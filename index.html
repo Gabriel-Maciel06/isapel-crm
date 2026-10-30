@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CRM Isapel Papéis - Inteligência e Gestão Comercial B2B, Funil Kanban, Arena 3D de Vendedores e Fechamento Diário">
+  <meta name="theme-color" content="#003360">
+  <title>CRM Isapel Papéis | Gestão Comercial B2B</title>
+
+  <!-- Google Fonts: Inter e Barlow Condensed para estética de precisão industrial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Temáticos da Isapel Papéis -->
+  <link rel="stylesheet" href="css/crm-theme.css">
+
+  <style>
+    /* Estilos complementares de refinamento para garantir consistência visual */
+    .tab-section { display: none; }
+    .tab-section.is-active { display: block; }
+    
+    /* Layout da Área de Fechamento */
+    .crm-closing-view {
+      padding: 1.5rem;
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .crm-closing-hero {
+      background: linear-gradient(135deg, var(--isapel-navy) 0%, #001f3f 100%);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2rem;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: var(--shadow-lg);
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .crm-closing-hero__title {
+      font-family: var(--font-condensed);
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+    }
+    .crm-closing-hero__subtitle {
+      color: #94A3B8;
+      font-size: 0.88rem;
+      margin-top: 0.25rem;
+      max-width: 680px;
+    }
+    .crm-closing-btn-hero {
+      background: var(--isapel-sky);
+      color: #FFFFFF;
+      padding: 0.85rem 1.6rem;
+      font-family: var(--font-condensed);
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      transition: background-color var(--transition-fast), transform 70ms ease-out, box-shadow var(--transition-fast);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .crm-closing-btn-hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.5);
+      background: var(--isapel-sky-hover);
+    }
+    .crm-closing-btn-hero:active {
+      transform: scale(0.96);
+    }
+
+    /* Grid de Prioridades Comerciais */
+    .crm-tactical-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 1100px) {
+      .crm-tactical-grid { grid-template-columns: 1fr; }
+    }
+    .crm-tactical-col {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .crm-tactical-col--p1 { border-top: 4px solid #EF4444; }
+    .crm-tactical-col--p2 { border-top: 4px solid #F59E0B; }
+    .crm-tactical-col--p3 { border-top: 4px solid #0284C7; }
+    
+    .crm-tactical-col__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.6rem;
+    }
+    .crm-tactical-col__badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+    }
+    .crm-tactical-col__badge--p1 { background: #FEE2E2; color: #991B1B; }
+    .crm-tactical-col__badge--p2 { background: #FEF3C7; color: #92400E; }
+    .crm-tactical-col__badge--p3 { background: #E0F2FE; color: #0369A1; }
+    
+    .crm-tactical-col__title {
+      font-family: var(--font-condensed);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--isapel-navy);
+      margin-top: 0.25rem;
+    }
+    .crm-tactical-col__desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+    .crm-tactical-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .crm-tactical-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      transition: all var(--transition-fast);
+    }
+    .crm-tactical-card:hover {
+      background: #FFFFFF;
+      border-color: var(--isapel-sky-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .crm-tactical-card__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .crm-tactical-card__client {
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--text-main);
+    }
+    .crm-tactical-card__val {
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--isapel-navy);
+    }
+    .crm-tactical-card__meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* JSON Box & WhatsApp Copy Card */
+    .crm-closing-actions-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .crm-json-codeblock {
+      background: #00162B;
+      color: #38BDF8;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.75rem;
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      max-height: 220px;
+      line-height: 1.4;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    /* Modal de Notas */
+    .crm-notes-modal-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .crm-tag-pill-btn {
+      background: #F1F5F9;
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all var(--transition-fast);
+      display: inline-block;
+      margin: 0.2rem;
+    }
+    .crm-tag-pill-btn:hover {
+      background: var(--isapel-sky-soft);
+      border-color: var(--isapel-sky-light);
+      color: var(--isapel-sky);
+    }
+
+    /* Toasts */
+    .crm-toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+    .crm-toast {
+      pointer-events: auto;
+      background: var(--isapel-navy);
+      color: #FFFFFF;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--isapel-sky);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      animation: slideDown 200ms ease;
+    }
+    .crm-toast--success { border-left-color: var(--isapel-emerald); }
+    .crm-toast--warning { border-left-color: var(--isapel-amber); }
+    .crm-toast--info { border-left-color: var(--isapel-sky-light); }
+  </style>
+</head>
+<body class="crm-body">
+
+  <!-- Skip Link Acessível (WCAG 2.4.1) -->
+  <a href="#quick-capture-section" class="crm-skip-link">Pular para o formulário de cadastro</a>
+
+  <!-- =====================================================================
+       1. HEADER INSTITUCIONAL ISAPEL (CORES: AZUL FÁBRICA #003360 & SKY)
+       ===================================================================== -->
+  <header class="crm-header" id="crm-header">
+    <div class="crm-header__brand-group">
+      <div class="crm-header__logo-container" style="background: #FFFFFF; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+        <img src="assets/logo-isapel-print.png" alt="Isapel Papéis" class="crm-header__logo" style="height: 34px; width: auto; object-fit: contain; display: block;" onerror="this.src='assets/logo-isapel.png';">
+      </div>
+      <div id="brand-text-fallback" style="display: none; align-items: center; gap: 0.5rem;">
+        <span style="font-family: var(--font-condensed); font-size: 1.35rem; font-weight: 800; letter-spacing: 0.05em; color: #FFFFFF;">ISAPEL</span>
+      </div>
+      <div class="crm-header__title-wrap">
+        <h1 class="crm-header__title">CRM Isapel</h1>
+      </div>
+    </div>
+
+    <!-- Abas de Navegação WAI-ARIA -->
+    <nav class="crm-header__nav-tabs" role="tablist" aria-label="Navegação Principal do CRM">
+      <button 
+        role="tab" 
+        aria-selected="true" 
+        aria-controls="tab-funil" 
+        tabindex="0"
+        class="crm-header__tab-btn is-active" 
+        data-tab="tab-funil" 
+        id="tab-nav-funil"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+        <span>Funil B2B</span>
+        <span class="crm-kanban-col__badge-count" id="header-total-leads-badge" style="background: rgba(255,255,255,0.2); color: #FFF;">0</span>
+      </button>
+      <button 
+        role="tab" 
+        aria-selected="false" 
+        aria-controls="tab-arena" 
+        tabindex="-1"
+        class="crm-header__tab-btn" 
+        data-tab="tab-arena" 
+        id="tab-nav-arena"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span>Arena 3D</span>
+      </button>
+      <button 
+        role="tab" 
+        aria-selected="false" 
+        aria-controls="tab-fechamento" 
+        tabindex="-1"
+        class="crm-header__tab-btn" 
+        data-tab="tab-fechamento" 
+        id="tab-nav-fechamento"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>Fechamento do Dia</span>
+      </button>
+    </nav>
+
+    <!-- Seletor de Vendedor & Ações -->
+    <div class="crm-header__actions">
+      <div class="crm-header__seller-picker" title="Filtrar visão por vendedor">
+        <div class="crm-header__seller-avatar" id="header-active-avatar">GM</div>
+        <div class="crm-header__seller-meta">
+          <label for="vendedor-select" class="crm-header__seller-label">Vendedor Ativo</label>
+          <select id="vendedor-select" class="crm-header__seller-select" aria-label="Selecione o vendedor ativo">
+            <option value="todos">Todos os Vendedores</option>
+            <option value="maciel">Gabriel Maciel</option>
+            <option value="fernanda">Fernanda</option>
+            <option value="caio">Caio</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Indicador de Sincronização Híbrida (Supabase + Rede) -->
+      <div id="sync-status-badge" style="display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; font-size: 0.72rem; color: #E2E8F0;" title="Sincronização em Nuvem (Supabase) + Backup Local na Rede">
+        <span id="sync-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+        <span id="sync-status-text">Nuvem & Rede</span>
+      </div>
+
+      <button id="btn-quick-fechamento-header" class="crm-btn" title="Ir para Fechamento do Dia">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <span>Fechamento</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. BARRA DE ENTRADA ULTRA-ÁGIL (EXATAMENTE 2 CAMPOS)
+       ===================================================================== -->
+  <section class="crm-quick-bar" id="quick-capture-section">
+    <form id="form-novo-lead" class="crm-quick-bar__form" autocomplete="off" onsubmit="return false;">
+      <div class="crm-quick-bar__title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="crm-quick-bar__title-icon" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <span>Novo Lead:</span>
+      </div>
+
+      <!-- Campo 1: Nome do Cliente / Empresa -->
+      <div class="crm-quick-bar__field-group" style="flex: 1.4;">
+        <label for="lead-nome" class="sr-only">1. Nome do Cliente ou Empresa</label>
+        <input
+          type="text"
+          id="lead-nome"
+          name="nome"
+          autocomplete="organization"
+          class="crm-quick-bar__input"
+          placeholder="1. Nome do Cliente ou Empresa (ex: Hospital Samaritano)"
+          required
+          maxlength="90"
+          aria-label="Nome do Cliente ou Empresa"
+        >
+      </div>
+
+      <!-- Campo 2: Telefone / WhatsApp com máscara dinâmica -->
+      <div class="crm-quick-bar__field-group" style="flex: 1.2;">
+        <label for="lead-telefone" class="sr-only">2. WhatsApp (com DDD)</label>
+        <input
+          type="tel"
+          id="lead-telefone"
+          name="telefone"
+          autocomplete="tel"
+          inputmode="tel"
+          class="crm-quick-bar__input"
+          placeholder="2. WhatsApp (com DDD)"
+          maxlength="15"
+          required
+          aria-label="Telefone WhatsApp com DDD"
+          aria-describedby="badge-ddd-display"
+        >
+      </div>
+
+      <!-- Botão de Cadastro Instantâneo -->
+      <button type="submit" id="btn-cadastrar-lead" class="crm-quick-bar__btn-submit">
+        <span>+ Cadastrar Lead</span>
+      </button>
+    </form>
+
+    <!-- Badge Dinâmico em Tempo Real (DDD + Localização) -->
+    <div id="ddd-badge-box" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+      <div class="crm-quick-bar__ddd-badge" id="badge-ddd-display" role="status" aria-live="polite">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        <span id="badge-ddd-localizacao">Digite o telefone com DDD</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. CONTEÚDO PRINCIPAL (3 ABAS)
+       ===================================================================== -->
+  <main class="crm-main-viewport">
+
+    <!-- ===================================================================
+         ABA 1: FUNIL DE QUALIFICAÇÃO B2B (6 COLUNAS KANBAN COM DRAG-AND-DROP)
+         =================================================================== -->
+    <section class="tab-section is-active" id="tab-funil" role="tabpanel" aria-labelledby="tab-nav-funil" tabindex="0">
+
+      <!-- Barra de Filtro Rápido e Métricas do Funil -->
+      <div class="crm-kanban-meta-bar" style="padding: 0.65rem 1.5rem 0 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <label for="kanban-search" class="sr-only">Filtrar leads no funil</label>
+          <input
+            type="text"
+            id="kanban-search"
+            class="crm-quick-bar__input"
+            style="width: 300px; height: 32px; font-size: 0.8rem;"
+            placeholder="Filtrar lead por nome, cidade ou DDD..."
+            aria-label="Filtrar lead por nome, cidade ou DDD"
+          >
+          <span style="font-size: 0.78rem; color: var(--text-muted);" id="kanban-filter-status">Exibindo todos os leads</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="font-size: 0.8rem; color: var(--text-muted);">
+            Pipeline Total: <strong id="kpi-pipeline-total" style="color: var(--isapel-navy); font-size: 0.95rem;">R$ 0,00</strong>
+          </div>
+          <button id="btn-recarregar-leads" class="crm-btn crm-btn--secondary" style="height: 30px; font-size: 0.75rem; padding: 0 0.75rem;" title="Sincronizar leads do funil">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span>Sincronizar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quadro Kanban Oficial -->
+      <div class="crm-kanban-wrapper">
+        <div class="crm-kanban-board" id="kanban-board">
+
+          <!-- Coluna 1: Novo Lead -->
+          <div class="crm-kanban-col crm-kanban-col--1" data-stage="novo" id="col-novo">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">1. Novo Lead</h3>
+                <span class="crm-kanban-col__badge-count" id="count-novo">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Total Estimado</span>
+                <span class="crm-kanban-col__total-value" id="total-novo">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="novo" id="cards-novo"></div>
+          </div>
+
+          <!-- Coluna 2: Qualificação -->
+          <div class="crm-kanban-col crm-kanban-col--2" data-stage="qualificacao" id="col-qualificacao">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">2. Qualificação</h3>
+                <span class="crm-kanban-col__badge-count" id="count-qualificacao">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Total Estimado</span>
+                <span class="crm-kanban-col__total-value" id="total-qualificacao">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="qualificacao" id="cards-qualificacao"></div>
+          </div>
+
+          <!-- Coluna 3: Proposta -->
+          <div class="crm-kanban-col crm-kanban-col--3" data-stage="proposta" id="col-proposta">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">3. Proposta Enviada</h3>
+                <span class="crm-kanban-col__badge-count" id="count-proposta">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Total Estimado</span>
+                <span class="crm-kanban-col__total-value" id="total-proposta">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="proposta" id="cards-proposta"></div>
+          </div>
+
+          <!-- Coluna 4: Negociação -->
+          <div class="crm-kanban-col crm-kanban-col--4" data-stage="negociacao" id="col-negociacao">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">4. Negociação</h3>
+                <span class="crm-kanban-col__badge-count" id="count-negociacao">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Total Estimado</span>
+                <span class="crm-kanban-col__total-value" id="total-negociacao">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="negociacao" id="cards-negociacao"></div>
+          </div>
+
+          <!-- Coluna 5: Fechado -->
+          <div class="crm-kanban-col crm-kanban-col--5" data-stage="fechado" id="col-fechado">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">5. Fechado (Ganho)</h3>
+                <span class="crm-kanban-col__badge-count" id="count-fechado">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Total Faturado</span>
+                <span class="crm-kanban-col__total-value" id="total-fechado" style="color: var(--isapel-emerald-text);">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="fechado" id="cards-fechado"></div>
+          </div>
+
+          <!-- Coluna 6: Perdido -->
+          <div class="crm-kanban-col crm-kanban-col--6" data-stage="perdido" id="col-perdido">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">6. Perdido</h3>
+                <span class="crm-kanban-col__badge-count" id="count-perdido">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Perdas</span>
+                <span class="crm-kanban-col__total-value" id="total-perdido" style="color: var(--isapel-carmine-text);">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="perdido" id="cards-perdido"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         ABA 2: ARENA 3D DE VENDEDORES (PLACAR E PÓDIO THREE.JS)
+         =================================================================== -->
+    <section class="tab-section" id="tab-arena" role="tabpanel" aria-labelledby="tab-nav-arena" tabindex="0">
+      <div class="crm-arena-view">
+
+        <div class="crm-arena-view__hero">
+          <div class="crm-arena-view__title-group">
+            <h2 style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span>Arena de Vendedores</span>
+            </h2>
+          </div>
+          <div class="crm-arena-view__target-metric">
+            <div class="crm-arena-view__target-metric-label">Meta da Fábrica (Diária)</div>
+            <div class="crm-arena-view__target-metric-value" id="arena-meta-valor">R$ 50.000,00</div>
+          </div>
+        </div>
+
+        <div class="crm-arena-grid">
+          <!-- Canvas 3D Three.js -->
+          <div class="crm-arena-canvas-card">
+            <div class="crm-arena-canvas-header">
+              <div class="crm-arena-canvas-title">Palco 3D dos Vendedores</div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button id="btn-arena-comemorar" class="crm-btn crm-btn--primary" style="height: 32px; font-size: 0.8rem;" title="Disparar comemoração da equipe">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                  <span>Comemoração</span>
+                </button>
+                <button id="btn-arena-reset-camera" class="crm-btn crm-btn--secondary" style="height: 32px; font-size: 0.8rem; color: #FFF; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);" title="Resetar visão da câmera 3D">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                  <span>Reset Câmera</span>
+                </button>
+              </div>
+            </div>
+            <div class="crm-arena-canvas-container" id="arena-3d-canvas-container" style="min-height: 520px; position: relative;">
+              <div id="arena3d-container" style="width: 100%; height: 520px; position: relative;">
+                <canvas id="arena3d-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pódio & Ranking -->
+          <div class="crm-podium-card">
+            <div class="crm-podium-header">
+              <h3 class="crm-podium-title">Pódio do Dia</h3>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;" id="arena-data-hoje">Hoje</span>
+            </div>
+
+            <!-- Estrutura de Pódio Visual -->
+            <div class="crm-podium-stage">
+              <!-- 2º Lugar -->
+              <div class="crm-podium-pillar crm-podium-pillar--2" id="podium-pillar-2">
+                <div class="crm-podium-avatar-wrap">
+                  <div class="crm-podium-avatar" id="podium-avatar-2">FE</div>
+                </div>
+                <span class="crm-podium-name" id="podium-name-2">Fernanda</span>
+                <span class="crm-podium-score" id="podium-score-2">R$ 0,00</span>
+                <div class="crm-podium-block">2º</div>
+              </div>
+
+              <!-- 1º Lugar (Ouro) -->
+              <div class="crm-podium-pillar crm-podium-pillar--1" id="podium-pillar-1">
+                <div class="crm-podium-avatar-wrap">
+                  <span class="crm-podium-crown"><svg width="22" height="22" viewBox="0 0 24 24" fill="#E3A52B" aria-hidden="true"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg></span>
+                  <div class="crm-podium-avatar" id="podium-avatar-1">GM</div>
+                </div>
+                <span class="crm-podium-name" id="podium-name-1">Gabriel Maciel</span>
+                <span class="crm-podium-score" id="podium-score-1">R$ 0,00</span>
+                <div class="crm-podium-block">1º</div>
+              </div>
+
+              <!-- 3º Lugar -->
+              <div class="crm-podium-pillar crm-podium-pillar--3" id="podium-pillar-3">
+                <div class="crm-podium-avatar-wrap">
+                  <div class="crm-podium-avatar" id="podium-avatar-3">CA</div>
+                </div>
+                <span class="crm-podium-name" id="podium-name-3">Caio</span>
+                <span class="crm-podium-score" id="podium-score-3">R$ 0,00</span>
+                <div class="crm-podium-block">3º</div>
+              </div>
+            </div>
+
+            <!-- Lista de Metas Individuais -->
+            <div class="crm-ranking-list">
+              <div class="crm-ranking-item" id="ranking-row-maciel">
+                <div class="crm-ranking-item__header">
+                  <span class="crm-ranking-item__name">Gabriel Maciel</span>
+                  <span class="crm-ranking-item__val" id="ranking-val-maciel">R$ 0,00</span>
+                </div>
+                <div class="crm-progress-bar">
+                  <div class="crm-progress-bar__fill" id="ranking-bar-maciel" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <div class="crm-ranking-item" id="ranking-row-fernanda">
+                <div class="crm-ranking-item__header">
+                  <span class="crm-ranking-item__name">Fernanda</span>
+                  <span class="crm-ranking-item__val" id="ranking-val-fernanda">R$ 0,00</span>
+                </div>
+                <div class="crm-progress-bar">
+                  <div class="crm-progress-bar__fill" id="ranking-bar-fernanda" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <div class="crm-ranking-item" id="ranking-row-caio">
+                <div class="crm-ranking-item__header">
+                  <span class="crm-ranking-item__name">Caio</span>
+                  <span class="crm-ranking-item__val" id="ranking-val-caio">R$ 0,00</span>
+                </div>
+                <div class="crm-progress-bar">
+                  <div class="crm-progress-bar__fill" id="ranking-bar-caio" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         ABA 3: FECHAMENTO DO DIA & PLANO TÁTICO
+         =================================================================== -->
+    <section class="tab-section" id="tab-fechamento" role="tabpanel" aria-labelledby="tab-nav-fechamento" tabindex="0">
+      <div class="crm-closing-view">
+
+        <!-- Banner com o Botão Master de Fechamento -->
+        <div class="crm-closing-hero">
+          <div>
+            <span class="crm-priority-tag crm-priority-tag--estrategica" style="margin-bottom: 0.5rem; display: inline-block;">
+              Inteligência Comercial Isapel
+            </span>
+            <h2 class="crm-closing-hero__title">Fechamento do Dia & Plano Tático</h2>
+            <p class="crm-closing-hero__subtitle">
+              Consolide todos os dados comerciais do expediente, baixe o arquivo JSON auditável e acompanhe as ações táticas prioritárias de amanhã para a equipe comercial.
+            </p>
+          </div>
+          <div>
+            <button id="btn-executar-fechamento" class="crm-closing-btn-hero">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.45rem; vertical-align: text-bottom;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><span>Encerrar Expediente & Gerar Plano do Dia Seguinte</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cards com as 4 Métricas Táticas do Dia -->
+        <div class="crm-tactic-metrics">
+          <div class="crm-tactic-metric-card">
+            <div class="crm-tactic-metric-card__val" id="metric-fechamento-pipeline">R$ 0,00</div>
+            <div class="crm-tactic-metric-card__lbl">Pipeline Ativo</div>
+          </div>
+          <div class="crm-tactic-metric-card">
+            <div class="crm-tactic-metric-card__val" id="metric-fechamento-ganho" style="color: var(--isapel-emerald);">R$ 0,00</div>
+            <div class="crm-tactic-metric-card__lbl">Vendas Fechadas Hoje</div>
+          </div>
+          <div class="crm-tactic-metric-card">
+            <div class="crm-tactic-metric-card__val" id="metric-fechamento-negociacao" style="color: var(--isapel-amber);">R$ 0,00</div>
+            <div class="crm-tactic-metric-card__lbl">Em Negociação Quente</div>
+          </div>
+          <div class="crm-tactic-metric-card">
+            <div class="crm-tactic-metric-card__val" id="metric-fechamento-rotas">0 Regiões</div>
+            <div class="crm-tactic-metric-card__lbl">Regiões Mapeadas</div>
+          </div>
+        </div>
+
+        <!-- As 3 Colunas de Prioridades Comerciais para o Próximo Dia -->
+        <div class="crm-tactical-grid">
+
+          <!-- Prioridade 1 -->
+          <div class="crm-tactical-col crm-tactical-col--p1">
+            <div class="crm-tactical-col__header">
+              <span class="crm-tactical-col__badge crm-tactical-col__badge--p1">Prioridade 1</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p1-count">0 leads</span>
+            </div>
+            <div>
+              <h4 class="crm-tactical-col__title">Fechamentos Urgentes & Amostras</h4>
+              <p class="crm-tactical-col__desc">
+                Leads em Negociação: contato nas primeiras horas do dia (08:00 - 10:30) para travar pedido e envio de amostras físicas com laudo técnico.
+              </p>
+            </div>
+            <div class="crm-tactical-items-list" id="lista-prioridade-1"></div>
+          </div>
+
+          <!-- Prioridade 2 -->
+          <div class="crm-tactical-col crm-tactical-col--p2">
+            <div class="crm-tactical-col__header">
+              <span class="crm-tactical-col__badge crm-tactical-col__badge--p2">Prioridade 2</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p2-count">0 leads</span>
+            </div>
+            <div>
+              <h4 class="crm-tactical-col__title">Follow-up de Propostas Enviadas</h4>
+              <p class="crm-tactical-col__desc">
+                Confirmar recebimento da cotação de toalha e higiênico, checar condições de pagamento (Boleto 28d / PIX) e tirar dúvidas técnicas.
+              </p>
+            </div>
+            <div class="crm-tactical-items-list" id="lista-prioridade-2"></div>
+          </div>
+
+          <!-- Prioridade 3 -->
+          <div class="crm-tactical-col crm-tactical-col--p3">
+            <div class="crm-tactical-col__header">
+              <span class="crm-tactical-col__badge crm-tactical-col__badge--p3">Prioridade 3</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p3-count">0 regiões</span>
+            </div>
+            <div>
+              <h4 class="crm-tactical-col__title">Prospecção & Expansão Regional</h4>
+              <p class="crm-tactical-col__desc">
+                Novos leads e contas qualificadas agrupados por DDD e região geográfica para prospecção comercial e follow-up estratégico.
+              </p>
+            </div>
+            <div class="crm-tactical-items-list" id="lista-prioridade-3"></div>
+          </div>
+
+        </div>
+
+        <!-- Ações: Copiar para WhatsApp e Download JSON -->
+        <div class="crm-closing-actions-box">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <h4 style="font-family: var(--font-condensed); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--isapel-navy);">
+                Exportação & Compartilhamento Operacional
+              </h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);" id="fechamento-status-text">
+                Arquivo <code>fechamento-isapel-YYYY-MM-DD.json</code> pronto para download.
+              </span>
+            </div>
+            <div style="display: flex; gap: 0.6rem;">
+              <button id="btn-copiar-plano-whatsapp" class="crm-btn crm-btn--primary" style="background: var(--isapel-emerald-dark); border: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Copiar Plano para WhatsApp da Equipe
+              </button>
+              <button id="btn-download-json-manual" class="crm-btn crm-btn--secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Baixar JSON
+              </button>
+            </div>
+          </div>
+
+          <pre class="crm-json-codeblock" id="json-preview-text">// O consolidado do fechamento diário será exibido aqui após o cálculo...</pre>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       MODAL 1: ANOTAÇÕES RÁPIDAS (+ NOTA)
+       ===================================================================== -->
+  <div class="crm-modal-backdrop" id="modal-notas-backdrop">
+    <div class="crm-modal" style="max-width: 650px;" role="dialog" aria-modal="true" aria-labelledby="modal-notas-lead-nome">
+      <div class="crm-modal__header">
+        <h3 class="crm-modal__title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>Histórico & Observações</span>
+        </h3>
+        <button class="crm-modal__close-btn" id="btn-fechar-modal-notas" aria-label="Fechar histórico de anotações">&times;</button>
+      </div>
+      <div class="crm-modal__body">
+        <div>
+          <h4 id="modal-notas-lead-nome" style="font-size: 1.1rem; font-weight: 700; color: var(--isapel-navy);">Cliente</h4>
+          <span id="modal-notas-lead-phone" style="font-size: 0.8rem; color: var(--text-muted);">Telefone</span>
+        </div>
+
+        <!-- Tags Rápidas de Conversa -->
+        <div>
+          <span style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 0.25rem;">
+            Tags Rápidas (clique para preencher):
+          </span>
+          <div style="display: flex; flex-wrap: wrap;">
+            <button type="button" class="crm-tag-pill-btn" data-text="Pediu desconto para pagamento à vista via PIX">Desconto PIX</button>
+            <button type="button" class="crm-tag-pill-btn" data-text="Precisa de 50 caixas de toalha interfolha 2 dobras">50 cx Interfolha</button>
+            <button type="button" class="crm-tag-pill-btn" data-text="Solicitou envio de amostra física e catálogo">Amostra + Catálogo</button>
+            <button type="button" class="crm-tag-pill-btn" data-text="Cotação de papel higiênico rolão 100% celulose 300m">Higiênico Rolão 300m</button>
+            <button type="button" class="crm-tag-pill-btn" data-text="Retornar contato amanhã às 14h">Ligar amanhã 14h</button>
+            <button type="button" class="crm-tag-pill-btn" data-text="Solicitou prazo faturado boleto 28 dias">Faturado 28 dias</button>
+          </div>
+        </div>
+
+        <!-- Campo de Nova Nota -->
+        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+          <label for="input-nova-nota" style="font-size: 0.82rem; font-weight: 600;">Nova Anotação / Resumo do Contato:</label>
+          <textarea
+            id="input-nova-nota"
+            class="crm-quick-bar__input"
+            rows="3"
+            style="height: 80px; padding: 0.6rem; resize: vertical;"
+            placeholder="Digite o resumo da negociação de hoje..."
+          ></textarea>
+        </div>
+
+        <!-- Linha do Tempo de Notas Anteriores -->
+        <div>
+          <span style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 0.5rem;">
+            Histórico Registrado:
+          </span>
+          <div id="modal-notes-timeline-list" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Itens de histórico -->
+          </div>
+        </div>
+      </div>
+      <div class="crm-modal__footer">
+        <button type="button" class="crm-btn crm-btn--secondary" id="btn-cancelar-modal-notas">Cancelar</button>
+        <button type="button" class="crm-btn crm-btn--primary" id="btn-salvar-nova-nota">Salvar Nota</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 2: EDIÇÃO DE LEAD (VALOR, VENDEDOR, ETAPA)
+       ===================================================================== -->
+  <div class="crm-modal-backdrop" id="modal-editar-backdrop">
+    <div class="crm-modal" style="max-width: 520px;" role="dialog" aria-modal="true" aria-labelledby="modal-editar-title">
+      <div class="crm-modal__header">
+        <h3 class="crm-modal__title" id="modal-editar-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg><span>Detalhes da Conta</span>
+        </h3>
+        <button class="crm-modal__close-btn" id="btn-fechar-modal-editar" aria-label="Fechar edição de lead">&times;</button>
+      </div>
+      <div class="crm-modal__body">
+        <form id="form-editar-lead" style="display: flex; flex-direction: column; gap: 0.85rem;" onsubmit="return false;">
+          <input type="hidden" id="edit-lead-id">
+
+          <div>
+            <label for="edit-lead-nome" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Nome do Cliente / Empresa</label>
+            <input type="text" id="edit-lead-nome" class="crm-quick-bar__input" required>
+          </div>
+
+          <div>
+            <label for="edit-lead-telefone" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Telefone / WhatsApp</label>
+            <input type="tel" id="edit-lead-telefone" class="crm-quick-bar__input" required>
+          </div>
+
+          <div>
+            <label for="edit-lead-valor" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Valor Negociado (R$)</label>
+            <input type="number" id="edit-lead-valor" class="crm-quick-bar__input" step="50" min="0">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div>
+              <label for="edit-lead-vendedor" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Vendedor</label>
+              <select id="edit-lead-vendedor" class="crm-quick-bar__input">
+                <option value="maciel">Gabriel Maciel</option>
+                <option value="fernanda">Fernanda</option>
+                <option value="caio">Caio</option>
+              </select>
+            </div>
+            <div>
+              <label for="edit-lead-etapa" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Etapa do Funil</label>
+              <select id="edit-lead-etapa" class="crm-quick-bar__input">
+                <option value="novo">1. Novo Lead</option>
+                <option value="qualificacao">2. Qualificação</option>
+                <option value="proposta">3. Proposta Enviada</option>
+                <option value="negociacao">4. Negociação</option>
+                <option value="fechado">5. Fechado (Ganho)</option>
+                <option value="perdido">6. Perdido</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="crm-modal__footer" style="justify-content: space-between;">
+        <button type="button" class="crm-btn crm-btn--secondary" id="btn-excluir-lead" style="color: var(--isapel-carmine); border-color: #FECACA;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.35rem; vertical-align: text-bottom;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Excluir Lead
+        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="crm-btn crm-btn--secondary" id="btn-cancelar-modal-editar">Cancelar</button>
+          <button type="button" class="crm-btn crm-btn--primary" id="btn-salvar-edicao-lead">Salvar Alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container de Toasts Flutuantes -->
+  <div class="crm-toast-container" id="crm-toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- =====================================================================
+       SCRIPTS: THREE.JS + CRM-BACKEND + ARENA-3D + CRM-APP
+       ===================================================================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      console.warn('Three.js CDN indisponível. Carregando js/three.min.js local...');
+      document.write('<script src="js/three.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- Base de Regras de Negócio e Dados -->
+  <script src="js/crm-backend.js"></script>
+
+  <!-- Sincronizador Híbrido Supabase & Backup de Rede -->
+  <script src="js/crm-sync.js"></script>
+
+  <!-- Módulo 3D da Arena de Vendedores -->
+  <script src="js/arena-3d.js"></script>
+
+  <!-- Aplicação Principal -->
+  <script src="js/crm-app.js"></script>
+
+</body>
+</html>

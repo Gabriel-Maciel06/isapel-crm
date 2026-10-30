@@ -1,0 +1,1760 @@
+/* ==========================================================================
+   ISAPEL PAPÉIS - CRM B2B DESIGN SYSTEM & THEME
+   Arquivo: crm-theme.css
+   Versão: 1.0.0 Oficial
+   Identidade: Azul Fábrica (#003360), Azul Claro (#0284C7 / #38BDF8),
+               Branco Neve (#FFFFFF), Dourado Troféu / Pódio (#E3A52B)
+   Padrão: Anti-Slop, Ultra-Crisp Precision Borders, WCAG AA/AAA
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   1. DESIGN TOKENS & VARIÁVEIS CSS
+   ========================================================================== */
+:root {
+  /* --- Cores Primárias Isapel --- */
+  --isapel-navy: #003360;          /* Dark Navy Fábrica Isapel */
+  --isapel-navy-dark: #002244;     /* Navy Profundo para Contrastes e Sombras */
+  --isapel-navy-light: #0b457a;    /* Navy Suave para Hovers */
+  
+  --isapel-sky: #0284C7;           /* Sky Blue Corporativo Vivo (Primary Action) */
+  --isapel-sky-dark: #0369A1;      /* Sky Escuro de Alto Contraste WCAG AA (5.5:1) */
+  --isapel-sky-hover: #0284C7;     /* Sky Hover Interativo */
+  --isapel-sky-light: #38BDF8;     /* Sky Light para Acentos, Badges e Destaques */
+  --isapel-sky-soft: #E0F2FE;      /* Fundo suave Sky Tint */
+  --isapel-sky-border: rgba(2, 132, 199, 0.25);
+
+  /* --- Superfícies e Fundos Limpos --- */
+  --bg-app: #F8FAFC;               /* Canvas de Fundo Geral */
+  --bg-surface: #FFFFFF;           /* Cards e Superfícies Brancas Neve */
+  --bg-column: #F1F5F9;            /* Fundo de Colunas Kanban */
+  --bg-muted: #F8FAFC;             /* Fundo Neutro Suave */
+  --bg-hover: #F1F5F9;             /* Estados de Hover Gerais */
+
+  /* --- Linhas e Bordas Cirúrgicas (Anti-Slop) --- */
+  --border-subtle: #E2E8F0;        /* Borda padrão de 1px */
+  --border-focus: #38BDF8;         /* Borda de Foco Ativo */
+  --border-strong: #CBD5E1;        /* Borda de Ênfase */
+
+  /* --- Acentos Corporativos de Suporte --- */
+  --isapel-gold: #E3A52B;          /* Dourado Troféu (1º Lugar Pódio) */
+  --isapel-gold-soft: #FEF3C7;     /* Fundo Dourado Suave */
+  --isapel-gold-text: #92400E;     /* Texto Contraste Ouro */
+
+  --isapel-emerald: #059669;       /* Verde Esmeralda WCAG AA (Fechado / Ganho) */
+  --isapel-emerald-dark: #047857;  /* Verde Escuro para Botões e Ações */
+  --isapel-emerald-soft: #D1FAE5;  /* Fundo Verde Suave */
+  --isapel-emerald-text: #065F46;  /* Texto Verde Escuro */
+
+  --isapel-amber: #F59E0B;         /* Âmbar Follow-up / Atenção */
+  --isapel-amber-soft: #FEF3C7;    /* Fundo Âmbar */
+  --isapel-amber-text: #92400E;    /* Texto Âmbar Escuro */
+
+  --isapel-indigo: #6366F1;        /* Roxo/Índigo para Amostras e Envio */
+  --isapel-indigo-soft: #EEF2FF;   /* Fundo Amostras */
+  --isapel-indigo-text: #3730A3;   /* Texto Amostras */
+
+  --isapel-carmine: #EF4444;       /* Carmim Suave para Perdido / Alerta Crítico */
+  --isapel-carmine-soft: #FEE2E2;  /* Fundo Carmim */
+  --isapel-carmine-text: #991B1B;  /* Texto Carmim */
+
+  --isapel-slate: #64748B;         /* Cinza Corporativo / Standby */
+  --isapel-slate-soft: #F1F5F9;    /* Fundo Cinza Neutro */
+  --isapel-slate-text: #334155;    /* Texto Cinza Escuro */
+
+  /* --- Tipografia & Texto --- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-condensed: 'Barlow Condensed', 'Inter', sans-serif;
+
+  --text-main: #0F172A;            /* Slate 900 - Alta legibilidade */
+  --text-muted: #64748B;           /* Slate 500 - Legendas e Metadados */
+  --text-dim: #94A3B8;             /* Slate 400 - Desabilitados / Placeholders */
+  --text-white: #FFFFFF;           /* Branco Puro */
+
+  /* --- Sombras Anti-Slop (Precisão Sem Borrões Gigantes) --- */
+  --shadow-xs: 0 1px 2px rgba(0, 51, 96, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 51, 96, 0.06), 0 1px 2px rgba(0, 51, 96, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 51, 96, 0.08), 0 2px 4px -2px rgba(0, 51, 96, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 51, 96, 0.08), 0 4px 6px -4px rgba(0, 51, 96, 0.04);
+  --shadow-hover: 0 6px 12px -2px rgba(2, 132, 199, 0.12), 0 2px 4px -1px rgba(0, 51, 96, 0.04);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 34, 68, 0.2), 0 8px 10px -6px rgba(0, 34, 68, 0.15);
+  --shadow-glow-sky: 0 0 0 3px rgba(56, 189, 248, 0.25);
+  --shadow-glow-gold: 0 0 15px rgba(227, 165, 43, 0.35);
+
+  /* --- Espaçamentos & Raios --- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   2. RESET E CONFIGURAÇÕES GERAIS
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Skip link acessível no topo (WCAG 2.4.1) */
+.crm-skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.6rem 1.2rem;
+  background: var(--isapel-sky-light);
+  color: var(--isapel-navy-dark);
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--isapel-navy);
+  text-decoration: none;
+}
+.crm-skip-link:focus {
+  top: 1rem;
+  outline: 3px solid #FFFFFF;
+}
+
+/* Utilitário para leitores de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Indicador Universal de Foco de Alta Visibilidade (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--isapel-sky);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.25);
+}
+
+/* Foco em superfícies escuras (Header e Banner Navy) */
+.crm-header :focus-visible,
+.crm-closing-hero :focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.5);
+}
+
+a {
+  color: var(--isapel-sky);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--isapel-sky-hover);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ==========================================================================
+   3. HEADER INSTITUCIONAL ISAPEL
+   ========================================================================== */
+.crm-header {
+  background: var(--isapel-navy);
+  color: var(--text-white);
+  padding: 0 1.5rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--isapel-sky);
+  box-shadow: 0 2px 10px rgba(0, 34, 68, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.crm-header__brand-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.crm-header__logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+.crm-header__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.crm-header__title {
+  font-family: var(--font-condensed);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.crm-header__badge-copilot {
+  background: linear-gradient(135deg, #0284C7 0%, #38BDF8 100%);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.crm-header__badge-copilot::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  animation: pulseSubtle 2s infinite ease-in-out;
+}
+
+/* Abas de Navegação no Header */
+.crm-header__nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(0, 34, 68, 0.6);
+  padding: 0.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.crm-header__tab-btn {
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #94A3B8;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform 70ms ease-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.crm-header__tab-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.crm-header__tab-btn:active {
+  transform: scale(0.96);
+}
+
+.crm-header__tab-btn.is-active {
+  background: var(--isapel-sky-dark);
+  color: #FFFFFF;
+}
+
+/* Área do Vendedor & Ações */
+.crm-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+#btn-quick-fechamento-header {
+  background: var(--isapel-navy-light);
+  color: #FFFFFF;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform 70ms ease-out;
+}
+
+#btn-quick-fechamento-header:hover {
+  background: var(--isapel-sky);
+  border-color: var(--isapel-sky-light);
+  transform: translateY(-1px);
+}
+
+#btn-quick-fechamento-header:active {
+  transform: scale(0.96);
+}
+
+.crm-header__seller-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.3rem 0.75rem 0.3rem 0.35rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.crm-header__seller-picker:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--isapel-sky-light);
+}
+
+.crm-header__seller-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--isapel-sky-light), var(--isapel-sky));
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1.5px solid #FFFFFF;
+}
+
+.crm-header__seller-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.crm-header__seller-label {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.crm-header__seller-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.crm-header__seller-select {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.crm-header__seller-select option {
+  background: var(--isapel-navy);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   4. BARRA DE CADASTRO RÁPIDO & LOGÍSTICA ISAPEL
+   ========================================================================== */
+.crm-quick-bar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.crm-quick-bar__form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  max-width: 860px;
+}
+
+.crm-quick-bar__title {
+  font-family: var(--font-condensed);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--isapel-navy);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.crm-quick-bar__title-icon {
+  color: var(--isapel-sky);
+  font-size: 1.1rem;
+}
+
+.crm-quick-bar__field-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.crm-quick-bar__input {
+  width: 100%;
+  height: 38px;
+  padding: 0 0.85rem;
+  background: #F8FAFC;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+}
+
+.crm-quick-bar__input::placeholder {
+  color: var(--text-dim);
+}
+
+.crm-quick-bar__input:hover {
+  border-color: #CBD5E1;
+  background: #FFFFFF;
+}
+
+.crm-quick-bar__input:focus {
+  outline: none;
+  background: #FFFFFF;
+  border-color: var(--isapel-sky);
+  box-shadow: var(--shadow-glow-sky);
+}
+
+/* Badge Dinâmico de DDD/Região com Animação SlideDown (Alto Contraste WCAG AA) */
+.crm-quick-bar__ddd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--isapel-sky-soft);
+  color: #0369A1; /* Contraste > 4.8:1 sobre fundo sky-soft */
+  border: 1px solid rgba(2, 132, 199, 0.35);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: calc(100vw - 48px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: slideDown 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.crm-quick-bar__btn-submit {
+  height: 38px;
+  padding: 0 1.25rem;
+  background: var(--isapel-sky-dark);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background-color var(--transition-fast), transform 70ms ease-out;
+  white-space: nowrap;
+}
+
+.crm-quick-bar__btn-submit:hover {
+  background: var(--isapel-sky);
+  transform: translateY(-1px);
+}
+
+.crm-quick-bar__btn-submit:active {
+  transform: scale(0.96);
+}
+
+/* Tag Colorida de Logística Isapel */
+.crm-quick-bar__logistics-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: var(--radius-full);
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.crm-quick-bar__logistics-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--isapel-emerald);
+}
+
+/* ==========================================================================
+   5. QUADRO KANBAN DE QUALIFICAÇÃO (6 COLUNAS)
+   ========================================================================== */
+.crm-kanban-wrapper {
+  padding: 1.25rem 3rem 1.25rem 2.5rem;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: calc(100vh - 128px);
+}
+
+.crm-kanban-board {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(185px, 1fr));
+  gap: 0.85rem;
+  min-width: 1240px;
+  height: 100%;
+  align-items: stretch;
+}
+
+/* Coluna do Kanban */
+.crm-kanban-col {
+  background: var(--bg-column);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: calc(100vh - 154px);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.crm-kanban-col.is-drag-over {
+  border-color: var(--isapel-sky-light);
+  background: #E0F2FE;
+  box-shadow: 0 0 0 2px var(--isapel-sky-light);
+}
+
+/* Cabeçalho da Coluna */
+.crm-kanban-col__header {
+  padding: 0.85rem 1rem;
+  background: #FFFFFF;
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.crm-kanban-col__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+/* Cores dos Indicadores de Coluna */
+.crm-kanban-col--1 .crm-kanban-col__indicator { background: var(--isapel-navy); }
+.crm-kanban-col--2 .crm-kanban-col__indicator { background: var(--isapel-sky); }
+.crm-kanban-col--3 .crm-kanban-col__indicator { background: var(--isapel-indigo); }
+.crm-kanban-col--4 .crm-kanban-col__indicator { background: var(--isapel-amber); }
+.crm-kanban-col--5 .crm-kanban-col__indicator { background: var(--isapel-emerald); } /* Fechado/Ganho = Verde Esmeralda */
+.crm-kanban-col--6 .crm-kanban-col__indicator { background: var(--isapel-carmine); } /* Perdido = Carmim/Vermelho */
+
+.crm-kanban-col__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.crm-kanban-col__title {
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--isapel-navy);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.crm-kanban-col__badge-count {
+  background: #E2E8F0;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.crm-kanban-col__summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.crm-kanban-col__total-value {
+  font-weight: 700;
+  color: var(--isapel-navy);
+}
+
+/* Área de Drop / Lista de Cards */
+.crm-kanban-col__body {
+  padding: 0.75rem;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-height: 120px;
+}
+
+/* Estado Vazio de Alto Contraste (WCAG AA > 4.5:1) */
+.crm-kanban-col__empty {
+  padding: 1.75rem 1rem;
+  text-align: center;
+  color: #475569; /* Contraste 5.2:1 sobre #F1F5F9 */
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: var(--radius-sm);
+  margin: 0.5rem;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* Card do Lead */
+.crm-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  transition: transform 180ms cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 180ms cubic-bezier(0.2, 0, 0, 1),
+              border-color 150ms ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  will-change: transform, box-shadow;
+}
+
+.crm-card:hover {
+  border-color: var(--isapel-sky-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.crm-card.is-dragging {
+  opacity: 0.55;
+  transform: scale(1.025) rotate(1.2deg);
+  box-shadow: 0 16px 32px rgba(0, 51, 96, 0.25);
+  border: 1.5px solid var(--isapel-sky);
+  cursor: grabbing !important;
+}
+
+@keyframes cardDropSettle {
+  0% {
+    transform: scale(1.03) translateY(-4px);
+    box-shadow: 0 12px 20px -3px rgba(0, 51, 96, 0.16);
+  }
+  60% {
+    transform: scale(0.99) translateY(1px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.crm-card.is-just-dropped {
+  animation: cardDropSettle 280ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Topo do Card: Região, Segmento e Tags */
+.crm-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.crm-card__region-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #EFF6FF;
+  color: #0369A1; /* Sky 700: Alto Contraste */
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #BFDBFE;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crm-card__seller-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #F1F5F9;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.crm-card__seller-initials {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--isapel-sky);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.crm-card__tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+}
+
+.crm-card__tag--sample {
+  background: var(--isapel-indigo-soft);
+  color: var(--isapel-indigo-text);
+  border: 1px solid #C7D2FE;
+}
+
+.crm-card__tag--high {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+.crm-card__tag--gold {
+  background: var(--isapel-gold-soft);
+  color: var(--isapel-gold-text);
+  border: 1px solid #FDE68A;
+}
+
+.crm-card__date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Título e Cliente */
+.crm-card__client-name {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.crm-card__segment {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Dados de Contato e Botão WhatsApp 1-Clique */
+.crm-card__contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F8FAFC;
+  padding: 0.4rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #EDF2F7;
+}
+
+.crm-card__phone-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.crm-card__whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #047857; /* Verde Escuro Esmeralda: Contraste 4.54:1 com branco (WCAG AA) */
+  color: #FFFFFF;
+  font-size: 0.76rem;
+  font-weight: 700;
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #065F46;
+  transition: background-color var(--transition-fast), transform 70ms ease-out;
+  touch-action: manipulation;
+  text-decoration: none;
+}
+
+.crm-card__whatsapp-btn:hover {
+  background: #065F46;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.crm-card__whatsapp-btn:active {
+  transform: scale(0.95);
+}
+
+/* Trecho de Anotações */
+.crm-card__notes-snippet {
+  font-size: 0.78rem;
+  color: #334155;
+  background: #F8FAFC;
+  border-left: 2px solid var(--isapel-sky);
+  padding: 0.35rem 0.55rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Rodapé do Card: Ações Rápidas */
+.crm-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.35rem;
+  border-top: 1px solid #F1F5F9;
+}
+
+.crm-card__volume {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--isapel-navy);
+}
+
+.crm-card__btn-advance {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0369A1;
+  min-height: 36px;
+  min-width: 44px;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform 70ms ease-out;
+}
+
+.crm-card__btn-advance:hover {
+  background: var(--isapel-sky-soft);
+  color: var(--isapel-sky-hover);
+}
+
+.crm-card__btn-advance:active {
+  transform: scale(0.96);
+}
+
+/* Botão de WhatsApp Rápido nos Cards Táticos de Fechamento */
+.crm-tactical-card__wa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: #047857;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  border: 1px solid #065F46;
+  transition: background-color var(--transition-fast), transform 70ms ease-out;
+  align-self: flex-start;
+  margin-top: 0.3rem;
+  min-height: 32px;
+}
+
+.crm-tactical-card__wa-btn:hover {
+  background: #065F46;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.crm-tactical-card__wa-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================================
+   6. ARENA DE COMPETIÇÃO 3D & GAMIFICAÇÃO ISAPEL
+   ========================================================================== */
+.crm-arena-view {
+  padding: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.crm-arena-view__hero {
+  background: linear-gradient(135deg, var(--isapel-navy) 0%, #001f3f 100%);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: var(--shadow-lg);
+}
+
+.crm-arena-view__title-group h2 {
+  font-family: var(--font-condensed);
+  font-size: 1.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+}
+
+.crm-arena-view__subtitle {
+  color: #94A3B8;
+  font-size: 0.88rem;
+  margin-top: 0.25rem;
+}
+
+.crm-arena-view__target-metric {
+  text-align: right;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.crm-arena-view__target-metric-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: var(--isapel-sky-light);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.crm-arena-view__target-metric-value {
+  font-family: var(--font-condensed);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+/* Grid da Arena: Canvas 3D e Placar */
+.crm-arena-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* Moldura do Canvas 3D */
+.crm-arena-canvas-card {
+  background: #00162B;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(2, 132, 199, 0.15);
+  overflow: hidden;
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-arena-canvas-header {
+  padding: 1rem 1.25rem;
+  background: rgba(0, 34, 68, 0.7);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.crm-arena-canvas-title {
+  color: #FFFFFF;
+  font-family: var(--font-condensed);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crm-arena-canvas-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--isapel-emerald);
+  box-shadow: 0 0 8px var(--isapel-emerald);
+}
+
+.crm-arena-canvas-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.crm-arena-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Pódio dos Campeões */
+.crm-podium-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.crm-podium-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.crm-podium-title {
+  font-family: var(--font-condensed);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--isapel-navy);
+}
+
+/* Estrutura do Pódio (1º, 2º e 3º) */
+.crm-podium-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem 0 0.5rem 0;
+}
+
+.crm-podium-pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.crm-podium-avatar-wrap {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.crm-podium-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #CBD5E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+
+.crm-podium-crown {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 4px rgba(227, 165, 43, 0.5));
+}
+
+.crm-podium-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.crm-podium-score {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.crm-podium-block {
+  width: 100%;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-condensed);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+/* 1º Lugar - Ouro Isapel */
+.crm-podium-pillar--1 .crm-podium-avatar {
+  width: 64px;
+  height: 64px;
+  border-color: var(--isapel-gold);
+  background: linear-gradient(135deg, #F59E0B, var(--isapel-gold));
+  box-shadow: var(--shadow-glow-gold);
+}
+.crm-podium-pillar--1 .crm-podium-block {
+  height: 110px;
+  background: linear-gradient(180deg, #E3A52B 0%, #B45309 100%);
+  box-shadow: 0 4px 15px rgba(227, 165, 43, 0.3);
+}
+
+/* 2º Lugar - Prata */
+.crm-podium-pillar--2 .crm-podium-avatar {
+  background: linear-gradient(135deg, #94A3B8, #64748B);
+}
+.crm-podium-pillar--2 .crm-podium-block {
+  height: 80px;
+  background: linear-gradient(180deg, #94A3B8 0%, #475569 100%);
+}
+
+/* 3º Lugar - Bronze */
+.crm-podium-pillar--3 .crm-podium-avatar {
+  background: linear-gradient(135deg, #D97706, #78350F);
+}
+.crm-podium-pillar--3 .crm-podium-block {
+  height: 60px;
+  background: linear-gradient(180deg, #B45309 0%, #78350F 100%);
+}
+
+/* Lista de Metas e Barras de Progresso */
+.crm-ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.crm-ranking-item {
+  background: #F8FAFC;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.crm-ranking-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.crm-ranking-item__name {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crm-ranking-item__val {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--isapel-navy);
+}
+
+.crm-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.crm-progress-bar__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--isapel-sky-light) 0%, var(--isapel-navy) 100%);
+  transition: width 400ms ease;
+}
+
+/* ==========================================================================
+   7. MODAL & PAINEL DE FECHAMENTO DO DIA
+   ========================================================================== */
+.crm-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 34, 68, 0.7);
+  backdrop-filter: blur(0px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 240ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 240ms cubic-bezier(0.4, 0, 0.2, 1),
+              backdrop-filter 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.crm-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(6px);
+}
+
+.crm-modal {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95) translateY(14px);
+  opacity: 0;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 220ms ease-out;
+  will-change: transform, opacity;
+}
+
+.crm-modal-backdrop.is-open .crm-modal {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.crm-modal__header {
+  padding: 1.25rem 1.5rem;
+  background: var(--isapel-navy);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--isapel-sky);
+}
+
+.crm-modal__title {
+  font-family: var(--font-condensed);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crm-modal__close-btn {
+  color: #94A3B8;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  transition: transform 160ms ease, color var(--transition-fast);
+}
+
+.crm-modal__close-btn:hover {
+  color: #FFFFFF;
+  transform: rotate(90deg) scale(1.1);
+}
+
+.crm-modal__close-btn:active {
+  transform: rotate(90deg) scale(0.92);
+}
+
+.crm-modal__body {
+  background: #FFFFFF;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Resumo Tático de Métricas */
+.crm-tactic-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.crm-tactic-metric-card {
+  background: #F8FAFC;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  text-align: center;
+}
+
+.crm-tactic-metric-card__val {
+  font-family: var(--font-condensed);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--isapel-navy);
+}
+
+.crm-tactic-metric-card__lbl {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Lista de Ações Táticas & Prioridades */
+.crm-priority-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.crm-priority-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  transition: border-color var(--transition-fast);
+}
+
+.crm-priority-item:hover {
+  border-color: var(--isapel-sky-light);
+}
+
+.crm-priority-item__info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crm-priority-item__title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.crm-priority-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.crm-priority-tag--alta {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+.crm-priority-tag--media {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.crm-priority-tag--estrategica {
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+}
+
+.crm-modal__footer {
+  padding: 1rem 1.5rem;
+  background: #F8FAFC;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.crm-btn {
+  height: 38px;
+  padding: 0 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform 70ms ease-out, box-shadow var(--transition-fast);
+  user-select: none;
+}
+
+.crm-btn:active {
+  transform: scale(0.96);
+}
+
+.crm-btn--secondary {
+  background: #FFFFFF;
+  border: 1px solid var(--border-strong);
+  color: var(--text-main);
+}
+
+.crm-btn--secondary:hover {
+  background: #F1F5F9;
+  border-color: #94A3B8;
+}
+
+.crm-btn--primary {
+  background: var(--isapel-sky);
+  color: #FFFFFF;
+  border: 1px solid transparent;
+}
+
+.crm-btn--primary:hover {
+  background: var(--isapel-sky-hover);
+}
+
+/* ==========================================================================
+   8. MICRO-ANIMAÇÕES & KEYFRAMES
+   ========================================================================== */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Transição Direcional Suave de Abas (240ms) */
+@keyframes tabFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-section {
+  display: none;
+}
+
+.tab-section.is-active {
+  display: block;
+  animation: tabFadeSlideIn 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ==========================================================================
+   9. RESPONSIVIDADE PRECISA (DESKTOP, TABLET & MOBILE)
+   ========================================================================== */
+/* Telas Grandes (Full HD 1920x1080) */
+@media (min-width: 1600px) {
+  .crm-kanban-board {
+    min-width: 100%;
+  }
+}
+
+/* Laptops Padrão (1366x768 / 1440x900) */
+@media (max-width: 1440px) {
+  .crm-arena-grid {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+/* Tablets (iPad / 1024px e 768px) */
+@media (max-width: 1024px) {
+  .crm-header {
+    height: auto;
+    padding: 0.75rem 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .crm-header__brand-group {
+    justify-content: space-between;
+  }
+
+  .crm-header__nav-tabs {
+    justify-content: center;
+  }
+
+  .crm-arena-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-tactic-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .crm-quick-bar {
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+  }
+
+  .crm-quick-bar > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  .crm-quick-bar__form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    width: 100% !important;
+  }
+
+  #ddd-badge-box {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+}
+
+/* Alvos de Toque no Mobile (WCAG 2.5.5 / 2.5.8 >= 44px) */
+@media (max-width: 768px) {
+  .crm-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .crm-card__btn-advance,
+  .crm-card__whatsapp-btn,
+  .crm-header__tab-btn,
+  .crm-quick-bar__btn-submit {
+    min-height: 44px;
+  }
+}
+
+/* Celulares (Vendedores em Rota Externa: 390x844 e menores) */
+@media (max-width: 640px) {
+  .crm-quick-bar {
+    padding: 0.75rem 1rem;
+  }
+
+  .crm-quick-bar__form {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .crm-quick-bar__btn-submit {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .crm-kanban-meta-bar {
+    padding: 0.65rem 1.25rem 0 1.25rem !important;
+  }
+
+  .crm-kanban-meta-bar > div {
+    width: 100%;
+  }
+
+  #kanban-search {
+    width: 100% !important;
+  }
+
+  .crm-kanban-wrapper {
+    padding: 0.75rem 1.25rem;
+    height: calc(100vh - 180px);
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 1.25rem;
+  }
+
+  .crm-kanban-board {
+    display: flex;
+    gap: 2rem;
+    min-width: max-content;
+  }
+
+  .crm-kanban-col {
+    width: calc(100vw - 3.5rem);
+    min-width: 300px;
+    max-width: 335px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  .crm-modal {
+    max-height: 95vh;
+  }
+
+  .crm-modal__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crm-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   10. ACESSIBILIDADE: PREFERS-REDUCED-MOTION (WCAG 2.2 NÍVEL AAA)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .crm-header__badge-copilot::before {
+    animation: none !important;
+  }
+
+  .tab-section.is-active {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .crm-modal {
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .crm-card:hover,
+  .crm-btn:hover,
+  .crm-closing-btn-hero:hover {
+    transform: none !important;
+  }
+
+  .crm-toast {
+    animation: none !important;
+  }
+
+  .crm-card.is-just-dropped {
+    animation: none !important;
+  }
+}

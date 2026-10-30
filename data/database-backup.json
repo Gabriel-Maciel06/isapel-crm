@@ -1,0 +1,479 @@
+[
+  {
+    "id": "lead-maciel-01",
+    "nome": "Hospital Metropolitano Campinas",
+    "contatoNome": "Dr. Fernando Vasconcelos (Diretoria de Suprimentos)",
+    "telefone": "(19) 98845-1234",
+    "vendedorId": "maciel",
+    "estagio": "negociacao",
+    "segmento": "Hospitalar / Saúde",
+    "produtosInteresse": [
+      "Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)",
+      "Papel Higiênico Rolão Institucional 300 Metros",
+      "Dispensers Institucionais Isapel em Regime de Comodato"
+    ],
+    "volumeMensal": "180 fardos/mês de Interfolha + 80 fardos Rolão",
+    "valorProposta": 19850,
+    "prazoPagamento": "28 DDL (Faturamento Boleto)",
+    "amostraEnviada": true,
+    "amostraDetalhe": "Entregue Kit Amostra Interfolha Folha Dupla via Frota Própria Isapel. Parecer favorável da comissão de controle de infecção.",
+    "dataCriacao": "2026-10-25T08:30:00.000Z",
+    "dataUltimoContato": "2026-10-29T14:20:00.000Z",
+    "prazoFollowUp": "2026-10-30T10:00:00.000Z",
+    "observacoes": "Negociação da cláusula de fornecimento contínuo com entrega CIF semanal no CD do hospital.",
+    "historico": [
+      {
+        "id": "hist-1",
+        "data": "2026-10-25T08:30:00.000Z",
+        "tipo": "contato",
+        "canal": "whatsapp",
+        "descricao": "Lead prospectado via lista de hospitais RMC. Solicitado levantamento de consumo atual com o comprador Dr. Fernando.",
+        "autor": "Gabriel Maciel"
+      },
+      {
+        "id": "hist-2",
+        "data": "2026-10-27T10:00:00.000Z",
+        "tipo": "proposta",
+        "canal": "email",
+        "descricao": "Cotação enviada: 180 fardos Interfolha + 80 Rolão com frete CIF incluso na frota Isapel rota Campinas.",
+        "autor": "Gabriel Maciel"
+      },
+      {
+        "id": "hist-3",
+        "data": "2026-10-28T16:00:00.000Z",
+        "tipo": "amostra",
+        "canal": "visita",
+        "descricao": "Amostras de teste entregues pelo motorista Isapel. Testado na UTI e aprovado sem soltar fiapos.",
+        "autor": "Gabriel Maciel"
+      },
+      {
+        "id": "hist-4",
+        "data": "2026-10-29T14:20:00.000Z",
+        "tipo": "negociacao",
+        "canal": "ligacao",
+        "descricao": "Alinhamento da minuta contratual e liberação do cadastro de faturamento para fechar primeiro pedido.",
+        "autor": "Gabriel Maciel"
+      }
+    ],
+    "ddd": 19,
+    "cidade": "Campinas, Piracicaba, Limeira e Americana",
+    "regiao": "Região Metropolitana de Campinas (RMC) e Leste Paulista",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota RMC Campinas / Piracicaba / Americana - Diária",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(19) 98845-1234",
+    "telefonePuro": "19988451234"
+  },
+  {
+    "id": "lead-maciel-02",
+    "nome": "Condomínio Empresarial Alpha Tower Barueri",
+    "contatoNome": "Mariana Duarte (Gerente de Facilities)",
+    "telefone": "(11) 97120-4567",
+    "vendedorId": "maciel",
+    "estagio": "fechado",
+    "segmento": "Facilities / Condomínios Corporativos",
+    "produtosInteresse": [
+      "Papel Toalha Interfolha Luxo Extra Branco (3 Dobras)",
+      "Papel Higiênico Cai-Cai Intercalado Folha Dupla",
+      "Sabonete Espuma Refil 800ml"
+    ],
+    "volumeMensal": "120 fardos/mês Interfolha Luxo + 90 caixas Cai-Cai",
+    "valorProposta": 14720,
+    "prazoPagamento": "21 DDL",
+    "amostraEnviada": true,
+    "amostraDetalhe": "Aprovado pelo conselho do condomínio. Instalação de 45 dispensers em comodato agendada.",
+    "dataCriacao": "2026-10-20T09:15:00.000Z",
+    "dataUltimoContato": "2026-10-29T11:00:00.000Z",
+    "prazoFollowUp": null,
+    "observacoes": "Contrato fechado com vigência de 12 meses. Primeira carga entregue na Rota Grande SP Isapel.",
+    "historico": [
+      {
+        "id": "hist-5",
+        "data": "2026-10-20T09:15:00.000Z",
+        "tipo": "contato",
+        "canal": "ligacao",
+        "descricao": "Contato direto com a Mariana de Facilities. Insatisfeitos com atrasos e papel rasgando do antigo fornecedor.",
+        "autor": "Gabriel Maciel"
+      },
+      {
+        "id": "hist-6",
+        "data": "2026-10-23T11:30:00.000Z",
+        "tipo": "proposta",
+        "canal": "email",
+        "descricao": "Envio de proposta comercial com comodato completo dos dispensers Isapel.",
+        "autor": "Gabriel Maciel"
+      },
+      {
+        "id": "hist-7",
+        "data": "2026-10-29T11:00:00.000Z",
+        "tipo": "fechamento",
+        "canal": "visita",
+        "descricao": "Contrato assinado! Cliente ativo ganho. Primeiro faturamento emitido.",
+        "autor": "Gabriel Maciel"
+      }
+    ],
+    "ddd": 11,
+    "cidade": "São Paulo e Grande SP",
+    "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota Diária Frota Isapel - Grande SP / Capital / ABC",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(11) 97120-4567",
+    "telefonePuro": "11971204567"
+  },
+  {
+    "id": "lead-maciel-03",
+    "nome": "LogTech Centro de Distribuição Cajamar",
+    "contatoNome": "Carlos Eduardo (Coordenador de Almoxarifado)",
+    "telefone": "(11) 99432-8877",
+    "vendedorId": "maciel",
+    "estagio": "proposta",
+    "segmento": "Indústria / Logística",
+    "produtosInteresse": [
+      "Papel Higiênico Rolão 500 Metros",
+      "Papel Toalha Bobina Autocorte 200 Metros"
+    ],
+    "volumeMensal": "220 fardos/mês Rolão 500m + 150 fardos Bobina Autocorte",
+    "valorProposta": 23600,
+    "prazoPagamento": "30 DDL",
+    "amostraEnviada": false,
+    "amostraDetalhe": "Aguardando agendamento de entrega de teste das bobinas autocorte.",
+    "dataCriacao": "2026-10-28T14:00:00.000Z",
+    "dataUltimoContato": "2026-10-28T17:45:00.000Z",
+    "prazoFollowUp": "2026-10-30T09:30:00.000Z",
+    "observacoes": "Proposta enviada há mais de 24h. Necessário alinhar janela de descarregamento na frota própria Isapel.",
+    "historico": [
+      {
+        "id": "hist-8",
+        "data": "2026-10-28T14:00:00.000Z",
+        "tipo": "contato",
+        "canal": "whatsapp",
+        "descricao": "Abordagem ao coordenador de almoxarifado do hub de Cajamar.",
+        "autor": "Gabriel Maciel"
+      },
+      {
+        "id": "hist-9",
+        "data": "2026-10-28T17:45:00.000Z",
+        "tipo": "proposta",
+        "canal": "email",
+        "descricao": "Cotação enviada com preço unitário competitivo para alto volume e frete CIF garantido.",
+        "autor": "Gabriel Maciel"
+      }
+    ],
+    "ddd": 11,
+    "cidade": "São Paulo e Grande SP",
+    "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota Diária Frota Isapel - Grande SP / Capital / ABC",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(11) 99432-8877",
+    "telefonePuro": "11994328877"
+  },
+  {
+    "id": "lead-fernanda-01",
+    "nome": "Rede Hotel Fasano & Suítes São Paulo",
+    "contatoNome": "Letícia Fontana (Governanta Geral)",
+    "telefone": "(11) 98341-9988",
+    "vendedorId": "fernanda",
+    "estagio": "negociacao",
+    "segmento": "Hotelaria & Gastronomia",
+    "produtosInteresse": [
+      "Papel Toalha Interfolha Luxo Extra Branco (3 Dobras)",
+      "Papel Higiênico Cai-Cai Intercalado Folha Dupla",
+      "Sabonete Espuma Refil 800ml"
+    ],
+    "volumeMensal": "90 fardos Interfolha Luxo + 60 fardos Cai-Cai + 40 caixas Sabonete",
+    "valorProposta": 13900,
+    "prazoPagamento": "28 DDL",
+    "amostraEnviada": true,
+    "amostraDetalhe": "Kit de amostras de Toalha Interfolha Luxo testado na ala de convenções com excelente receptividade.",
+    "dataCriacao": "2026-10-26T10:00:00.000Z",
+    "dataUltimoContato": "2026-10-29T15:30:00.000Z",
+    "prazoFollowUp": "2026-10-30T11:00:00.000Z",
+    "observacoes": "Pendente envio da minuta de contrato com garantia de lote homogêneo 100% Celulose Virgem.",
+    "historico": [
+      {
+        "id": "hist-10",
+        "data": "2026-10-26T10:00:00.000Z",
+        "tipo": "contato",
+        "canal": "visita",
+        "descricao": "Reunião presencial com a governanta Letícia. Foco total em maciez e ausência de odor no papel.",
+        "autor": "Fernanda"
+      },
+      {
+        "id": "hist-11",
+        "data": "2026-10-27T14:00:00.000Z",
+        "tipo": "amostra",
+        "canal": "visita",
+        "descricao": "Entrega de fardos de teste da linha Luxo 3 Dobras.",
+        "autor": "Fernanda"
+      },
+      {
+        "id": "hist-12",
+        "data": "2026-10-29T15:30:00.000Z",
+        "tipo": "negociacao",
+        "canal": "whatsapp",
+        "descricao": "Letícia aprovou a qualidade. Ajustando apenas se a entrega pode ser feita no início da manhã.",
+        "autor": "Fernanda"
+      }
+    ],
+    "ddd": 11,
+    "cidade": "São Paulo e Grande SP",
+    "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota Diária Frota Isapel - Grande SP / Capital / ABC",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(11) 98341-9988",
+    "telefonePuro": "11983419988"
+  },
+  {
+    "id": "lead-fernanda-02",
+    "nome": "Complexo Universitário Vale do Paraíba",
+    "contatoNome": "Prof. Sérgio Meirelles (Diretor Administrativo)",
+    "telefone": "(12) 99182-3344",
+    "vendedorId": "fernanda",
+    "estagio": "proposta",
+    "segmento": "Educação / Universidades",
+    "produtosInteresse": [
+      "Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)",
+      "Papel Higiênico Rolão 300 Metros"
+    ],
+    "volumeMensal": "140 fardos Interfolha + 110 fardos Rolão",
+    "valorProposta": 16250,
+    "prazoPagamento": "28 DDL",
+    "amostraEnviada": false,
+    "amostraDetalhe": "Aguardando validação da cotação para despachar amostra de Interfolha.",
+    "dataCriacao": "2026-10-28T09:40:00.000Z",
+    "dataUltimoContato": "2026-10-28T16:20:00.000Z",
+    "prazoFollowUp": "2026-10-30T14:00:00.000Z",
+    "observacoes": "Proposta encaminhada há mais de 24h. Oportunidade perfeita para encaixar na Rota Vale do Paraíba da Frota Isapel.",
+    "historico": [
+      {
+        "id": "hist-13",
+        "data": "2026-10-28T09:40:00.000Z",
+        "tipo": "contato",
+        "canal": "ligacao",
+        "descricao": "Contato com setor de compras do campus universitário em Taubaté.",
+        "autor": "Fernanda"
+      },
+      {
+        "id": "hist-14",
+        "data": "2026-10-28T16:20:00.000Z",
+        "tipo": "proposta",
+        "canal": "email",
+        "descricao": "Proposta formal enviada com tabela de preços diferenciada para instituição de ensino.",
+        "autor": "Fernanda"
+      }
+    ],
+    "ddd": 12,
+    "cidade": "São José dos Campos e Taubaté",
+    "regiao": "Vale do Paraíba e Litoral Norte",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota Vale do Paraíba - Segundas, Quartas e Sextas",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(12) 99182-3344",
+    "telefonePuro": "12991823344"
+  },
+  {
+    "id": "lead-fernanda-03",
+    "nome": "Frigorífico Granja do Sul Santos Dumont",
+    "contatoNome": "Marcelo Pires (Gerente de Higienização)",
+    "telefone": "(35) 98822-1100",
+    "vendedorId": "fernanda",
+    "estagio": "qualificacao",
+    "segmento": "Indústria / Alimentos",
+    "produtosInteresse": [
+      "Papel Toalha Bobina Autocorte 200 Metros 100% Celulose",
+      "Sabonete Espuma Refil 800ml"
+    ],
+    "volumeMensal": "160 fardos Bobina Autocorte",
+    "valorProposta": 0,
+    "prazoPagamento": "A definir",
+    "amostraEnviada": false,
+    "amostraDetalhe": "",
+    "dataCriacao": "2026-10-29T10:15:00.000Z",
+    "dataUltimoContato": "2026-10-29T10:15:00.000Z",
+    "prazoFollowUp": "2026-10-30T09:00:00.000Z",
+    "observacoes": "DDD 35 (Sul de Minas) atendido pela rota direta de frota da divisa de SP. Necessário qualificar exigências do SIF.",
+    "historico": [
+      {
+        "id": "hist-15",
+        "data": "2026-10-29T10:15:00.000Z",
+        "tipo": "contato",
+        "canal": "whatsapp",
+        "descricao": "Primeiro contato realizado. Marcelo solicitou laudo de atoxidade do papel toalha bobina para uso em área de desossa.",
+        "autor": "Fernanda"
+      }
+    ],
+    "ddd": 35,
+    "cidade": "Poços de Caldas, Pouso Alegre e Varginha",
+    "regiao": "Sul e Sudoeste de Minas Gerais (Divisa SP)",
+    "uf": "MG",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota Sul de Minas (Atendimento direto via Frota SP) - Terças e Quintas",
+    "tempoEntrega": "48 a 72 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(35) 98822-1100",
+    "telefonePuro": "35988221100"
+  },
+  {
+    "id": "lead-caio-01",
+    "nome": "Rede OdontoCare Clínicas Especializadas",
+    "contatoNome": "Dra. Beatriz Nogueira",
+    "telefone": "(19) 99654-7711",
+    "vendedorId": "caio",
+    "estagio": "novo",
+    "segmento": "Clínicas / Consultórios",
+    "produtosInteresse": [
+      "Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)"
+    ],
+    "volumeMensal": "40 fardos/mês em 4 unidades em Americana e Santa Bárbara",
+    "valorProposta": 0,
+    "prazoPagamento": "Boleto 14/28 DDL",
+    "amostraEnviada": false,
+    "amostraDetalhe": "",
+    "dataCriacao": "2026-10-29T16:30:00.000Z",
+    "dataUltimoContato": null,
+    "prazoFollowUp": "2026-10-30T08:30:00.000Z",
+    "observacoes": "Lead captado por prospecção ativa. Alta probabilidade de encaixe logístico na rota diária Campinas/RMC.",
+    "historico": [
+      {
+        "id": "hist-16",
+        "data": "2026-10-29T16:30:00.000Z",
+        "tipo": "cadastro",
+        "canal": "whatsapp",
+        "descricao": "Lead inserido via formulário rápido. Fazer ligação de qualificação para mapear consumo exato.",
+        "autor": "Caio"
+      }
+    ],
+    "ddd": 19,
+    "cidade": "Campinas, Piracicaba, Limeira e Americana",
+    "regiao": "Região Metropolitana de Campinas (RMC) e Leste Paulista",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota RMC Campinas / Piracicaba / Americana - Diária",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(19) 99654-7711",
+    "telefonePuro": "19996547711"
+  },
+  {
+    "id": "lead-caio-02",
+    "nome": "Galpões Industriais & Logística RodoVale Sorocaba",
+    "contatoNome": "Cláudio Sanches (Operações)",
+    "telefone": "(15) 98112-9922",
+    "vendedorId": "caio",
+    "estagio": "qualificacao",
+    "segmento": "Indústria / Logística",
+    "produtosInteresse": [
+      "Papel Higiênico Rolão Institucional 300 Metros",
+      "Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)"
+    ],
+    "volumeMensal": "90 fardos Rolão + 60 fardos Interfolha",
+    "valorProposta": 0,
+    "prazoPagamento": "A definir",
+    "amostraEnviada": false,
+    "amostraDetalhe": "",
+    "dataCriacao": "2026-10-28T11:00:00.000Z",
+    "dataUltimoContato": "2026-10-29T09:30:00.000Z",
+    "prazoFollowUp": "2026-10-30T10:30:00.000Z",
+    "observacoes": "DDD 15 coberto pela frota própria Isapel Sorocaba. Cláudio confirmou interesse em comodato de 20 toalheiros.",
+    "historico": [
+      {
+        "id": "hist-17",
+        "data": "2026-10-28T11:00:00.000Z",
+        "tipo": "cadastro",
+        "canal": "whatsapp",
+        "descricao": "Lead prospectado no condomínio industrial de Sorocaba.",
+        "autor": "Caio"
+      },
+      {
+        "id": "hist-18",
+        "data": "2026-10-29T09:30:00.000Z",
+        "tipo": "contato",
+        "canal": "ligacao",
+        "descricao": "Qualificação realizada: consumo de 90 fardos de Rolão por mês. Estão insatisfeitos com a entrega do concorrente que quebra com frequência.",
+        "autor": "Caio"
+      }
+    ],
+    "ddd": 15,
+    "cidade": "Sorocaba e Itapetininga",
+    "regiao": "Sudoeste Paulista e Região Metropolitana de Sorocaba",
+    "uf": "SP",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota Sorocaba / Sudoeste - Segundas e Quintas",
+    "tempoEntrega": "24 a 48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(15) 98112-9922",
+    "telefonePuro": "15981129922"
+  },
+  {
+    "id": "lead-caio-03",
+    "nome": "Rede FarmaMais Distribuidora Paraná",
+    "contatoNome": "Vanessa Guimarães (Compras Corporativas)",
+    "telefone": "(41) 98777-6543",
+    "vendedorId": "caio",
+    "estagio": "proposta",
+    "segmento": "Distribuição / Farmacêutico",
+    "produtosInteresse": [
+      "Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)",
+      "Papel Higiênico Rolão 300 Metros"
+    ],
+    "volumeMensal": "110 fardos Interfolha + 70 fardos Rolão",
+    "valorProposta": 15400,
+    "prazoPagamento": "28 DDL",
+    "amostraEnviada": true,
+    "amostraDetalhe": "Amostras despachadas na linha direta de Curitiba/RMC.",
+    "dataCriacao": "2026-10-27T15:20:00.000Z",
+    "dataUltimoContato": "2026-10-28T14:10:00.000Z",
+    "prazoFollowUp": "2026-10-30T11:30:00.000Z",
+    "observacoes": "DDD 41 com Rota Direta Isapel. Cotação feita com frete CIF incluso.",
+    "historico": [
+      {
+        "id": "hist-19",
+        "data": "2026-10-27T15:20:00.000Z",
+        "tipo": "contato",
+        "canal": "ligacao",
+        "descricao": "Prospecção em Curitiba. Vanessa atendeu prontamente pedindo cotação de fardos fechados.",
+        "autor": "Caio"
+      },
+      {
+        "id": "hist-20",
+        "data": "2026-10-28T14:10:00.000Z",
+        "tipo": "proposta",
+        "canal": "email",
+        "descricao": "Proposta comercial formalizada. Confirmado frete CIF pela rota PR Isapel.",
+        "autor": "Caio"
+      }
+    ],
+    "ddd": 41,
+    "cidade": "Curitiba e São José dos Pinhais",
+    "regiao": "Região Metropolitana de Curitiba (RMC) e Litoral Paranaense",
+    "uf": "PR",
+    "logistica": "Rota Direta CIF (Frota Própria Isapel - 24/72h)",
+    "rotaLogistica": "Rota RMC Curitiba - Segundas, Quartas e Sextas",
+    "tempoEntrega": "48 horas",
+    "frotaPropria": true,
+    "tipoFretePadrao": "CIF Isapel",
+    "telefoneFormatado": "(41) 98777-6543",
+    "telefonePuro": "41987776543"
+  }
+]
