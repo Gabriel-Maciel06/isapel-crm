@@ -70,6 +70,13 @@
 
   // Converter formato do CRM JS para formato da tabela Supabase
   function mapearParaBanco(lead) {
+    let vendedorNome = lead.vendedorNome;
+    if (!vendedorNome) {
+      if (lead.vendedorId === 'fernanda') vendedorNome = 'Fernanda';
+      else if (lead.vendedorId === 'caio') vendedorNome = 'Caio';
+      else vendedorNome = 'Gabriel Maciel';
+    }
+
     return {
       id: lead.id,
       nome: lead.nome,
@@ -81,7 +88,7 @@
       uf: lead.uf || 'SP',
       estagio: lead.estagio || 'novo',
       vendedor_id: lead.vendedorId || 'maciel',
-      vendedor_nome: lead.vendedorNome || 'Gabriel Maciel',
+      vendedor_nome: vendedorNome,
       valor_proposta: Number(lead.valorProposta || 0),
       observacoes: lead.observacoes || '',
       historico: lead.historico || [],
@@ -165,6 +172,10 @@
           'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
         }
       });
+      if (res.ok) {
+        statusConexao.ultimoSync = new Date();
+        notificarStatus();
+      }
       return res.ok;
     } catch (err) {
       console.warn('⚠️ [Isapel Sync] Falha ao deletar do Supabase:', err.message);

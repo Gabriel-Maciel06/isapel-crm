@@ -1276,9 +1276,10 @@
     }
 
     const autor = AppState.vendedorAtivo !== 'todos' ? AppState.vendedorAtivo : 'Comercial';
+    let leadAtualizado = null;
 
     if (window.IsapelCRM && typeof window.IsapelCRM.registrarContatoLead === 'function') {
-      window.IsapelCRM.registrarContatoLead(AppState.leadEmNotasId, {
+      leadAtualizado = window.IsapelCRM.registrarContatoLead(AppState.leadEmNotasId, {
         descricao: texto,
         tipo: 'anotacao',
         canal: 'whatsapp',
@@ -1299,8 +1300,14 @@
         });
         lead.observacoes = texto;
         lead.dataUltimoContato = new Date().toISOString();
-        localStorage.setItem('isapel_leads_v1', JSON.stringify(todos));
+        localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
+        leadAtualizado = lead;
       }
+    }
+
+    // Sincronizar na Nuvem (Supabase)
+    if (leadAtualizado && window.IsapelSync && typeof window.IsapelSync.salvarLeadNuvem === 'function') {
+      window.IsapelSync.salvarLeadNuvem(leadAtualizado);
     }
 
     playSound('lead-cadastrado');
@@ -1380,8 +1387,10 @@
       return;
     }
 
+    let leadAtualizado = null;
+
     if (window.IsapelCRM && typeof window.IsapelCRM.atualizarLead === 'function') {
-      window.IsapelCRM.atualizarLead(id, {
+      leadAtualizado = window.IsapelCRM.atualizarLead(id, {
         nome: nome,
         telefone: telefone,
         valorProposta: valor,
@@ -1398,11 +1407,17 @@
         lead.valorProposta = valor;
         lead.vendedorId = vendedorId;
         lead.estagio = estagio;
-        localStorage.setItem('isapel_leads_v1', JSON.stringify(todos));
+        localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
+        leadAtualizado = lead;
       }
     }
 
-    showToast('Lead atualizado com sucesso!', 'success');
+    // Sincronizar atualização na Nuvem (Supabase)
+    if (leadAtualizado && window.IsapelSync && typeof window.IsapelSync.salvarLeadNuvem === 'function') {
+      window.IsapelSync.salvarLeadNuvem(leadAtualizado);
+    }
+
+    showToast('Lead atualizado com sucesso na nuvem!', 'success');
     fecharModalEditar();
     renderizarKanban();
     sincronizarArena3D();
@@ -1412,15 +1427,22 @@
     if (!AppState.leadEmEdicaoId) return;
 
     if (confirm('Tem certeza de que deseja excluir este lead do CRM?')) {
+      const idParaExcluir = AppState.leadEmEdicaoId;
+
       if (window.IsapelCRM && typeof window.IsapelCRM.removerLead === 'function') {
-        window.IsapelCRM.removerLead(AppState.leadEmEdicaoId);
+        window.IsapelCRM.removerLead(idParaExcluir);
       } else {
         let todos = obterTodosOsLeads();
-        todos = todos.filter(l => l.id !== AppState.leadEmEdicaoId);
-        localStorage.setItem('isapel_leads_v1', JSON.stringify(todos));
+        todos = todos.filter(l => l.id !== idParaExcluir);
+        localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
       }
 
-      showToast('Lead removido do pipeline.', 'info');
+      // Sincronizar exclusão na Nuvem (Supabase)
+      if (window.IsapelSync && typeof window.IsapelSync.removerLeadNuvem === 'function') {
+        window.IsapelSync.removerLeadNuvem(idParaExcluir);
+      }
+
+      showToast('Lead removido do pipeline e da nuvem com sucesso.', 'info');
       fecharModalEditar();
       renderizarKanban();
       sincronizarArena3D();
@@ -1519,30 +1541,23 @@
         }
       });
 
-      // Tenta sincronizar com Supabase ao abrir
+      // Sincronização em tempo real com Supabase (Nuvem como fonte primária)
       window.IsapelSync.carregarLeadsNuvem().then(leadsNuvem => {
-        if (leadsNuvem && leadsNuvem.length > 0 && window.IsapelCRM) {
-          leadsNuvem.forEach(l => {
-            // Atualiza ou insere na base local
-            if (typeof window.IsapelCRM.atualizarLead === 'function') {
-              const existe = window.IsapelCRM.obterLeadPorId(l.id);
-              if (existe) {
-                window.IsapelCRM.atualizarLead(l.id, l);
-              } else if (typeof window.IsapelCRM.cadastrarLeadRapido === 'function') {
-                window.IsapelCRM.cadastrarLeadRapido(l.nome, l.telefone, l.vendedorId);
-              }
-            }
-          });
-          renderizarKanban();
-          sincronizarArena3D();
-          console.log('[Isapel Sync] Sincronização inicial com nuvem concluída.');
+        if (leadsNuvem && Array.isArray(leadsNuvem) && window.IsapelCRM) {
+          if (leadsNuvem.length > 0) {
+            window.IsapelCRM.definirLeads(leadsNuvem);
+            renderizarKanban();
+            sincronizarArena3D();
+            console.log(`[Isapel Sync] Nuvem conectada: ${leadsNuvem.length} leads sincronizados.`);
+          }
         }
       });
 
       // Auto-polling para sincronizar alterações feitas por outros vendedores (Maciel, Fernanda, Caio)
       setInterval(async () => {
         const novos = await window.IsapelSync.carregarLeadsNuvem();
-        if (novos && novos.length > 0) {
+        if (novos && Array.isArray(novos) && window.IsapelCRM) {
+          window.IsapelCRM.definirLeads(novos);
           renderizarKanban();
           sincronizarArena3D();
         }

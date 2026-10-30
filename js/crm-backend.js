@@ -1419,16 +1419,16 @@
   }
 
   function carregarLeadsArmazenados() {
-    if (memoriaLeads) {
+    if (memoriaLeads && Array.isArray(memoriaLeads)) {
       return memoriaLeads;
     }
 
     if (isLocalStorageDisponivel()) {
       try {
         const dados = window.localStorage.getItem(STORAGE_KEY_LEADS);
-        if (dados) {
+        if (dados !== null) {
           const parsed = JSON.parse(dados);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             memoriaLeads = parsed;
             return memoriaLeads;
           }
@@ -1438,25 +1438,28 @@
       }
     }
 
-    // Inicializa com leads demonstrativos enriquecidos com DDD/Logística
+    // Inicializa com leads demonstrativos apenas na primeira execução limpa
     memoriaLeads = LEADS_INICIAIS.map(lead => enriquecerLeadComDDD(lead));
     salvarLeads(memoriaLeads);
     return memoriaLeads;
   }
 
   function salvarLeads(leads) {
-    memoriaLeads = leads;
+    memoriaLeads = Array.isArray(leads) ? leads : [];
     if (isLocalStorageDisponivel()) {
       try {
-        window.localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(leads));
+        window.localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(memoriaLeads));
       } catch (err) {
         console.error('Erro ao salvar leads no localStorage:', err);
       }
     }
-    // Sincronização em Nuvem (Supabase) em background
-    if (typeof window !== 'undefined' && window.IsapelSync && typeof window.IsapelSync.salvarLeadNuvem === 'function') {
-      // Sincroniza em background sem travar a interface
-    }
+  }
+
+  function definirLeads(novosLeads) {
+    if (!Array.isArray(novosLeads)) return [];
+    memoriaLeads = novosLeads.map(l => enriquecerLeadComDDD(l));
+    salvarLeads(memoriaLeads);
+    return memoriaLeads;
   }
 
   /**
@@ -2258,6 +2261,7 @@
     // Operações de Leads (CRUD & Funil)
     cadastrarLeadRapido: cadastrarLeadRapido,
     atualizarLead: atualizarLead,
+    definirLeads: definirLeads,
     moverEstagioLead: moverEstagioLead,
     registrarContatoLead: registrarContatoLead,
     removerLead: removerLead,
