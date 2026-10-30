@@ -736,10 +736,8 @@
       sincronizarArena3D();
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'));
-        if (window.Arena3D && typeof window.Arena3D.atualizar === 'function') {
-          window.Arena3D.atualizar();
-        }
-      }, 80);
+        sincronizarArena3D();
+      }, 100);
     } else if (tabId === 'tab-fechamento') {
       atualizarPainelFechamento();
     }
@@ -781,67 +779,60 @@
   // 11. ARENA 3D - SINCRONIZAÇÃO E CONTROLES
   // ==========================================================================
   function sincronizarArena3D() {
+    const todos = obterTodosOsLeads();
     let metricas = null;
 
     if (window.IsapelCRM && typeof window.IsapelCRM.calcularMetricasArena === 'function') {
-      metricas = window.IsapelCRM.calcularMetricasArena();
+      metricas = window.IsapelCRM.calcularMetricasArena('todos', todos);
     } else {
       metricas = calcularMetricasArenaFallback();
     }
 
     if (!metricas) return;
 
-    // Atualiza placar HTML da Arena
-    const ranks = ['maciel', 'fernanda', 'caio'].map(id => {
-      return { id: id, ...(metricas[id] || {}) };
-    }).sort((a, b) => (b.valorTotal || 0) - (a.valorTotal || 0));
+    const rankingArray = Array.isArray(metricas) ? metricas : Object.values(metricas);
 
-    // Pódio 1º, 2º e 3º
-    if (ranks[0]) {
-      const elNome = document.getElementById('podium-name-1');
-      const elVal = document.getElementById('podium-score-1');
-      const elAv = document.getElementById('podium-avatar-1');
-      if (elNome) elNome.textContent = ranks[0].nome || ranks[0].id;
-      if (elVal) elVal.textContent = formatarMoeda(ranks[0].valorTotal || 0);
-      if (elAv) elAv.textContent = ranks[0].id === 'maciel' ? 'GM' : (ranks[0].id === 'fernanda' ? 'FE' : 'CA');
+    // Se o Three.js da Arena3D estiver ativo, atualiza com os dados reais
+    if (window.Arena3D && typeof window.Arena3D.atualizar === 'function') {
+      window.Arena3D.atualizar(rankingArray);
     }
 
-    if (ranks[1]) {
-      const elNome = document.getElementById('podium-name-2');
-      const elVal = document.getElementById('podium-score-2');
-      const elAv = document.getElementById('podium-avatar-2');
-      if (elNome) elNome.textContent = ranks[1].nome || ranks[1].id;
-      if (elVal) elVal.textContent = formatarMoeda(ranks[1].valorTotal || 0);
-      if (elAv) elAv.textContent = ranks[1].id === 'maciel' ? 'GM' : (ranks[1].id === 'fernanda' ? 'FE' : 'CA');
+    // Atualiza o Pódio 2D da coluna lateral
+    function atualizarPilar(num, p) {
+      if (!p) return;
+      const elNome = document.getElementById(`podium-name-${num}`);
+      const elVal = document.getElementById(`podium-score-${num}`);
+      const elAv = document.getElementById(`podium-avatar-${num}`);
+
+      const nomeVendedor = p.vendedor?.nome || (p.vendedorId === 'maciel' ? 'Gabriel Maciel' : (p.vendedorId === 'fernanda' ? 'Fernanda' : 'Caio'));
+      const iniciais = p.vendedorId === 'maciel' ? 'GM' : (p.vendedorId === 'fernanda' ? 'FE' : 'CA');
+
+      if (elNome) elNome.textContent = nomeVendedor;
+      if (elVal) elVal.textContent = p.volumeTotalFaturado > 0 ? formatarMoeda(p.volumeTotalFaturado) : `${p.pontuacaoGeral || 0} XP`;
+      if (elAv) elAv.textContent = iniciais;
     }
 
-    if (ranks[2]) {
-      const elNome = document.getElementById('podium-name-3');
-      const elVal = document.getElementById('podium-score-3');
-      const elAv = document.getElementById('podium-avatar-3');
-      if (elNome) elNome.textContent = ranks[2].nome || ranks[2].id;
-      if (elVal) elVal.textContent = formatarMoeda(ranks[2].valorTotal || 0);
-      if (elAv) elAv.textContent = ranks[2].id === 'maciel' ? 'GM' : (ranks[2].id === 'fernanda' ? 'FE' : 'CA');
-    }
+    atualizarPilar(1, rankingArray[0]);
+    atualizarPilar(2, rankingArray[1]);
+    atualizarPilar(3, rankingArray[2]);
 
-    // Barras de Progresso individuais
-    ['maciel', 'fernanda', 'caio'].forEach(id => {
-      const m = metricas[id] || { valorTotal: 0, fardosTotal: 0 };
+    // Atualiza as barras de progresso laterais
+    rankingArray.forEach(p => {
+      const id = p.vendedorId;
       const valEl = document.getElementById(`ranking-val-${id}`);
       const barEl = document.getElementById(`ranking-bar-${id}`);
-
-      if (valEl) valEl.textContent = formatarMoeda(m.valorTotal || 0);
+      if (valEl) {
+        valEl.textContent = p.volumeTotalFaturado > 0 
+          ? formatarMoeda(p.volumeTotalFaturado) 
+          : `${p.totalCadastrados || 0} leads (${p.pontuacaoGeral || 0} XP)`;
+      }
       if (barEl) {
         const meta = id === 'maciel' ? 60000 : (id === 'fernanda' ? 45000 : 35000);
-        const pct = Math.min(100, Math.round(((m.valorTotal || 0) / meta) * 100));
+        const faturado = p.volumeTotalFaturado || 0;
+        const pct = Math.min(100, Math.max(5, Math.round((faturado / meta) * 100)));
         barEl.style.width = `${pct}%`;
       }
     });
-
-    // Se o Three.js da Arena3D estiver ativo, atualiza
-    if (window.Arena3D && typeof window.Arena3D.atualizar === 'function') {
-      window.Arena3D.atualizar(metricas);
-    }
   }
 
   function calcularMetricasArenaFallback() {

@@ -79,13 +79,13 @@
       avatarIcone: 'GM',
       descricao: 'Gabriel Maciel',
       metricas: {
-        contatos: 54,
-        novosLeads: 24,
-        emNegociacao: 18,
-        fechados: 16,
-        taxaConversao: 37.5,
-        valorTotal: 198400,
-        pontos: 2280
+        contatos: 0,
+        novosLeads: 0,
+        emNegociacao: 0,
+        fechados: 0,
+        taxaConversao: 0,
+        valorTotal: 0,
+        pontos: 0
       }
     },
     {
@@ -98,13 +98,13 @@
       avatarIcone: 'FE',
       descricao: 'Fernanda',
       metricas: {
-        contatos: 49,
-        novosLeads: 20,
-        emNegociacao: 15,
-        fechados: 13,
-        taxaConversao: 33.3,
-        valorTotal: 162500,
-        pontos: 1950
+        contatos: 0,
+        novosLeads: 0,
+        emNegociacao: 0,
+        fechados: 0,
+        taxaConversao: 0,
+        valorTotal: 0,
+        pontos: 0
       }
     },
     {
@@ -117,13 +117,13 @@
       avatarIcone: 'CA',
       descricao: 'Caio',
       metricas: {
-        contatos: 43,
-        novosLeads: 17,
-        emNegociacao: 12,
-        fechados: 10,
-        taxaConversao: 29.4,
-        valorTotal: 124000,
-        pontos: 1590
+        contatos: 0,
+        novosLeads: 0,
+        emNegociacao: 0,
+        fechados: 0,
+        taxaConversao: 0,
+        valorTotal: 0,
+        pontos: 0
       }
     }
   ];
@@ -1236,25 +1236,34 @@
    */
   function normalizarMetricas(raw) {
     if (!raw) return {};
-    const norm = {};
-    if (raw.pontos !== undefined) norm.pontos = raw.pontos;
-    else if (raw.pontuacaoGeral !== undefined) norm.pontos = raw.pontuacaoGeral;
+    const norm = {
+      pontos: 0,
+      contatos: 0,
+      novosLeads: 0,
+      fechados: 0,
+      emNegociacao: 0,
+      taxaConversao: 0,
+      valorTotal: 0
+    };
 
-    if (raw.contatos !== undefined) norm.contatos = raw.contatos;
-    else if (raw.totalContatos !== undefined) norm.contatos = raw.totalContatos;
+    if (raw.pontos !== undefined) norm.pontos = Number(raw.pontos) || 0;
+    else if (raw.pontuacaoGeral !== undefined) norm.pontos = Number(raw.pontuacaoGeral) || 0;
 
-    if (raw.novosLeads !== undefined) norm.novosLeads = raw.novosLeads;
-    else if (raw.totalCadastrados !== undefined) norm.novosLeads = raw.totalCadastrados;
+    if (raw.contatos !== undefined) norm.contatos = Number(raw.contatos) || 0;
+    else if (raw.totalContatos !== undefined) norm.contatos = Number(raw.totalContatos) || 0;
 
-    if (raw.fechados !== undefined) norm.fechados = raw.fechados;
-    else if (raw.totalFechados !== undefined) norm.fechados = raw.totalFechados;
+    if (raw.novosLeads !== undefined) norm.novosLeads = Number(raw.novosLeads) || 0;
+    else if (raw.totalCadastrados !== undefined) norm.novosLeads = Number(raw.totalCadastrados) || 0;
 
-    if (raw.emNegociacao !== undefined) norm.emNegociacao = raw.emNegociacao;
-    else if (raw.leadsPorEstagio && raw.leadsPorEstagio.negociacao !== undefined) norm.emNegociacao = raw.leadsPorEstagio.negociacao;
+    if (raw.fechados !== undefined) norm.fechados = Number(raw.fechados) || 0;
+    else if (raw.totalFechados !== undefined) norm.fechados = Number(raw.totalFechados) || 0;
 
-    if (raw.taxaConversao !== undefined) norm.taxaConversao = raw.taxaConversao;
-    if (raw.valorTotal !== undefined) norm.valorTotal = raw.valorTotal;
-    else if (raw.volumeTotalFaturado !== undefined) norm.valorTotal = raw.volumeTotalFaturado;
+    if (raw.emNegociacao !== undefined) norm.emNegociacao = Number(raw.emNegociacao) || 0;
+    else if (raw.leadsPorEstagio && raw.leadsPorEstagio.negociacao !== undefined) norm.emNegociacao = Number(raw.leadsPorEstagio.negociacao) || 0;
+
+    if (raw.taxaConversao !== undefined) norm.taxaConversao = Number(raw.taxaConversao) || 0;
+    if (raw.valorTotal !== undefined) norm.valorTotal = Number(raw.valorTotal) || 0;
+    else if (raw.volumeTotalFaturado !== undefined) norm.valorTotal = Number(raw.volumeTotalFaturado) || 0;
 
     return norm;
   }
@@ -1263,27 +1272,24 @@
    * Função principal exportada: atualizarArena3D(metricasVendedores, options)
    */
   function atualizar(metricasVendedores, options = {}) {
-    if (!metricasVendedores) return;
-
-    // Trata se for array ou mapa { 'maciel': { ... }, 'fernanda': { ... } }
-    if (Array.isArray(metricasVendedores)) {
-      metricasVendedores.forEach(novoItem => {
-        const targetId = (novoItem.vendedorId || novoItem.id || novoItem.nome || '').toString().toLowerCase();
-        const existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
-        if (existente) {
-          const norm = normalizarMetricas(novoItem.metricas || novoItem);
-          existente.metricas = Object.assign({}, existente.metricas, norm);
-        }
-      });
-    } else if (typeof metricasVendedores === 'object') {
-      Object.keys(metricasVendedores).forEach(key => {
-        const targetId = key.toLowerCase();
-        const existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
-        if (existente) {
-          const norm = normalizarMetricas(metricasVendedores[key]);
-          existente.metricas = Object.assign({}, existente.metricas, norm);
-        }
-      });
+    if (metricasVendedores) {
+      if (Array.isArray(metricasVendedores)) {
+        metricasVendedores.forEach(novoItem => {
+          const targetId = (novoItem.vendedorId || novoItem.id || novoItem.nome || '').toString().toLowerCase();
+          const existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
+          if (existente) {
+            existente.metricas = normalizarMetricas(novoItem.metricas || novoItem);
+          }
+        });
+      } else if (typeof metricasVendedores === 'object') {
+        Object.keys(metricasVendedores).forEach(key => {
+          const targetId = key.toLowerCase();
+          const existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
+          if (existente) {
+            existente.metricas = normalizarMetricas(metricasVendedores[key]);
+          }
+        });
+      }
     }
 
     if (options.criterio) {

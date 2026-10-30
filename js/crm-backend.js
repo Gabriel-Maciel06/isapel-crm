@@ -1753,8 +1753,8 @@
    *  +40 pts por negociação/amostra entregue
    *  +100 pts por fechamento/ganho
    */
-  function calcularMetricasArena(vendedorIdFiltro) {
-    const leads = carregarLeadsArmazenados();
+  function calcularMetricasArena(vendedorIdFiltro, leadsCustomizados) {
+    const leads = Array.isArray(leadsCustomizados) ? leadsCustomizados : carregarLeadsArmazenados();
     const vendedoresKeys = Object.keys(VENDEDORES_CONFIG);
 
     const resultados = vendedoresKeys.map(vid => {
@@ -1785,17 +1785,14 @@
           totalAmostras++;
         }
         if (l.estagio === 'fechado') {
-          volumeTotalFaturado += (l.valorProposta || 0);
+          volumeTotalFaturado += (Number(l.valorProposta) || 0);
         }
 
-        // Histórico de contatos
-        if (Array.isArray(l.historico)) {
-          // Conta eventos de contato ativo realizados por este vendedor
-          l.historico.forEach(h => {
-            if (['contato', 'nota', 'proposta', 'amostra', 'negociacao', 'fechamento'].includes(h.tipo)) {
-              totalContatos++;
-            }
-          });
+        // Histórico de contatos e anotações reais
+        if (Array.isArray(l.historico) && l.historico.length > 0) {
+          totalContatos += l.historico.length;
+        } else if (l.observacoes && String(l.observacoes).trim().length > 0) {
+          totalContatos += 1;
         }
       });
 
@@ -1804,13 +1801,15 @@
         ? Math.round((totalFechados / totalCadastrados) * 1000) / 10
         : 0;
 
-      // Cálculo do Score de Pontuação da Arena
+      // Cálculo do Score de Pontuação da Arena (XP)
+      const bonusFaturamentoXP = Math.round(volumeTotalFaturado / 100);
       const pontuacaoGeral = (
         (totalCadastrados * 10) +
         (totalContatos * 15) +
         (leadsPorEstagio.proposta * 25) +
         (leadsPorEstagio.negociacao * 40) +
-        (totalFechados * 100)
+        (totalFechados * 100) +
+        bonusFaturamentoXP
       );
 
       return {
