@@ -293,7 +293,7 @@
         telefone: telefone,
         vendedorId: vendedorId,
         observacao: 'Lead cadastrado via entrada ultra-rápida de WhatsApp.',
-        valorProposta: 3500.00
+        valorProposta: 0
       });
     } else {
       // Fallback autônomo
@@ -341,7 +341,7 @@
       frotaPropria: infoDDD.frotaPropria,
       estagio: 'novo',
       vendedorId: vendedorId,
-      valorProposta: 3500.00,
+      valorProposta: 0,
       dataCriacao: new Date().toISOString(),
       dataUltimoContato: new Date().toISOString(),
       historicoContatos: [
