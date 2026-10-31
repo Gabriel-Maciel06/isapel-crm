@@ -1538,13 +1538,19 @@
         .rank-3 .arena3d-xp-bar-fill { background: linear-gradient(90deg, #003360, #0284c7); }
         .arena3d-hint {
           position: absolute;
-          bottom: 8px;
+          top: 62px;
           left: 50%;
           transform: translateX(-50%);
           font-size: 11px;
           color: rgba(255, 255, 255, 0.6);
+          letter-spacing: 0.05em;
           pointer-events: none;
-        }  letter-spacing: 0.05em;
+          background: rgba(6, 17, 30, 0.6);
+          padding: 3px 12px;
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(8px);
+          z-index: 5;
         }
         @media (max-width: 900px) {
           .arena3d-hud-podium {

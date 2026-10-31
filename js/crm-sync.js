@@ -96,10 +96,28 @@
     };
   }
 
-  // 1. Puxar Leads da Nuvem (Supabase)
-  async function carregarLeadsNuvem() {
+  // 1. Puxar Leads da Nuvem (Supabase com RBAC e Isolamento de Dados)
+  async function carregarLeadsNuvem(filtroVendedorParam) {
     try {
-      const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?select=*&order=data_atualizacao.desc`;
+      const sessao = (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+        ? window.IsapelAuth.obterSessao()
+        : null;
+
+      let queryParams = ['select=*', 'order=data_atualizacao.desc'];
+
+      if (sessao && sessao.perfil === 'vendedor' && sessao.vendedorId) {
+        // Vendedor só puxa e enxerga estritamente os seus próprios leads pela rede
+        queryParams.unshift(`vendedor_id=eq.${encodeURIComponent(sessao.vendedorId)}`);
+      } else {
+        // Diretoria ou sem sessão: se houver filtro específico selecionado
+        const selectVendedor = (typeof document !== 'undefined') ? document.getElementById('vendedor-select') : null;
+        const filtro = filtroVendedorParam || (selectVendedor ? selectVendedor.value : 'todos');
+        if (filtro && filtro !== 'todos') {
+          queryParams.unshift(`vendedor_id=eq.${encodeURIComponent(filtro)}`);
+        }
+      }
+
+      const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?${queryParams.join('&')}`;
       const res = await fetch(endpoint, {
         headers: {
           'apikey': SUPABASE_CONFIG.anonKey,
@@ -131,7 +149,23 @@
 
   // 2. Salvar / Atualizar Lead no Supabase
   async function salvarLeadNuvem(lead) {
+    const sessao = (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+
+    if (sessao && sessao.perfil === 'vendedor' && sessao.vendedorId) {
+      lead.vendedor_id = sessao.vendedorId;
+      lead.vendedorId = sessao.vendedorId;
+      lead.vendedor_nome = sessao.nome;
+      lead.vendedorNome = sessao.nome;
+    }
+
     const payload = mapearParaBanco(lead);
+    if (sessao && sessao.perfil === 'vendedor' && sessao.vendedorId) {
+      payload.vendedor_id = sessao.vendedorId;
+      payload.vendedor_nome = sessao.nome;
+    }
+
     try {
       const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}`;
       const res = await fetch(endpoint, {
@@ -164,7 +198,16 @@
   // 3. Excluir Lead no Supabase
   async function removerLeadNuvem(leadId) {
     try {
-      const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?id=eq.${encodeURIComponent(leadId)}`;
+      const sessao = (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+        ? window.IsapelAuth.obterSessao()
+        : null;
+
+      let query = `id=eq.${encodeURIComponent(leadId)}`;
+      if (sessao && sessao.perfil === 'vendedor' && sessao.vendedorId) {
+        query += `&vendedor_id=eq.${encodeURIComponent(sessao.vendedorId)}`;
+      }
+
+      const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?${query}`;
       const res = await fetch(endpoint, {
         method: 'DELETE',
         headers: {

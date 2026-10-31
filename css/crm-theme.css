@@ -415,6 +415,87 @@ a:hover {
 }
 
 /* ==========================================================================
+   RBAC & PERFIL DO USUÁRIO NO HEADER
+   ========================================================================== */
+.crm-header__user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.3rem 0.75rem 0.3rem 0.35rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all var(--transition-fast);
+}
+
+.crm-header__user-profile:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.crm-role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  line-height: 1.2;
+  margin-top: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: var(--font-condensed);
+}
+
+.crm-role-badge--vendedor {
+  background: rgba(56, 189, 248, 0.16);
+  color: #38BDF8;
+  border-color: rgba(56, 189, 248, 0.38);
+}
+
+.crm-role-badge--diretoria {
+  background: rgba(245, 158, 11, 0.18);
+  color: #FCD34D;
+  border-color: rgba(245, 158, 11, 0.42);
+}
+
+#btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 32px;
+  padding: 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+#btn-logout:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #FCA5A5;
+  transform: translateY(-1px);
+}
+
+#btn-logout:active {
+  transform: translateY(0);
+}
+
+#btn-logout:focus-visible {
+  outline: 2px solid var(--isapel-sky-light);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
    4. BARRA DE CADASTRO RÁPIDO & LOGÍSTICA ISAPEL
    ========================================================================== */
 .crm-quick-bar {

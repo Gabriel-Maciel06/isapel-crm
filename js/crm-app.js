@@ -276,9 +276,15 @@
       return;
     }
 
-    // Identifica o vendedor a atribuir
+    // Identifica o vendedor a atribuir (prioridade estrita para sessão ativa)
+    const sessaoAtiva = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+
     let vendedorId = AppState.vendedorAtivo;
-    if (vendedorId === 'todos') {
+    if (sessaoAtiva && sessaoAtiva.perfil === 'vendedor' && sessaoAtiva.vendedorId) {
+      vendedorId = sessaoAtiva.vendedorId;
+    } else if (vendedorId === 'todos') {
       // Round-robin ou padrão Maciel se "todos" estiver selecionado
       const vendedores = ['maciel', 'fernanda', 'caio'];
       const index = Math.floor(Math.random() * vendedores.length);
@@ -752,7 +758,18 @@
 
     if (!select) return;
 
-    select.addEventListener('change', (e) => {
+    select.addEventListener('change', async (e) => {
+      const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+        ? window.IsapelAuth.obterSessao()
+        : null;
+
+      // Se for vendedor, trava e reverte imediatamente
+      if (sessao && sessao.perfil === 'vendedor') {
+        select.value = sessao.vendedorId;
+        AppState.vendedorAtivo = sessao.vendedorId;
+        return;
+      }
+
       AppState.vendedorAtivo = e.target.value;
 
       if (avatar) {
@@ -764,6 +781,16 @@
 
       renderizarKanban();
       showToast(`Visualização filtrada para: ${select.options[select.selectedIndex].text}`, 'info', 2000);
+
+      // Se nuvem estiver ativa e for diretoria, sincroniza dados filtrados
+      if (window.IsapelSync && sessao && sessao.perfil === 'diretoria') {
+        const leads = await window.IsapelSync.carregarLeadsNuvem(AppState.vendedorAtivo);
+        if (leads && Array.isArray(leads) && window.IsapelCRM) {
+          window.IsapelCRM.definirLeads(leads);
+          renderizarKanban();
+          sincronizarArena3D();
+        }
+      }
     });
   }
 
@@ -1348,12 +1375,32 @@
     const lead = todos.find(l => l.id === leadId);
     if (!lead) return;
 
+    const sessao = (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+    const isVendedor = Boolean(sessao && sessao.perfil === 'vendedor');
+
     const modal = document.getElementById('modal-editar-backdrop');
     document.getElementById('edit-lead-id').value = lead.id;
     document.getElementById('edit-lead-nome').value = lead.nome || '';
     document.getElementById('edit-lead-telefone').value = lead.telefoneFormatado || lead.telefone || '';
     document.getElementById('edit-lead-valor').value = lead.valorProposta || 0;
-    document.getElementById('edit-lead-vendedor').value = lead.vendedorId || 'maciel';
+
+    const selectVendedor = document.getElementById('edit-lead-vendedor');
+    if (selectVendedor) {
+      selectVendedor.value = lead.vendedorId || (isVendedor ? sessao.vendedorId : 'maciel');
+      selectVendedor.disabled = isVendedor;
+      if (isVendedor) {
+        selectVendedor.title = 'A reatribuição de vendedor é restrita à Diretoria.';
+        selectVendedor.style.cursor = 'not-allowed';
+        selectVendedor.style.opacity = '0.7';
+      } else {
+        selectVendedor.removeAttribute('title');
+        selectVendedor.style.cursor = 'default';
+        selectVendedor.style.opacity = '1';
+      }
+    }
+
     document.getElementById('edit-lead-etapa').value = lead.estagio || 'novo';
 
     if (modal) modal.classList.add('is-open');
@@ -1370,7 +1417,17 @@
     const nome = document.getElementById('edit-lead-nome').value.trim();
     const telefone = document.getElementById('edit-lead-telefone').value.trim();
     const valor = parseFloat(document.getElementById('edit-lead-valor').value) || 0;
-    const vendedorId = document.getElementById('edit-lead-vendedor').value;
+    
+    const sessao = (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+    const isVendedor = Boolean(sessao && sessao.perfil === 'vendedor');
+
+    let vendedorId = document.getElementById('edit-lead-vendedor').value;
+    if (isVendedor && sessao.vendedorId) {
+      vendedorId = sessao.vendedorId; // Vendedor não pode alterar vendedorId
+    }
+
     const estagio = document.getElementById('edit-lead-etapa').value;
 
     if (!id || !nome || !telefone) {
@@ -1486,6 +1543,68 @@
   // ==========================================================================
   function initApp() {
     console.log('[Isapel CRM] Inicializando frontend moderno B2B...');
+
+    // 0. Autenticação e Controle de Acesso Baseado em Papéis (RBAC)
+    const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+
+    if (sessao) {
+      const headerUserName = document.getElementById('header-user-name');
+      const headerUserAvatar = document.getElementById('header-user-avatar');
+      const headerUserRoleBadge = document.getElementById('header-user-role-badge');
+      const wrapperVendedorSelect = document.getElementById('wrapper-vendedor-select');
+      const selectVendedor = document.getElementById('vendedor-select');
+      const avatarAtivo = document.getElementById('header-active-avatar');
+
+      if (headerUserName) headerUserName.textContent = sessao.nome;
+      if (headerUserAvatar) headerUserAvatar.textContent = sessao.avatar;
+      if (headerUserRoleBadge) {
+        headerUserRoleBadge.textContent = sessao.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
+        headerUserRoleBadge.className = `crm-role-badge crm-role-badge--${sessao.perfil}`;
+      }
+
+      if (sessao.perfil === 'vendedor') {
+        // Vendedor: restrito estritamente ao seu próprio vendedorId
+        AppState.vendedorAtivo = sessao.vendedorId;
+        if (selectVendedor) {
+          selectVendedor.value = sessao.vendedorId;
+          selectVendedor.disabled = true;
+        }
+        if (avatarAtivo) {
+          avatarAtivo.textContent = sessao.avatar;
+        }
+        if (wrapperVendedorSelect) {
+          wrapperVendedorSelect.style.display = 'none';
+        }
+      } else if (sessao.perfil === 'diretoria') {
+        // Diretoria: visão global irrestrita com permissão de alternar o filtro
+        AppState.vendedorAtivo = 'todos';
+        if (selectVendedor) {
+          selectVendedor.value = 'todos';
+          selectVendedor.disabled = false;
+        }
+        if (avatarAtivo) {
+          avatarAtivo.textContent = 'ALL';
+        }
+        if (wrapperVendedorSelect) {
+          wrapperVendedorSelect.style.display = 'flex';
+        }
+      }
+    }
+
+    // Configurar ação do botão de Logout
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) {
+      btnLogout.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.IsapelAuth && typeof window.IsapelAuth.logout === 'function') {
+          window.IsapelAuth.logout('login.html');
+        } else {
+          window.location.replace('login.html');
+        }
+      });
+    }
 
     inicializarFormularioCadastro();
     inicializarAbas();

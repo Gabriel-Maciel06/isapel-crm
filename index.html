@@ -15,6 +15,14 @@
   <!-- Estilos Temáticos da Isapel Papéis -->
   <link rel="stylesheet" href="css/crm-theme.css">
 
+  <!-- Módulo de Autenticação e Guarda de Rota Imediata (Anti-FOUC) -->
+  <script src="js/crm-auth.js"></script>
+  <script>
+    if (!window.IsapelAuth || !window.IsapelAuth.estaAutenticado()) {
+      window.location.replace('login.html');
+    }
+  </script>
+
   <style>
     /* Estilos complementares de refinamento para garantir consistência visual */
     .tab-section { display: none; }
@@ -319,10 +327,20 @@
       </button>
     </nav>
 
-    <!-- Seletor de Vendedor & Ações -->
+    <!-- Perfil do Usuário, Seletor de Vendedor & Ações RBAC -->
     <div class="crm-header__actions">
-      <div class="crm-header__seller-picker" title="Filtrar visão por vendedor">
-        <div class="crm-header__seller-avatar" id="header-active-avatar">GM</div>
+      <!-- Perfil do Usuário Autenticado & Role Badge -->
+      <div class="crm-header__user-profile" id="header-user-profile" title="Usuário autenticado">
+        <div class="crm-header__seller-avatar" id="header-user-avatar">GM</div>
+        <div class="crm-header__seller-meta">
+          <span class="crm-header__seller-name" id="header-user-name">Gabriel Maciel</span>
+          <span class="crm-role-badge" id="header-user-role-badge">Vendedor</span>
+        </div>
+      </div>
+
+      <!-- Seletor de vendedor encapsulado no container wrapper-vendedor-select -->
+      <div class="crm-header__seller-picker" id="wrapper-vendedor-select" title="Filtrar visão por vendedor">
+        <div class="crm-header__seller-avatar" id="header-active-avatar">ALL</div>
         <div class="crm-header__seller-meta">
           <label for="vendedor-select" class="crm-header__seller-label">Vendedor Ativo</label>
           <select id="vendedor-select" class="crm-header__seller-select" aria-label="Selecione o vendedor ativo">
@@ -343,6 +361,12 @@
       <button id="btn-quick-fechamento-header" class="crm-btn" title="Ir para Fechamento do Dia">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <span>Fechamento</span>
+      </button>
+
+      <!-- Botão de Sair (Logout) -->
+      <button id="btn-logout" class="crm-btn crm-btn--secondary" title="Encerrar sessão no CRM" aria-label="Sair do CRM">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sair</span>
       </button>
     </div>
   </header>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acesso ao CRM Isapel Papéis - Inteligência Comercial B2B">
+  <meta name="theme-color" content="#003360">
+  <title>Login | CRM Isapel Papéis</title>
+
+  <!-- Google Fonts: Inter e Barlow Condensed -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/crm-theme.css">
+
+  <style>
+    /* ==========================================================================
+       ISAPEL PAPÉIS - ESTILOS DEDICADOS DA PÁGINA DE AUTENTICAÇÃO (LOGIN)
+       ========================================================================== */
+    .crm-auth-page {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 20%, #003360 0%, #001a33 60%, #001122 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: var(--font-sans);
+    }
+
+    .crm-auth-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .crm-auth-card {
+      position: relative;
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 4px solid var(--isapel-sky);
+      box-shadow: 0 20px 40px -10px rgba(0, 17, 34, 0.6);
+      width: 100%;
+      max-width: 440px;
+      padding: 2.25rem 2rem;
+      z-index: 2;
+      box-sizing: border-box;
+    }
+
+    .crm-auth-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .crm-auth-brand__logo-wrap {
+      background: #FFFFFF;
+      padding: 6px 14px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1rem;
+    }
+
+    .crm-auth-brand__logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .crm-auth-brand__title {
+      font-family: var(--font-condensed);
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--isapel-navy);
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .crm-auth-brand__subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      margin-bottom: 0;
+    }
+
+    .crm-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .crm-form-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .crm-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .crm-auth-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 0.85rem;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: #F8FAFC;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .crm-auth-input:focus {
+      background: #FFFFFF;
+      border-color: var(--isapel-sky);
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+
+    .crm-auth-input--with-toggle {
+      padding-right: 2.75rem;
+    }
+
+    .crm-password-toggle {
+      position: absolute;
+      right: 0.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: color var(--transition-fast);
+    }
+
+    .crm-password-toggle:hover {
+      color: var(--text-main);
+    }
+
+    .crm-password-toggle:focus {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+
+    .crm-btn--login {
+      width: 100%;
+      height: 44px;
+      background: var(--isapel-sky-dark);
+      color: #FFFFFF;
+      font-family: var(--font-condensed);
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 12px rgba(3, 105, 161, 0.3);
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .crm-btn--login:hover {
+      background: var(--isapel-sky);
+      transform: translateY(-1px);
+    }
+
+    .crm-btn--login:active {
+      transform: translateY(0);
+    }
+
+    .crm-auth-alert {
+      background: #FEE2E2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    .crm-quick-profiles {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .crm-quick-profiles__title {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      text-align: center;
+    }
+
+    .crm-quick-profiles__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    .crm-profile-chip {
+      background: #F1F5F9;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: left;
+      font-family: var(--font-sans);
+    }
+
+    .crm-profile-chip:hover {
+      background: var(--isapel-sky-soft);
+      border-color: var(--isapel-sky-light);
+      color: var(--isapel-sky-dark);
+      transform: translateY(-1px);
+    }
+
+    .crm-profile-chip:focus {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+
+    .crm-profile-chip__badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      background: rgba(0, 51, 96, 0.1);
+      color: var(--isapel-navy);
+      letter-spacing: 0.02em;
+    }
+
+    .crm-auth-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.75rem;
+      z-index: 2;
+    }
+  </style>
+
+  <!-- Script de verificação imediata para evitar redirecionamento redundante -->
+  <script src="js/crm-auth.js"></script>
+  <script>
+    if (window.IsapelAuth && window.IsapelAuth.estaAutenticado()) {
+      window.location.replace('index.html');
+    }
+  </script>
+</head>
+<body class="crm-auth-page">
+
+  <main class="crm-auth-card" role="main">
+    <div class="crm-auth-brand">
+      <div class="crm-auth-brand__logo-wrap">
+        <img src="assets/logo-isapel-print.png" alt="Isapel Papéis" class="crm-auth-brand__logo" onerror="this.src='assets/logo-isapel.png'">
+      </div>
+      <h1 class="crm-auth-brand__title">CRM Isapel</h1>
+      <p class="crm-auth-brand__subtitle">Inteligência Comercial & Gestão B2B</p>
+    </div>
+
+    <!-- Região de Alerta Acessível (WAI-ARIA) -->
+    <div id="login-alert" class="crm-auth-alert" role="alert" aria-live="polite" style="display: none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <span id="login-alert-text">Usuário ou senha incorretos.</span>
+    </div>
+
+    <!-- Formulário Semântico de Login -->
+    <form id="form-login" autocomplete="on" novalidate>
+      <div class="crm-form-group">
+        <label for="login-usuario" class="crm-form-label">Usuário / Identificador</label>
+        <div class="crm-input-wrap">
+          <input
+            type="text"
+            id="login-usuario"
+            name="username"
+            autocomplete="username"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            class="crm-auth-input"
+            placeholder="Ex: maciel, fernanda, caio, diretoria"
+            required
+            aria-required="true"
+          >
+        </div>
+      </div>
+
+      <div class="crm-form-group">
+        <label for="login-senha" class="crm-form-label">Senha de Acesso</label>
+        <div class="crm-input-wrap">
+          <input
+            type="password"
+            id="login-senha"
+            name="password"
+            autocomplete="current-password"
+            class="crm-auth-input crm-auth-input--with-toggle"
+            placeholder="Digite sua senha"
+            required
+            aria-required="true"
+          >
+          <button type="button" id="btn-toggle-senha" class="crm-password-toggle" aria-label="Mostrar ou ocultar senha" aria-pressed="false">
+            <svg id="icon-eye-show" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <svg id="icon-eye-hide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-submit-login" class="crm-btn crm-btn--login">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+        <span>Acessar CRM</span>
+      </button>
+    </form>
+
+    <!-- Seletor de Perfis para Teste / Homologação Rápida -->
+    <div class="crm-quick-profiles">
+      <div class="crm-quick-profiles__title">Ambiente de Testes / Atalhos Rápidos</div>
+      <div class="crm-quick-profiles__grid">
+        <button type="button" class="crm-profile-chip" data-user="maciel" data-pass="isapel2026">
+          <span class="crm-profile-chip__badge">GM</span>
+          <span>Maciel (Vendedor)</span>
+        </button>
+        <button type="button" class="crm-profile-chip" data-user="fernanda" data-pass="isapel2026">
+          <span class="crm-profile-chip__badge">FE</span>
+          <span>Fernanda (Vendedora)</span>
+        </button>
+        <button type="button" class="crm-profile-chip" data-user="caio" data-pass="isapel2026">
+          <span class="crm-profile-chip__badge">CA</span>
+          <span>Caio (SDR / Hunter)</span>
+        </button>
+        <button type="button" class="crm-profile-chip" data-user="diretoria" data-pass="isapel2026">
+          <span class="crm-profile-chip__badge">DIR</span>
+          <span>Diretoria (Gestão)</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="crm-auth-footer">
+    <p>Isapel Papéis & Embalagens &bull; CRM Comercial v1.1.0 &bull; Acesso Restrito</p>
+  </footer>
+
+  <script>
+    // Inicialização do Formulário de Login e Acessibilidade
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form-login');
+      const inputUser = document.getElementById('login-usuario');
+      const inputPass = document.getElementById('login-senha');
+      const alertBox = document.getElementById('login-alert');
+      const alertText = document.getElementById('login-alert-text');
+      const btnToggle = document.getElementById('btn-toggle-senha');
+      const iconShow = document.getElementById('icon-eye-show');
+      const iconHide = document.getElementById('icon-eye-hide');
+
+      // Toggle Mostrar/Ocultar Senha com WAI-ARIA
+      if (btnToggle && inputPass) {
+        btnToggle.addEventListener('click', () => {
+          const isPassword = inputPass.type === 'password';
+          inputPass.type = isPassword ? 'text' : 'password';
+          btnToggle.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+          btnToggle.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+          if (iconShow && iconHide) {
+            iconShow.style.display = isPassword ? 'none' : 'block';
+            iconHide.style.display = isPassword ? 'block' : 'none';
+          }
+          inputPass.focus();
+        });
+      }
+
+      // Atalhos dos Chips de Teste
+      document.querySelectorAll('.crm-profile-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          if (inputUser) inputUser.value = chip.dataset.user || '';
+          if (inputPass) inputPass.value = chip.dataset.pass || '';
+          if (alertBox) alertBox.style.display = 'none';
+          if (inputUser) inputUser.focus();
+        });
+      });
+
+      // Submissão do Formulário
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const usuario = inputUser ? inputUser.value.trim().toLowerCase() : '';
+          const senha = inputPass ? inputPass.value : '';
+
+          if (!usuario || !senha) {
+            if (alertText) alertText.textContent = 'Por favor, preencha o usuário e a senha.';
+            if (alertBox) alertBox.style.display = 'flex';
+            if (!usuario && inputUser) inputUser.focus();
+            else if (inputPass) inputPass.focus();
+            return;
+          }
+
+          if (!window.IsapelAuth || typeof window.IsapelAuth.login !== 'function') {
+            if (alertText) alertText.textContent = 'Erro de sistema: módulo de autenticação indisponível.';
+            if (alertBox) alertBox.style.display = 'flex';
+            return;
+          }
+
+          const resultado = window.IsapelAuth.login(usuario, senha);
+          if (resultado && resultado.ok) {
+            window.location.replace('index.html');
+          } else {
+            const msgErro = (resultado && resultado.erro) ? resultado.erro : 'Usuário ou senha incorretos.';
+            if (alertText) alertText.textContent = msgErro;
+            if (alertBox) alertBox.style.display = 'flex';
+            if (inputPass) {
+              inputPass.value = '';
+              inputPass.focus();
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
