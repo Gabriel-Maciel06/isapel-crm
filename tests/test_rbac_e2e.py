@@ -202,15 +202,15 @@ def test_tier1_functional(browser):
         page = context.new_page()
         page.goto(f"{BASE_URL}/login.html", wait_until="networkidle")
 
-        chip_fe = page.locator(".crm-profile-chip[data-user='fernanda']")
-        chip_fe.click()
+        page.fill("#login-usuario", "fernanda")
+        page.fill("#login-senha", "Fernanda1234")
         page.click("#btn-submit-login")
         page.wait_for_url("**/index.html*", timeout=6000)
 
         expect(page.locator("#header-user-name")).to_contain_text("Fernanda")
         expect(page.locator("#header-user-avatar")).to_have_text("FE")
         expect(page.locator("#header-user-role-badge")).to_contain_text("Vendedor")
-        stats.record_pass("T1.3: Login da vendedora Fernanda [FE] via quick-chip")
+        stats.record_pass("T1.3: Login da vendedora Fernanda [FE] via credenciais")
         context.close()
     except Exception as e:
         stats.record_fail("T1.3: Login Fernanda", str(e))
@@ -221,15 +221,15 @@ def test_tier1_functional(browser):
         page = context.new_page()
         page.goto(f"{BASE_URL}/login.html", wait_until="networkidle")
 
-        chip_ca = page.locator(".crm-profile-chip[data-user='caio']")
-        chip_ca.click()
+        page.fill("#login-usuario", "caio")
+        page.fill("#login-senha", "Caio1234")
         page.click("#btn-submit-login")
         page.wait_for_url("**/index.html*", timeout=6000)
 
         expect(page.locator("#header-user-name")).to_contain_text("Caio")
         expect(page.locator("#header-user-avatar")).to_have_text("CA")
         expect(page.locator("#header-user-role-badge")).to_contain_text("Vendedor")
-        stats.record_pass("T1.4: Login do vendedor Caio [CA] via quick-chip")
+        stats.record_pass("T1.4: Login do vendedor Caio [CA] via credenciais")
         context.close()
     except Exception as e:
         stats.record_fail("T1.4: Login Caio", str(e))
@@ -240,8 +240,8 @@ def test_tier1_functional(browser):
         page = context.new_page()
         page.goto(f"{BASE_URL}/login.html", wait_until="networkidle")
 
-        chip_dir = page.locator(".crm-profile-chip[data-user='diretoria']")
-        chip_dir.click()
+        page.fill("#login-usuario", "diretoria")
+        page.fill("#login-senha", "Diretoria123!")
         page.click("#btn-submit-login")
         page.wait_for_url("**/index.html*", timeout=6000)
 
@@ -905,12 +905,6 @@ def test_quality_audit(browser):
         # Tap target size (>= 40px)
         btn_box = page.locator("#btn-submit-login").bounding_box()
         assert btn_box["height"] >= 40, f"Botão de login altura mínima deve ser >= 40px, obteve {btn_box['height']}"
-
-        # Chips tap targets
-        chips = page.locator(".crm-profile-chip")
-        for i in range(chips.count()):
-            chip_box = chips.nth(i).bounding_box()
-            assert chip_box["height"] >= 30, f"Chip de perfil deve ter altura confortável, obteve {chip_box['height']}"
 
         # 1.2 Auditoria em index.html (como Maciel)
         page.fill("#login-usuario", "maciel")

@@ -216,67 +216,6 @@
       box-sizing: border-box;
     }
 
-    .crm-quick-profiles {
-      margin-top: 1.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px dashed var(--border-subtle);
-    }
-
-    .crm-quick-profiles__title {
-      font-size: 0.74rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-      margin-bottom: 0.6rem;
-      text-align: center;
-    }
-
-    .crm-quick-profiles__grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-    }
-
-    .crm-profile-chip {
-      background: #F1F5F9;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 0.45rem 0.65rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      text-align: left;
-      font-family: var(--font-sans);
-    }
-
-    .crm-profile-chip:hover {
-      background: var(--isapel-sky-soft);
-      border-color: var(--isapel-sky-light);
-      color: var(--isapel-sky-dark);
-      transform: translateY(-1px);
-    }
-
-    .crm-profile-chip:focus {
-      outline: 2px solid var(--border-focus);
-      outline-offset: 1px;
-    }
-
-    .crm-profile-chip__badge {
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 0.1rem 0.35rem;
-      border-radius: 4px;
-      background: rgba(0, 51, 96, 0.1);
-      color: var(--isapel-navy);
-      letter-spacing: 0.02em;
-    }
-
     .crm-auth-footer {
       margin-top: 1.5rem;
       text-align: center;
@@ -325,7 +264,7 @@
             autocapitalize="off"
             spellcheck="false"
             class="crm-auth-input"
-            placeholder="Ex: maciel, fernanda, caio, diretoria"
+            placeholder="Digite seu usuário"
             required
             aria-required="true"
           >
@@ -357,29 +296,6 @@
         <span>Acessar CRM</span>
       </button>
     </form>
-
-    <!-- Seletor de Perfis para Teste / Homologação Rápida -->
-    <div class="crm-quick-profiles">
-      <div class="crm-quick-profiles__title">Ambiente de Testes / Atalhos Rápidos</div>
-      <div class="crm-quick-profiles__grid">
-        <button type="button" class="crm-profile-chip" data-user="maciel" data-pass="isapel2026">
-          <span class="crm-profile-chip__badge">GM</span>
-          <span>Maciel (Vendedor)</span>
-        </button>
-        <button type="button" class="crm-profile-chip" data-user="fernanda" data-pass="isapel2026">
-          <span class="crm-profile-chip__badge">FE</span>
-          <span>Fernanda (Vendedora)</span>
-        </button>
-        <button type="button" class="crm-profile-chip" data-user="caio" data-pass="isapel2026">
-          <span class="crm-profile-chip__badge">CA</span>
-          <span>Caio (SDR / Hunter)</span>
-        </button>
-        <button type="button" class="crm-profile-chip" data-user="diretoria" data-pass="isapel2026">
-          <span class="crm-profile-chip__badge">DIR</span>
-          <span>Diretoria (Gestão)</span>
-        </button>
-      </div>
-    </div>
   </main>
 
   <footer class="crm-auth-footer">
@@ -412,16 +328,6 @@
           inputPass.focus();
         });
       }
-
-      // Atalhos dos Chips de Teste
-      document.querySelectorAll('.crm-profile-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-          if (inputUser) inputUser.value = chip.dataset.user || '';
-          if (inputPass) inputPass.value = chip.dataset.pass || '';
-          if (alertBox) alertBox.style.display = 'none';
-          if (inputUser) inputUser.focus();
-        });
-      });
 
       // Submissão do Formulário
       if (form) {
