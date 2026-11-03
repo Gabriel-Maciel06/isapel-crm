@@ -342,6 +342,28 @@
       barbaHex: 0x161211,
       oculos: 'nenhum',
       cracha: true
+    },
+    albert: {
+      id: 'albert',
+      uniforme: 'polo-navy',
+      peleHex: 0xe6b994,
+      cabeloEstilo: 'curto-executivo',
+      cabeloHex: 0x1a1514,
+      barbaEstilo: 'sem-barba',
+      barbaHex: 0x161211,
+      oculos: 'nenhum',
+      cracha: true
+    },
+    daniel: {
+      id: 'daniel',
+      uniforme: 'camisa-social',
+      peleHex: 0xdfa980,
+      cabeloEstilo: 'curto-executivo',
+      cabeloHex: 0x1a1514,
+      barbaEstilo: 'com-bigode',
+      barbaHex: 0x161211,
+      oculos: 'nenhum',
+      cracha: true
     }
   };
 

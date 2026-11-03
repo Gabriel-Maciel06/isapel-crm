@@ -51,6 +51,20 @@
       avatar: 'CA',
       cargo: 'SDR & Hunter B2B',
       cor: '#38BDF8'
+    },
+    albert: {
+      id: 'albert',
+      nome: 'Albert',
+      avatar: 'AL',
+      cargo: 'Consultor Comercial B2B',
+      cor: '#0284C7'
+    },
+    daniel: {
+      id: 'daniel',
+      nome: 'Daniel',
+      avatar: 'DA',
+      cargo: 'Consultor Comercial B2B',
+      cor: '#059669'
     }
   };
 

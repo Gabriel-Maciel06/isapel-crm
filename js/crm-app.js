@@ -810,6 +810,8 @@
         if (AppState.vendedorAtivo === 'maciel') avatar.textContent = 'GM';
         else if (AppState.vendedorAtivo === 'fernanda') avatar.textContent = 'FE';
         else if (AppState.vendedorAtivo === 'caio') avatar.textContent = 'CA';
+        else if (AppState.vendedorAtivo === 'albert') avatar.textContent = 'AL';
+        else if (AppState.vendedorAtivo === 'daniel') avatar.textContent = 'DA';
         else avatar.textContent = 'ALL';
       }
 
@@ -873,8 +875,10 @@
       const elVal = document.getElementById(`podium-score-${num}`);
       const elAv = document.getElementById(`podium-avatar-${num}`);
 
-      const nomeVendedor = p.vendedor?.nome || (p.vendedorId === 'maciel' ? 'Gabriel Maciel' : (p.vendedorId === 'fernanda' ? 'Fernanda' : 'Caio'));
-      const iniciais = p.vendedorId === 'maciel' ? 'GM' : (p.vendedorId === 'fernanda' ? 'FE' : 'CA');
+      const nomesMap = { maciel: 'Gabriel Maciel', fernanda: 'Fernanda', caio: 'Caio', albert: 'Albert', daniel: 'Daniel' };
+      const iniciaisMap = { maciel: 'GM', fernanda: 'FE', caio: 'CA', albert: 'AL', daniel: 'DA' };
+      const nomeVendedor = p.vendedor?.nome || nomesMap[p.vendedorId] || p.vendedorId;
+      const iniciais = iniciaisMap[p.vendedorId] || (p.vendedorId ? p.vendedorId.substring(0, 2).toUpperCase() : 'CO');
 
       if (elNome) elNome.textContent = nomeVendedor;
       if (elVal) elVal.textContent = p.volumeTotalFaturado > 0 ? formatarMoeda(p.volumeTotalFaturado) : `${p.pontuacaoGeral || 0} XP`;
@@ -896,7 +900,8 @@
           : `${p.totalCadastrados || 0} leads (${p.pontuacaoGeral || 0} XP)`;
       }
       if (barEl) {
-        const meta = id === 'maciel' ? 60000 : (id === 'fernanda' ? 45000 : 35000);
+        const metasMap = { maciel: 60000, fernanda: 45000, caio: 35000, albert: 45000, daniel: 45000 };
+        const meta = metasMap[id] || 40000;
         const faturado = p.volumeTotalFaturado || 0;
         const pct = Math.min(100, Math.max(5, Math.round((faturado / meta) * 100)));
         barEl.style.width = `${pct}%`;
@@ -909,7 +914,9 @@
     const res = {
       maciel: { id: 'maciel', nome: 'Gabriel Maciel', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 },
       fernanda: { id: 'fernanda', nome: 'Fernanda', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 },
-      caio: { id: 'caio', nome: 'Caio', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 }
+      caio: { id: 'caio', nome: 'Caio', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 },
+      albert: { id: 'albert', nome: 'Albert', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 },
+      daniel: { id: 'daniel', nome: 'Daniel', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 }
     };
 
     todos.forEach(lead => {

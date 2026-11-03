@@ -895,6 +895,28 @@
       especialidade: 'Prospecção Ativa B2B, Clínicas, Escritórios e Centros Logísticos',
       email: 'caio@isapel.com.br',
       metaMensalFardos: 1500
+    },
+    albert: {
+      id: 'albert',
+      nome: 'Albert',
+      cargo: 'Consultor Comercial B2B',
+      idade: 25,
+      perfil: 'Consultor Comercial B2B',
+      avatarColor: '#0284C7',
+      especialidade: 'Prospecção e Atendimento Regional',
+      email: 'albert@isapel.com.br',
+      metaMensalFardos: 2000
+    },
+    daniel: {
+      id: 'daniel',
+      nome: 'Daniel',
+      cargo: 'Consultor Comercial B2B',
+      idade: 26,
+      perfil: 'Consultor Comercial B2B',
+      avatarColor: '#059669',
+      especialidade: 'Prospecção e Atendimento Regional',
+      email: 'daniel@isapel.com.br',
+      metaMensalFardos: 2000
     }
   };
 

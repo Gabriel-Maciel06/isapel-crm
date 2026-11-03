@@ -66,6 +66,34 @@
       metaMensalReais: 35000,
       senhasValidas: ['Caio1234', 'caio1234', 'isapel2026', 'caio123']
     },
+    albert: {
+      id: 'albert',
+      usuario: 'albert',
+      nome: 'Albert',
+      perfil: 'vendedor',
+      vendedorId: 'albert',
+      cargo: 'Consultor Comercial B2B',
+      avatar: 'AL',
+      avatarIniciais: 'AL',
+      avatarCor: '#0284C7',
+      metaMensalFardos: 2000,
+      metaMensalReais: 45000,
+      senhasValidas: ['albert123', 'Albert123', 'Albert123!', 'albert123!', 'isapel2026']
+    },
+    daniel: {
+      id: 'daniel',
+      usuario: 'daniel',
+      nome: 'Daniel',
+      perfil: 'vendedor',
+      vendedorId: 'daniel',
+      cargo: 'Consultor Comercial B2B',
+      avatar: 'DA',
+      avatarIniciais: 'DA',
+      avatarCor: '#059669',
+      metaMensalFardos: 2000,
+      metaMensalReais: 45000,
+      senhasValidas: ['daniel123', 'Daniel123', 'Daniel123!', 'daniel123!', 'isapel2026']
+    },
     diretoria: {
       id: 'diretoria',
       usuario: 'diretoria',
@@ -475,6 +503,34 @@
         avatarCor: '#38BDF8',
         metaMensalFardos: 1500,
         metaMensalReais: 35000
+      },
+      {
+        id: 'albert',
+        login: 'albert',
+        usuario: 'albert',
+        nome: 'Albert',
+        perfil: 'vendedor',
+        vendedorId: 'albert',
+        cargo: 'Consultor Comercial B2B',
+        avatar: 'AL',
+        avatarIniciais: 'AL',
+        avatarCor: '#0284C7',
+        metaMensalFardos: 2000,
+        metaMensalReais: 45000
+      },
+      {
+        id: 'daniel',
+        login: 'daniel',
+        usuario: 'daniel',
+        nome: 'Daniel',
+        perfil: 'vendedor',
+        vendedorId: 'daniel',
+        cargo: 'Consultor Comercial B2B',
+        avatar: 'DA',
+        avatarIniciais: 'DA',
+        avatarCor: '#059669',
+        metaMensalFardos: 2000,
+        metaMensalReais: 45000
       }
     ];
 
