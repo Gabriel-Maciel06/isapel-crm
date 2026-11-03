@@ -225,11 +225,14 @@
     }
   </style>
 
-  <!-- Script de verificação imediata para evitar redirecionamento redundante -->
+  <!-- Scripts de Autenticação e Sincronização em Nuvem (Supabase) -->
   <script src="js/crm-auth.js"></script>
+  <script src="js/crm-sync.js"></script>
   <script>
     if (window.IsapelAuth && window.IsapelAuth.estaAutenticado()) {
       window.location.replace('index.html');
+    } else if (window.IsapelAuth && typeof window.IsapelAuth.sincronizarVendedoresNuvem === 'function') {
+      window.IsapelAuth.sincronizarVendedoresNuvem().catch(() => {});
     }
   </script>
 </head>
@@ -350,11 +353,29 @@
             return;
           }
 
-          const resultado = window.IsapelAuth.login(usuario, senha);
+          let resultado = window.IsapelAuth.login(usuario, senha);
+          if (!resultado.ok && typeof window.IsapelAuth.sincronizarVendedoresNuvem === 'function') {
+            window.IsapelAuth.sincronizarVendedoresNuvem().then(() => {
+              const retry = window.IsapelAuth.login(usuario, senha);
+              if (retry && retry.ok) {
+                window.location.replace('index.html');
+              } else {
+                exibirErro(retry);
+              }
+            }).catch(() => {
+              exibirErro(resultado);
+            });
+            return;
+          }
+
           if (resultado && resultado.ok) {
             window.location.replace('index.html');
           } else {
-            const msgErro = (resultado && resultado.erro) ? resultado.erro : 'Usuário ou senha incorretos.';
+            exibirErro(resultado);
+          }
+
+          function exibirErro(res) {
+            const msgErro = (res && res.erro) ? res.erro : 'Usuário ou senha incorretos.';
             if (alertText) alertText.textContent = msgErro;
             if (alertBox) alertBox.style.display = 'flex';
             if (inputPass) {
