@@ -325,6 +325,19 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
         <span id="tab-nav-fechamento-label">Analytics &amp; Fechamento</span>
       </button>
+      <button 
+        role="tab" 
+        aria-selected="false" 
+        aria-controls="tab-gestao" 
+        tabindex="-1"
+        class="crm-header__tab-btn" 
+        data-tab="tab-gestao" 
+        id="tab-nav-gestao"
+        style="display: none;"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Gestão de Equipe</span>
+      </button>
     </nav>
 
     <!-- Perfil do Usuário, Seletor de Vendedor & Ações RBAC -->
@@ -336,6 +349,9 @@
           <span class="crm-header__seller-name" id="header-user-name">Gabriel Maciel</span>
           <span class="crm-role-badge" id="header-user-role-badge">Vendedor</span>
         </div>
+        <button type="button" id="btn-customizar-avatar-header" class="crm-btn-avatar-mini btn-customizar-avatar" title="Personalizar Avatar 3D" aria-label="Personalizar Avatar 3D">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+        </button>
       </div>
 
       <!-- Seletor de vendedor encapsulado no container wrapper-vendedor-select -->
@@ -423,7 +439,7 @@
 
     <!-- Badge Dinâmico em Tempo Real (DDD + Localização) -->
     <div id="ddd-badge-box" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-      <div class="crm-quick-bar__ddd-badge" id="badge-ddd-display" role="status" aria-live="polite">
+      <div class="crm-quick-bar__ddd-badge" id="badge-ddd-display" aria-live="polite">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
         <span id="badge-ddd-localizacao">Digite o telefone com DDD</span>
       </div>
@@ -593,7 +609,11 @@
           <div class="crm-arena-canvas-card">
             <div class="crm-arena-canvas-header">
               <div class="crm-arena-canvas-title">Palco 3D dos Vendedores</div>
-              <div style="display: flex; gap: 0.5rem;">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button id="btn-abrir-customizador-arena" class="crm-btn crm-btn--primary btn-customizar-avatar" style="height: 32px; font-size: 0.8rem; background: #0284C7; border-color: #0284C7;" title="Personalizar Consultores 3D">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                  <span>🎨 Personalizar Consultores 3D</span>
+                </button>
                 <button id="btn-arena-comemorar" class="crm-btn crm-btn--primary" style="height: 32px; font-size: 0.8rem;" title="Disparar comemoração da equipe">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                   <span>Comemoração</span>
@@ -739,6 +759,17 @@
               </span>
             </div>
 
+            <!-- Filtro de Região dos Leads -->
+            <div class="crm-analytics-filter-group">
+              <label for="analytics-regiao-select" class="crm-analytics-filter-label">Região / DDD</label>
+              <div class="crm-analytics-select-wrapper">
+                <select id="analytics-regiao-select" class="crm-analytics-select" aria-label="Filtrar por região dos leads">
+                  <option value="todas">Todas as Regiões</option>
+                </select>
+                <svg class="crm-analytics-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+
             <!-- Filtro de Período (Pills) -->
             <div class="crm-analytics-filter-group">
               <span class="crm-analytics-filter-label" id="label-periodo-pills">Período</span>
@@ -830,16 +861,16 @@
             <div class="crm-kpi-card__hint" id="analytics-kpi-ticket-medio-hint">Média por proposta ativa</div>
           </div>
 
-          <!-- 6. Rotas CIF Atendidas -->
-          <div class="crm-kpi-card">
+          <!-- 6. Regiões de Leads Recebidos -->
+          <div class="crm-kpi-card" id="analytics-kpi-card-regioes" style="cursor: pointer;" title="Visualizar e filtrar por região">
             <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Rotas CIF Atendidas</span>
+              <span class="crm-kpi-card__lbl">Regiões de Leads Recebidos</span>
               <span class="crm-kpi-icon crm-kpi-icon--slate" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               </span>
             </div>
             <div class="crm-kpi-card__val" id="analytics-kpi-rotas">0 Regiões</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-rotas-hint">Frota Própria Isapel</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-rotas-hint">DDDs &amp; Praças Atendidas</div>
           </div>
         </div>
 
@@ -859,17 +890,23 @@
             </div>
           </div>
 
-          <!-- Card Lateral: Distribuição da Equipe Comercial ou Métricas do Vendedor -->
+          <!-- Card Lateral: Distribuição da Equipe Comercial & Regiões dos Leads -->
           <div class="crm-chart-card" id="analytics-seller-card">
             <div class="crm-chart-card__header">
               <div class="crm-chart-card__title-wrap">
                 <h3 class="crm-chart-card__title" id="analytics-seller-card-title">Distribuição da Equipe Comercial</h3>
-                <span class="crm-chart-card__subtitle">Desempenho comparativo e pipeline por consultor</span>
+                <span class="crm-chart-card__subtitle" id="analytics-seller-card-subtitle">Desempenho comparativo e pipeline por consultor</span>
               </div>
-              <span class="crm-chart-card__badge">Isapel B2B</span>
+              <div class="crm-analytics-side-tabs" style="display: flex; gap: 0.35rem;">
+                <button type="button" class="crm-pill-btn is-active" id="btn-sidecard-equipe" style="font-size: 0.72rem; padding: 0.25rem 0.55rem;">👥 Equipe</button>
+                <button type="button" class="crm-pill-btn" id="btn-sidecard-regioes" style="font-size: 0.72rem; padding: 0.25rem 0.55rem;">📍 Regiões</button>
+              </div>
             </div>
             <div class="crm-seller-distribution-list" id="analytics-seller-distribution-container">
               <!-- Renderizado dinamicamente via JS -->
+            </div>
+            <div class="crm-regions-distribution-list" id="analytics-regions-distribution-container" style="display: none;">
+              <!-- Renderizado dinamicamente via JS com as regiões dos leads -->
             </div>
           </div>
         </div>
@@ -1013,6 +1050,180 @@
       </div>
     </section>
 
+    <!-- ===================================================================
+         ABA 4: GESTÃO COMERCIAL & NOVOS CONSULTORES (RESTRITA À DIRETORIA)
+         =================================================================== -->
+    <section class="tab-section" id="tab-gestao" role="tabpanel" aria-labelledby="tab-nav-gestao" hidden="until-found" tabindex="-1">
+      <div class="crm-gestao-container">
+        
+        <!-- Header da Seção de Gestão -->
+        <div class="crm-gestao-header">
+          <div class="crm-gestao-header__info">
+            <div class="crm-gestao-header__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Acesso Restrito &bull; Diretoria Comercial</span>
+            </div>
+            <h2 class="crm-gestao-header__title">Gestão Comercial &amp; Novos Consultores</h2>
+            <p class="crm-gestao-header__subtitle">
+              Cadastre novos consultores B2B, configure metas operacionais e gerencie a equipe de vendas da Isapel Papéis.
+            </p>
+          </div>
+        </div>
+
+        <!-- Grid Bento: Formulário de Cadastro + Tabela da Equipe -->
+        <div class="crm-gestao-grid">
+          
+          <!-- Card de Cadastro de Novo Vendedor -->
+          <div class="crm-gestao-card crm-gestao-card--form">
+            <div class="crm-gestao-card__header">
+              <div class="crm-gestao-card__icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              </div>
+              <div>
+                <h3 class="crm-gestao-card__title">Novo Consultor Comercial</h3>
+                <span class="crm-gestao-card__desc">Preencha os dados de acesso e meta comercial</span>
+              </div>
+            </div>
+
+            <form id="form-novo-vendedor" class="crm-gestao-form" novalidate>
+              <div class="crm-form-group">
+                <label for="vendedor-novo-nome" class="crm-form-label">
+                  Nome Completo <span class="crm-required">*</span>
+                </label>
+                <div class="crm-input-wrapper">
+                  <input
+                    type="text"
+                    id="vendedor-novo-nome"
+                    name="nome"
+                    class="crm-quick-bar__input crm-form-input"
+                    placeholder="Ex: Albert Roberto"
+                    required
+                    minlength="3"
+                    autocomplete="name"
+                  >
+                </div>
+              </div>
+
+              <div class="crm-form-group">
+                <label for="vendedor-novo-login" class="crm-form-label">
+                  Identificador / Login <span class="crm-required">*</span>
+                </label>
+                <div class="crm-input-wrapper">
+                  <input
+                    type="text"
+                    id="vendedor-novo-login"
+                    name="login"
+                    class="crm-quick-bar__input crm-form-input"
+                    placeholder="ex: albert"
+                    required
+                    minlength="3"
+                    autocomplete="username"
+                  >
+                </div>
+                <span class="crm-form-hint">Apenas letras minúsculas, números e traço (sem espaços).</span>
+              </div>
+
+              <div class="crm-form-group">
+                <label for="vendedor-novo-senha" class="crm-form-label">
+                  Senha Inicial <span class="crm-required">*</span>
+                </label>
+                <div class="crm-password-wrapper">
+                  <input
+                    type="password"
+                    id="vendedor-novo-senha"
+                    name="senhaInicial"
+                    class="crm-quick-bar__input crm-form-input crm-password-input"
+                    placeholder="Mínimo 6 caracteres"
+                    required
+                    minlength="6"
+                    autocomplete="new-password"
+                  >
+                  <button
+                    type="button"
+                    id="btn-toggle-senha-vendedor"
+                    class="crm-password-toggle-btn"
+                    aria-label="Mostrar ou ocultar senha"
+                    title="Alternar visibilidade da senha"
+                  >
+                    <svg id="icon-toggle-senha-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <svg id="icon-toggle-senha-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22"></line></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="crm-form-group">
+                <label for="vendedor-novo-cargo" class="crm-form-label">
+                  Cargo B2B <span class="crm-required">*</span>
+                </label>
+                <select id="vendedor-novo-cargo" name="cargo" class="crm-quick-bar__input crm-form-select" required>
+                  <option value="Consultor Comercial B2B">Consultor Comercial B2B</option>
+                  <option value="SDR & Hunter B2B">SDR & Hunter B2B</option>
+                  <option value="Executivo de Contas B2B">Executivo de Contas B2B</option>
+                </select>
+              </div>
+
+              <div class="crm-form-group">
+                <label for="vendedor-novo-meta" class="crm-form-label">
+                  Meta Comercial Mensal (Fardos / R$) <span class="crm-required">*</span>
+                </label>
+                <div class="crm-input-wrapper">
+                  <input
+                    type="number"
+                    id="vendedor-novo-meta"
+                    name="meta"
+                    class="crm-quick-bar__input crm-form-input"
+                    placeholder="Meta fardos / R$"
+                    min="0"
+                    step="100"
+                    required
+                  >
+                </div>
+                <span class="crm-form-hint">Ex: 45000 (R$) ou 2000 (fardos de papel toalha/higiênico).</span>
+              </div>
+
+              <div class="crm-gestao-form__actions">
+                <button type="submit" id="btn-cadastrar-vendedor" class="crm-btn crm-btn--primary crm-btn--lg">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                  <span>Cadastrar Vendedor</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Card de Equipe / Roster -->
+          <div class="crm-gestao-card crm-gestao-card--roster">
+            <div class="crm-gestao-card__header">
+              <div class="crm-gestao-card__icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div>
+                <h3 class="crm-gestao-card__title">Equipe Comercial Isapel</h3>
+                <span class="crm-gestao-card__desc">Consultores ativos e distribuição de metas</span>
+              </div>
+            </div>
+
+            <div class="crm-table-responsive">
+              <table id="tabela-equipe-vendedores" class="crm-gestao-table" aria-label="Equipe de Vendedores">
+                <thead>
+                  <tr>
+                    <th scope="col">Consultor</th>
+                    <th scope="col">Cargo</th>
+                    <th scope="col">Meta Mensal</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Avatar 3D</th>
+                  </tr>
+                </thead>
+                <tbody id="tabela-equipe-vendedores-tbody">
+                  <!-- Renderizado dinamicamente via renderizarTabelaVendedores() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- =====================================================================
@@ -1138,6 +1349,203 @@
           <button type="button" class="crm-btn crm-btn--primary" id="btn-salvar-edicao-lead">Salvar Alterações</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 3: PERSONALIZADOR DE AVATARES 3D DOS CONSULTORES
+       ===================================================================== -->
+  <div class="crm-modal-backdrop" id="modal-avatar-backdrop" style="display: none;" role="presentation">
+    <div class="crm-modal crm-modal--avatar" id="modal-avatar-customizer" role="dialog" aria-modal="true" aria-labelledby="modal-avatar-title">
+      
+      <!-- Header do Modal -->
+      <div class="crm-modal__header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="crm-avatar-modal-icon" aria-hidden="true">🎨</div>
+          <div>
+            <h3 class="crm-modal__title" id="modal-avatar-title">Personalizar Consultor 3D</h3>
+            <p class="crm-modal__subtitle">Uniformes Isapel, traços fisionômicos e estilo dos consultores</p>
+          </div>
+        </div>
+        <button type="button" class="crm-modal__close-btn" id="btn-fechar-customizador" aria-label="Fechar personalizador">&times;</button>
+      </div>
+
+      <!-- Corpo com Split View (2 Colunas) -->
+      <div class="crm-modal__body crm-avatar-split-view">
+        
+        <!-- Coluna Esquerda: Palco de Live Preview 3D -->
+        <div class="crm-avatar-stage-panel">
+          <div class="crm-avatar-stage-header">
+            <div class="crm-avatar-seller-badge" id="avatar-seller-locked-name">
+              <span class="avatar-locked-indicator" aria-hidden="true">👤</span>
+              <span id="avatar-seller-name" class="avatar-locked-badge">Gabriel Maciel</span>
+            </div>
+            <span class="crm-avatar-stage-badge">Live Preview 3D</span>
+          </div>
+
+          <!-- Canvas Three.js de Preview -->
+          <div class="crm-avatar-canvas-wrapper" id="avatar-canvas-wrapper">
+            <canvas id="avatar-preview-canvas" width="380" height="440" aria-label="Visualização tridimensional interativa do consultor"></canvas>
+            <div class="crm-avatar-drag-hint">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              <span>Arraste para girar em 360°</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Controles Bento de Customização -->
+        <div class="crm-avatar-controls-panel">
+          
+          <!-- Seletor de Consultor (RBAC: desabilitado para vendedor, habilitado para diretoria) -->
+          <div class="crm-avatar-bento-card">
+            <label for="avatar-custom-seller-select" class="crm-avatar-control-label">
+              <span>Consultor Selecionado</span>
+              <span class="crm-avatar-rbac-tag" id="avatar-rbac-tag">RBAC</span>
+            </label>
+            <select id="avatar-custom-seller-select" name="vendedor" class="crm-input crm-select" aria-label="Selecione o consultor para personalizar">
+              <option value="maciel">Gabriel Maciel (maciel)</option>
+              <option value="fernanda">Fernanda (fernanda)</option>
+              <option value="caio">Caio (caio)</option>
+            </select>
+          </div>
+
+          <!-- Uniformes Oficiais Isapel -->
+          <div class="crm-avatar-bento-card" id="avatar-uniforme-options">
+            <label for="avatar-uniforme-select" class="crm-avatar-control-label">
+              <span>Uniforme Corporativo Isapel</span>
+            </label>
+            <!-- Select dropdown para compatibilidade de testes -->
+            <select id="avatar-uniforme-select" name="uniforme" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
+              <option value="polo-navy">Camisa Polo Azul Marinho (#003360)</option>
+              <option value="polo-sky">Camisa Polo Azul Céu (#0284C7)</option>
+              <option value="camisa-social">Camisa Social Branca com Crachá Isapel (#FFFFFF)</option>
+            </select>
+            <!-- Swatch Buttons interativos com data-uniforme -->
+            <div class="crm-uniforme-swatches">
+              <button type="button" class="crm-uniforme-swatch-btn is-active uniforme-swatch" data-uniforme="polo-navy" title="Polo Azul Marinho (#003360)">
+                <span class="uniforme-color-dot" style="background: #003360;"></span>
+                <div class="uniforme-meta">
+                  <strong>Polo Azul Marinho</strong>
+                  <small>#003360 Oficial</small>
+                </div>
+              </button>
+              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="polo-sky" title="Polo Azul Céu (#0284C7)">
+                <span class="uniforme-color-dot" style="background: #0284C7;"></span>
+                <div class="uniforme-meta">
+                  <strong>Azul Céu</strong>
+                  <small>#0284C7 Destaque</small>
+                </div>
+              </button>
+              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="camisa-social" title="Camisa Social Branca com Crachá Isapel">
+                <span class="uniforme-color-dot" style="background: #FFFFFF; border: 1px solid #CBD5E1;"></span>
+                <div class="uniforme-meta">
+                  <strong>Camisa Social Branca</strong>
+                  <small>Crachá + Gravata Ouro</small>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Estilos e Cores de Cabelo -->
+          <div class="crm-avatar-bento-card">
+            <label for="avatar-cabelo-estilo" class="crm-avatar-control-label">
+              <span>Estilo e Cor do Cabelo</span>
+            </label>
+            <select id="avatar-cabelo-estilo" name="cabelo" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
+              <option value="cacheado-curto">Cacheado Curto (Estilo Gabriel Maciel)</option>
+              <option value="liso-comprido">Longo c/ Franja e Ombros (Estilo Fernanda)</option>
+              <option value="cacheado-volumoso">Cachos Volumosos (Estilo Caio)</option>
+              <option value="curto-executivo">Curto Executivo (Penteado com risca)</option>
+              <option value="ondulado-medio">Ondulado Médio / Bob Cut</option>
+              <option value="raspado-buzz">Raspado / Buzz Cut Militar</option>
+            </select>
+            <div class="crm-swatch-row" id="avatar-cabelo-cores">
+              <button type="button" class="crm-color-swatch cabelo-option is-active" data-cor-cabelo="#1A1514" data-cabelo-cor="#1A1514" style="background: #1A1514;" title="Preto Intenso"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#2C1E18" data-cabelo-cor="#2C1E18" style="background: #2C1E18;" title="Castanho Escuro"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#4E3524" data-cabelo-cor="#4E3524" style="background: #4E3524;" title="Castanho Médio"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#784B29" data-cabelo-cor="#784B29" style="background: #784B29;" title="Castanho Claro"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#F7CF46" data-cabelo-cor="#F7CF46" style="background: #F7CF46;" title="Loiro Dourado (Fernanda)"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#EFE6C8" data-cabelo-cor="#EFE6C8" style="background: #EFE6C8;" title="Loiro Platinado"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#A6381E" data-cabelo-cor="#A6381E" style="background: #A6381E;" title="Ruivo Acobreado"></button>
+              <button type="button" class="crm-color-swatch cabelo-option" data-cor-cabelo="#94A3B8" data-cabelo-cor="#94A3B8" style="background: #94A3B8;" title="Grisalho Executivo"></button>
+            </div>
+          </div>
+
+          <!-- Barba e Bigode (com presença explícita do bigode do Maciel) -->
+          <div class="crm-avatar-bento-card">
+            <label for="avatar-barba-estilo" class="crm-avatar-control-label">
+              <span>Barba e Bigode</span>
+            </label>
+            <select id="avatar-barba-estilo" name="barba" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
+              <option value="com-bigode">Com Bigode Marcante 3D (Canônico Gabriel Maciel)</option>
+              <option value="sem-barba">Sem Barba (Rosto Limpo)</option>
+              <option value="cavanhaque">Cavanhaque Executivo</option>
+              <option value="barba-cheia">Barba Cheia Alinhada Corporativa</option>
+            </select>
+            <div class="crm-swatch-row" id="avatar-barba-cores">
+              <button type="button" class="crm-color-swatch barba-option is-active" data-cor-barba="#161211" style="background: #161211;" title="Preto Barba"></button>
+              <button type="button" class="crm-color-swatch barba-option" data-cor-barba="#2C1E18" style="background: #2C1E18;" title="Castanho Escuro"></button>
+              <button type="button" class="crm-color-swatch barba-option" data-cor-barba="#4E3524" style="background: #4E3524;" title="Castanho Médio"></button>
+              <button type="button" class="crm-color-swatch barba-option" data-cor-barba="#94A3B8" style="background: #94A3B8;" title="Grisalho Barba"></button>
+            </div>
+          </div>
+
+          <!-- Tom de Pele (Paleta Brasileira com 8 tons) -->
+          <div class="crm-avatar-bento-card">
+            <label for="avatar-pele-tom" class="crm-avatar-control-label">
+              <span>Tom de Pele (Paleta Brasileira)</span>
+            </label>
+            <select id="avatar-pele-tom" name="pele" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
+              <option value="#FDDFCA">Porcelana Claro (#FDDFCA)</option>
+              <option value="#F9D3B4">Bege Claro - Fernanda (#F9D3B4)</option>
+              <option value="#E6B994">Moreno Suave - Maciel (#E6B994)</option>
+              <option value="#DFA980">Moreno Quente - Caio (#DFA980)</option>
+              <option value="#BD855A">Bronze Dourado (#BD855A)</option>
+              <option value="#8D5524">Castanho Nobre (#8D5524)</option>
+              <option value="#513524">Ébano Profundo (#513524)</option>
+              <option value="#3B2219">Retinto Intenso (#3B2219)</option>
+            </select>
+            <div class="crm-swatch-row" id="avatar-pele-swatches">
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#FDDFCA" data-tom-pele="#FDDFCA" style="background: #FDDFCA;" title="Porcelana Claro"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#F9D3B4" data-tom-pele="#F9D3B4" style="background: #F9D3B4;" title="Bege Claro (Fernanda)"></button>
+              <button type="button" class="crm-color-swatch pele-swatch is-active" data-pele="#E6B994" data-tom-pele="#E6B994" style="background: #E6B994;" title="Moreno Suave (Maciel)"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#DFA980" data-tom-pele="#DFA980" style="background: #DFA980;" title="Moreno Quente (Caio)"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#BD855A" data-tom-pele="#BD855A" style="background: #BD855A;" title="Bronze Dourado"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#8D5524" data-tom-pele="#8D5524" style="background: #8D5524;" title="Castanho Nobre"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#513524" data-tom-pele="#513524" style="background: #513524;" title="Ébano Profundo"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#3B2219" data-tom-pele="#3B2219" style="background: #3B2219;" title="Retinto Intenso"></button>
+            </div>
+          </div>
+
+          <!-- Acessórios e Óculos -->
+          <div class="crm-avatar-bento-card">
+            <label for="avatar-acessorio-oculos" class="crm-avatar-control-label">
+              <span>Acessórios & Óculos</span>
+            </label>
+            <select id="avatar-acessorio-oculos" name="oculos" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
+              <option value="nenhum">Sem Óculos</option>
+              <option value="executivo-dourado">Óculos Retangular Dourado Bia Paper</option>
+              <option value="executivo-preto">Óculos Retangular Preto Fosco</option>
+              <option value="redondo-moderno">Óculos Redondo Moderno</option>
+            </select>
+            <label class="crm-checkbox-label" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--slate-700); cursor: pointer;">
+              <input type="checkbox" id="avatar-cracha-check" checked>
+              <span>Exibir Crachá Executivo Isapel com Presilha Metálica</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer com Ações -->
+      <div class="crm-modal__footer" style="justify-content: space-between;">
+        <button type="button" class="crm-btn crm-btn--secondary" id="btn-cancelar-customizador">Cancelar</button>
+        <button type="button" class="crm-btn crm-btn--primary" id="btn-salvar-avatar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.35rem;" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Salvar Personalização
+        </button>
+      </div>
+
     </div>
   </div>
 

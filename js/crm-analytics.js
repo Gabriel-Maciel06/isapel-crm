@@ -369,7 +369,28 @@
         return false;
       }
 
-      // 2. Filtro por Data
+      // 2. Filtro por Região dos Leads
+      const regiaoAlvo = opts.regiao || 'todas';
+      if (regiaoAlvo && regiaoAlvo !== 'todas') {
+        const leadDdd = lead.ddd ? String(lead.ddd).trim() : '';
+        const leadReg = String(lead.regiao || '').trim().toLowerCase();
+        const leadCid = String(lead.cidade || '').trim().toLowerCase();
+        const alvo = String(regiaoAlvo).trim().toLowerCase();
+
+        const matchDdd = alvo.startsWith('ddd ') ? alvo.replace('ddd ', '').trim() : alvo;
+        const eDdd = /^\d+$/.test(matchDdd);
+
+        if (eDdd) {
+          if (leadDdd !== matchDdd) return false;
+        } else {
+          const combo = `${leadReg} ${leadCid} ddd ${leadDdd}`;
+          if (!combo.includes(alvo) && !alvo.includes(leadReg)) {
+            return false;
+          }
+        }
+      }
+
+      // 3. Filtro por Data
       if (periodoTipo !== 'todos' && (dataInicioLim || dataFimLim)) {
         const dataLead = extrairDataDeLead(lead);
         if (!dataLead) {
@@ -494,6 +515,7 @@
     let valorEmNegociacao = 0;
     let totalContasComValor = 0;
     const regioesUnicas = new Set();
+    const regioesMap = new Map();
 
     leads.forEach(lead => {
       const valor = Number(lead.valorProposta || lead.valor_proposta || 0) || 0;
@@ -514,11 +536,34 @@
         valorEmNegociacao += valor;
       }
 
-      const regiao = lead.regiao || lead.cidade || (lead.ddd ? `DDD ${lead.ddd}` : null);
-      if (regiao) {
-        regioesUnicas.add(String(regiao).trim());
+      const ddd = lead.ddd ? String(lead.ddd).trim() : '';
+      let regiaoNome = lead.regiao || lead.cidade || (ddd ? `DDD ${ddd}` : 'Não informada');
+      regiaoNome = String(regiaoNome).trim();
+      if (regiaoNome) {
+        regioesUnicas.add(regiaoNome);
+        const chave = ddd ? `DDD ${ddd} - ${regiaoNome}` : regiaoNome;
+        if (!regioesMap.has(chave)) {
+          regioesMap.set(chave, {
+            chave: chave,
+            regiao: regiaoNome,
+            ddd: ddd,
+            count: 0,
+            valorTotal: 0
+          });
+        }
+        const item = regioesMap.get(chave);
+        item.count += 1;
+        item.valorTotal += valor;
       }
     });
+
+    const distribuicaoRegioes = Array.from(regioesMap.values())
+      .map(r => ({
+        ...r,
+        valorTotal: Number(r.valorTotal.toFixed(2)),
+        pctTotal: totalRecebidos > 0 ? Number(((r.count / totalRecebidos) * 100).toFixed(1)) : 0
+      }))
+      .sort((a, b) => b.count - a.count);
 
     valorPipelineTotal = Number(valorPipelineTotal.toFixed(2));
     valorFechadoTotal = Number(valorFechadoTotal.toFixed(2));
@@ -619,7 +664,8 @@
         regioesAtendidasCount: regioesUnicas.size
       },
       funil: funil,
-      distribuicaoVendedores: distribuicaoVendedores
+      distribuicaoVendedores: distribuicaoVendedores,
+      distribuicaoRegioes: distribuicaoRegioes
     };
   }
 

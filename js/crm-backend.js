@@ -898,6 +898,78 @@
     }
   };
 
+  const STORAGE_VENDEDORES_KEY = 'isapel_crm_vendedores_custom';
+
+  /**
+   * Registra ou atualiza um vendedor dinâmico no catálogo do backend.
+   * @param {Object} v - Registro do vendedor
+   */
+  function registrarVendedorDinamico(v) {
+    if (!v || (!v.id && !v.login && !v.usuario)) return;
+    const vid = String(v.id || v.login || v.usuario).trim().toLowerCase();
+    if (!vid) return;
+
+    // Preserva se já for fundador e não sobrescreve características essenciais
+    const existing = VENDEDORES_CONFIG[vid];
+
+    VENDEDORES_CONFIG[vid] = {
+      id: vid,
+      login: vid,
+      usuario: vid,
+      nome: v.nome || (existing ? existing.nome : vid),
+      cargo: v.cargo || (existing ? existing.cargo : 'Consultor Comercial B2B'),
+      idade: v.idade || (existing ? existing.idade : 25),
+      perfil: v.perfil || (existing ? existing.perfil : 'Consultor Comercial B2B'),
+      avatarColor: v.avatarCor || v.avatarColor || (existing ? existing.avatarColor : '#0284C7'),
+      avatar: v.avatar || v.avatarIniciais || (existing ? existing.avatar : 'CO'),
+      avatarIniciais: v.avatarIniciais || v.avatar || (existing ? existing.avatarIniciais : 'CO'),
+      especialidade: v.especialidade || (existing ? existing.especialidade : 'Atendimento Comercial e Vendas B2B'),
+      email: v.email || (existing ? existing.email : `${vid}@isapel.com.br`),
+      metaMensalFardos: Number(v.metaMensalFardos || (existing ? existing.metaMensalFardos : 1500)),
+      metaMensalReais: Number(v.metaMensalReais || (existing ? existing.metaMensalReais : 40000))
+    };
+  }
+
+  /**
+   * Carrega os vendedores customizados gravados no storage e na camada Auth
+   */
+  function carregarVendedoresDinamicos() {
+    try {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem) {
+        const raw = localStorage.getItem(STORAGE_VENDEDORES_KEY);
+        if (raw) {
+          const lista = JSON.parse(raw);
+          if (Array.isArray(lista)) {
+            lista.forEach(registrarVendedorDinamico);
+          }
+        }
+      }
+    } catch (e) {
+      // Storage inacessível
+    }
+
+    if (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterVendedores === 'function') {
+      try {
+        const listaAuth = window.IsapelAuth.obterVendedores();
+        if (Array.isArray(listaAuth)) {
+          listaAuth.forEach(registrarVendedorDinamico);
+        }
+      } catch (e) {}
+    }
+  }
+
+  // Ouvinte global para atualização instantânea quando um novo vendedor for cadastrado
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('isapel:vendedor-cadastrado', function (evt) {
+      if (evt && evt.detail) {
+        registrarVendedorDinamico(evt.detail);
+      }
+    });
+  }
+
+  // Inicializa o carregamento de vendedores dinâmicos
+  carregarVendedoresDinamicos();
+
   // ==========================================================================
   // 3. FUNIL DE VENDAS COMPLETO (6 ETAPAS B2B)
   // ==========================================================================
@@ -1754,6 +1826,7 @@
    *  +100 pts por fechamento/ganho
    */
   function calcularMetricasArena(vendedorIdFiltro, leadsCustomizados) {
+    carregarVendedoresDinamicos();
     const leads = Array.isArray(leadsCustomizados) ? leadsCustomizados : carregarLeadsArmazenados();
     const vendedoresKeys = Object.keys(VENDEDORES_CONFIG);
 
@@ -2256,6 +2329,8 @@
     // Gestão de Vendedores
     obterVendedores: () => Object.values(VENDEDORES_CONFIG),
     obterVendedorPorId: (id) => VENDEDORES_CONFIG[id] || null,
+    registrarVendedor: registrarVendedorDinamico,
+    carregarVendedoresDinamicos: carregarVendedoresDinamicos,
 
     // Operações de Leads (CRUD & Funil)
     cadastrarLeadRapido: cadastrarLeadRapido,

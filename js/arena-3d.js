@@ -135,6 +135,24 @@
     3: { x: 3.1, y: 0.85, z: 0.4, height: 0.85, radius: 1.4, cor: CORES.bronze, label: '3º LUGAR' }
   };
 
+  /**
+   * Obtém as coordenadas do pódio ou piso da arena para qualquer colocação (1º a 4º+)
+   */
+  function obterSlotPodio(rank) {
+    if (PODIUM_SLOTS[rank]) return PODIUM_SLOTS[rank];
+    const lateral = (rank % 2 === 0 ? -1 : 1);
+    const idx = Math.floor((rank - 4) / 2);
+    return {
+      x: lateral * (4.8 + idx * 1.5),
+      y: 0.18,
+      z: 1.0 + idx * 1.2,
+      height: 0.18,
+      radius: 1.0,
+      cor: CORES.isapelNavy,
+      label: `${rank}º LUGAR`
+    };
+  }
+
   // ==========================================================================
   // ESTADO INTERNO DO MÓDULO
   // ==========================================================================
@@ -277,17 +295,1027 @@
     };
   }
 
+  // ==========================================================================
+  // CONFIGURAÇÃO, PARSERS E NORMALIZADORES DE AVATARES
+  // ==========================================================================
+  function parseColor(val, fallback) {
+    if (typeof val === 'number') return val;
+    if (typeof val === 'string') {
+      const clean = val.trim();
+      if (clean.startsWith('#')) return parseInt(clean.slice(1), 16);
+      if (clean.startsWith('0x')) return parseInt(clean, 16);
+      if (/^[0-9a-fA-F]{6}$/.test(clean)) return parseInt(clean, 16);
+    }
+    return fallback;
+  }
+
+  const VENDEDORES_DEFAULT_AVATARS = {
+    maciel: {
+      id: 'maciel',
+      uniforme: 'camisa-social',
+      peleHex: 0xe6b994,
+      cabeloEstilo: 'cacheado-curto',
+      cabeloHex: 0x1a1514,
+      barbaEstilo: 'com-bigode',
+      barbaHex: 0x161211,
+      oculos: 'nenhum',
+      cracha: true
+    },
+    fernanda: {
+      id: 'fernanda',
+      uniforme: 'polo-sky',
+      peleHex: 0xf9d3b4,
+      cabeloEstilo: 'liso-comprido',
+      cabeloHex: 0xf7cf46,
+      barbaEstilo: 'sem-barba',
+      barbaHex: 0x161211,
+      oculos: 'nenhum',
+      cracha: true
+    },
+    caio: {
+      id: 'caio',
+      uniforme: 'polo-navy',
+      peleHex: 0xdfa980,
+      cabeloEstilo: 'cacheado-volumoso',
+      cabeloHex: 0x1f1917,
+      barbaEstilo: 'cavanhaque',
+      barbaHex: 0x161211,
+      oculos: 'nenhum',
+      cracha: true
+    }
+  };
+
+  function normalizarConfigAvatar(raw, fallbackId) {
+    const vid = fallbackId || (raw && (raw.id || raw.vendedorId)) || 'custom';
+    const def = VENDEDORES_DEFAULT_AVATARS[vid] || {
+      id: vid,
+      uniforme: 'polo-sky',
+      peleHex: 0xe6b994,
+      cabeloEstilo: 'curto-executivo',
+      cabeloHex: 0x1a1514,
+      barbaEstilo: 'sem-barba',
+      barbaHex: 0x161211,
+      oculos: 'nenhum',
+      cracha: true
+    };
+
+    const norm = { ...def, id: vid };
+    if (!raw || typeof raw !== 'object') return norm;
+
+    // 1. Uniforme
+    if (typeof raw.uniforme === 'string') {
+      const u = raw.uniforme.toLowerCase();
+      if (u.includes('sky') || u.includes('cyan') || u.includes('ceu') || u.includes('céu')) {
+        norm.uniforme = 'polo-sky';
+      } else if (u.includes('social') || u.includes('blazer') || u.includes('branca') || u.includes('gravata')) {
+        norm.uniforme = 'camisa-social';
+      } else {
+        norm.uniforme = 'polo-navy';
+      }
+    } else if (raw.uniforme && typeof raw.uniforme === 'object') {
+      const tipo = (raw.uniforme.tipo || '').toLowerCase();
+      if (tipo.includes('cyan') || tipo.includes('sky')) {
+        norm.uniforme = 'polo-sky';
+      } else if (tipo.includes('social') || tipo.includes('blazer') || tipo.includes('branca')) {
+        norm.uniforme = 'camisa-social';
+      } else {
+        norm.uniforme = 'polo-navy';
+      }
+      if (raw.uniforme.temCracha !== undefined) {
+        norm.cracha = Boolean(raw.uniforme.temCracha);
+      }
+    }
+
+    // 2. Pele
+    if (raw.peleHex !== undefined) {
+      norm.peleHex = parseColor(raw.peleHex, norm.peleHex);
+    } else if (raw.pele && (raw.pele.tom || raw.pele.cor || raw.pele.hex)) {
+      norm.peleHex = parseColor(raw.pele.tom || raw.pele.cor || raw.pele.hex, norm.peleHex);
+    }
+
+    // 3. Cabelo
+    if (raw.cabeloEstilo) {
+      norm.cabeloEstilo = String(raw.cabeloEstilo);
+    } else if (raw.cabelo && (raw.cabelo.estilo || raw.cabelo.tipo)) {
+      const est = (raw.cabelo.estilo || raw.cabelo.tipo).toLowerCase();
+      if (est.includes('longo') || est.includes('feminino') || est.includes('franja')) norm.cabeloEstilo = 'liso-comprido';
+      else if (est.includes('volumoso') || est.includes('afro')) norm.cabeloEstilo = 'cacheado-volumoso';
+      else if (est.includes('curto') && est.includes('social')) norm.cabeloEstilo = 'curto-executivo';
+      else if (est.includes('curto') || est.includes('cacheado')) norm.cabeloEstilo = 'cacheado-curto';
+      else if (est.includes('ondulado') || est.includes('bob')) norm.cabeloEstilo = 'ondulado-medio';
+      else if (est.includes('raspado') || est.includes('buzz')) norm.cabeloEstilo = 'raspado-buzz';
+      else norm.cabeloEstilo = raw.cabelo.estilo;
+    }
+
+    if (raw.cabeloHex !== undefined) {
+      norm.cabeloHex = parseColor(raw.cabeloHex, norm.cabeloHex);
+    } else if (raw.cabelo && (raw.cabelo.cor || raw.cabelo.hex)) {
+      norm.cabeloHex = parseColor(raw.cabelo.cor || raw.cabelo.hex, norm.cabeloHex);
+    }
+
+    // 4. Barba / Bigode
+    if (raw.barbaEstilo) {
+      norm.barbaEstilo = String(raw.barbaEstilo);
+    } else if (raw.barba && (raw.barba.tipo || raw.barba.estilo)) {
+      const b = (raw.barba.tipo || raw.barba.estilo).toLowerCase();
+      if (b.includes('bigode')) norm.barbaEstilo = 'com-bigode';
+      else if (b.includes('cavanhaque')) norm.barbaEstilo = 'cavanhaque';
+      else if (b.includes('cheia') || b.includes('barba')) norm.barbaEstilo = 'barba-cheia';
+      else norm.barbaEstilo = 'sem-barba';
+    }
+
+    if (raw.barbaHex !== undefined) {
+      norm.barbaHex = parseColor(raw.barbaHex, norm.barbaHex);
+    } else if (raw.barba && (raw.barba.cor || raw.barba.hex)) {
+      norm.barbaHex = parseColor(raw.barba.cor || raw.barba.hex, norm.barbaHex);
+    }
+
+    // 5. Óculos
+    if (raw.oculos) {
+      norm.oculos = String(raw.oculos);
+    } else if (raw.acessorios && raw.acessorios.oculos) {
+      const oc = String(raw.acessorios.oculos).toLowerCase();
+      if (oc.includes('redondo')) norm.oculos = 'redondo-moderno';
+      else if (oc.includes('retangular') || oc.includes('executivo')) norm.oculos = 'executivo-dourado';
+      else if (oc !== 'nenhum') norm.oculos = oc;
+      else norm.oculos = 'nenhum';
+    }
+
+    // 6. Crachá
+    if (raw.cracha !== undefined) {
+      norm.cracha = Boolean(raw.cracha);
+    }
+
+    return norm;
+  }
+
+  function obterConfigAvatarSalva(vendedorId) {
+    const vid = String(vendedorId || '').trim().toLowerCase();
+
+    // 1. Consulta IsapelSync se disponível
+    if (typeof window !== 'undefined' && window.IsapelSync && typeof window.IsapelSync.obterPerfilAvatar === 'function') {
+      try {
+        const cfgSync = window.IsapelSync.obterPerfilAvatar(vid);
+        if (cfgSync && (cfgSync.uniforme || cfgSync.cabeloEstilo || cfgSync.cabelo)) {
+          return normalizarConfigAvatar(cfgSync, vid);
+        }
+      } catch (e) {}
+    }
+
+    // 2. Consulta localStorage (chaves oficiais e legadas de fallback)
+    if (typeof localStorage !== 'undefined') {
+      try {
+        const chaves = ['isapel_crm_avatar_profiles', 'isapel_avatar_customizations', 'isapel_vendedores_custom_v1'];
+        for (const k of chaves) {
+          const raw = localStorage.getItem(k);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed[vid]) {
+              return normalizarConfigAvatar(parsed[vid], vid);
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 3. Fallback canônico
+    return normalizarConfigAvatar({}, vid);
+  }
+
+  // ==========================================================================
+  // CONSTRUTOR MODULAR PARAMÉTRICO DE AVATARES 3D (AVATARBUILDER)
+  // ==========================================================================
+  const AvatarBuilder = {
+    construirAvatar: function (config, THREE_LIB) {
+      const T = THREE_LIB || THREE;
+      if (!T) {
+        console.error('[AvatarBuilder] Three.js não fornecido!');
+        return null;
+      }
+
+      const cfg = normalizarConfigAvatar(config, (config && config.id) || 'custom');
+      const root = new T.Group();
+      root.name = 'char_' + cfg.id;
+
+      const bodyGroup = new T.Group();
+      bodyGroup.name = 'body_pivot';
+      root.add(bodyGroup);
+
+      // Sombra de contato circular no piso
+      const shadowGeo = new T.CircleGeometry(0.55, 24);
+      const shadowMat = new T.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.35 });
+      const shadowMesh = new T.Mesh(shadowGeo, shadowMat);
+      shadowMesh.rotation.x = -Math.PI / 2;
+      shadowMesh.position.y = 0.02;
+      root.add(shadowMesh);
+
+      // Materiais reativos principais
+      const matPele = new T.MeshStandardMaterial({
+        color: parseColor(cfg.peleHex, 0xe6b994),
+        roughness: 0.5
+      });
+      matPele.userData = { tipo: 'pele' };
+
+      const matCabelo = new T.MeshStandardMaterial({
+        color: parseColor(cfg.cabeloHex, 0x1a1514),
+        roughness: 0.7
+      });
+      matCabelo.userData = { tipo: 'cabelo' };
+
+      const matBarba = new T.MeshStandardMaterial({
+        color: parseColor(cfg.barbaHex, 0x161211),
+        roughness: 0.65
+      });
+      matBarba.userData = { tipo: 'barba' };
+
+      const matOuro = new T.MeshStandardMaterial({
+        color: 0xe3a52b,
+        metalness: 0.85,
+        roughness: 0.25
+      });
+
+      // 1. Pernas e Calçados
+      this._adicionarPernas(bodyGroup, cfg, T);
+
+      // 2. Torso e Uniforme (Polo Navy, Polo Sky ou Camisa Social com Gravata)
+      const corManga = this._adicionarTorsoUniforme(bodyGroup, cfg, matOuro, T);
+
+      // 3. Braços Articulados
+      const matManga = new T.MeshStandardMaterial({ color: corManga, roughness: 0.45 });
+      const armLeft = this._criarBracoArticulado(matManga, matPele, true, T);
+      armLeft.position.set(-0.47, 1.54, 0);
+      const armRight = this._criarBracoArticulado(matManga, matPele, false, T);
+      armRight.position.set(0.47, 1.54, 0);
+      bodyGroup.add(armLeft, armRight);
+
+      // 4. Pescoço
+      const pescGeo = new T.CylinderGeometry(0.125, 0.138, 0.18, 10);
+      const pescMesh = new T.Mesh(pescGeo, matPele);
+      pescMesh.position.y = 1.70;
+      bodyGroup.add(pescMesh);
+
+      // 5. Cabeça e Feições
+      const headGroup = new T.Group();
+      headGroup.name = 'head_group';
+      headGroup.position.set(0, 2.0, 0);
+      bodyGroup.add(headGroup);
+
+      this._adicionarRosto(headGroup, matPele, matCabelo, T);
+      this._adicionarCabelo(headGroup, cfg.cabeloEstilo, matCabelo, T);
+      this._adicionarBarba(headGroup, cfg.barbaEstilo, matBarba, T);
+      this._adicionarAcessorios(headGroup, cfg, matOuro, T);
+
+      root.userData = {
+        id: cfg.id,
+        bodyGroup,
+        headGroup,
+        armLeft,
+        armRight,
+        rank: (config && config.rank) || 2,
+        baseY: 0,
+        targetPos: new T.Vector3(),
+        animTimeOffset: Math.random() * 2
+      };
+
+      return root;
+    },
+
+    _adicionarPernas: function (bodyGroup, cfg, T) {
+      const matCalca = new T.MeshStandardMaterial({ color: 0x0a1829, roughness: 0.4 });
+      const matSapato = new T.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.25 });
+
+      const pernaGeo = new T.CylinderGeometry(0.115, 0.095, 0.88, 10);
+      const pernaEsq = new T.Mesh(pernaGeo, matCalca);
+      pernaEsq.position.set(-0.16, 0.46, 0);
+      const pernaDir = pernaEsq.clone();
+      pernaDir.position.x = 0.16;
+      bodyGroup.add(pernaEsq, pernaDir);
+
+      const sapatoGeo = new T.BoxGeometry(0.18, 0.11, 0.32);
+      const sapatoEsq = new T.Mesh(sapatoGeo, matSapato);
+      sapatoEsq.position.set(-0.16, 0.055, 0.06);
+      const sapatoDir = sapatoEsq.clone();
+      sapatoDir.position.x = 0.16;
+      bodyGroup.add(sapatoEsq, sapatoDir);
+    },
+
+    _adicionarTorsoUniforme: function (bodyGroup, cfg, matOuro, T) {
+      const tipo = cfg.uniforme || 'polo-navy';
+      const torsoGroup = new T.Group();
+      torsoGroup.name = 'torso_uniforme';
+
+      let corManga = 0x003360;
+
+      if (tipo === 'polo-navy') {
+        corManga = 0x003360;
+        const matPolo = new T.MeshStandardMaterial({ color: 0x003360, roughness: 0.45 });
+        const matAcento = new T.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.4 });
+
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.35, 0.35, 0.74, 16), matPolo);
+        torsoMesh.position.y = 1.25;
+        torsoGroup.add(torsoMesh);
+
+        // Gola polo em Torus
+        const gola = new T.Mesh(new T.TorusGeometry(0.24, 0.045, 8, 16), matAcento);
+        gola.rotation.x = Math.PI / 2;
+        gola.position.set(0, 1.60, 0);
+        torsoGroup.add(gola);
+
+        // Peitilho com botões
+        const peitilho = new T.Mesh(new T.BoxGeometry(0.08, 0.22, 0.02), matAcento);
+        peitilho.position.set(0, 1.44, 0.35);
+        const b1 = new T.Mesh(new T.SphereGeometry(0.015, 6, 6), new T.MeshBasicMaterial({ color: 0xffffff }));
+        b1.position.set(0, 1.50, 0.365);
+        const b2 = b1.clone();
+        b2.position.y = 1.40;
+        torsoGroup.add(peitilho, b1, b2);
+
+      } else if (tipo === 'polo-sky') {
+        corManga = 0x0284c7;
+        const matPolo = new T.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.40 });
+        const matAcento = new T.MeshStandardMaterial({ color: 0x003360, roughness: 0.4 });
+
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.35, 0.35, 0.74, 16), matPolo);
+        torsoMesh.position.y = 1.25;
+        torsoGroup.add(torsoMesh);
+
+        // Gola contrastante navy
+        const gola = new T.Mesh(new T.TorusGeometry(0.24, 0.045, 8, 16), matAcento);
+        gola.rotation.x = Math.PI / 2;
+        gola.position.set(0, 1.60, 0);
+        torsoGroup.add(gola);
+
+        // Peitilho navy
+        const peitilho = new T.Mesh(new T.BoxGeometry(0.08, 0.22, 0.02), matAcento);
+        peitilho.position.set(0, 1.44, 0.35);
+        const b1 = new T.Mesh(new T.SphereGeometry(0.015, 6, 6), new T.MeshBasicMaterial({ color: 0xffffff }));
+        b1.position.set(0, 1.50, 0.365);
+        const b2 = b1.clone();
+        b2.position.y = 1.40;
+        torsoGroup.add(peitilho, b1, b2);
+
+      } else {
+        // Camisa social branca executiva com gravata dourada Bia Paper (#E3A52B)
+        corManga = 0xf8fafc;
+        const matCamisa = new T.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.30 });
+        const torsoMesh = new T.Mesh(new T.BoxGeometry(0.70, 0.76, 0.40), matCamisa);
+        torsoMesh.position.y = 1.28;
+        torsoGroup.add(torsoMesh);
+
+        // Colarinho pontudo
+        const colEsq = new T.Mesh(new T.BoxGeometry(0.14, 0.06, 0.03), matCamisa);
+        colEsq.position.set(-0.08, 1.63, 0.205);
+        colEsq.rotation.z = -0.35;
+        const colDir = colEsq.clone();
+        colDir.position.x = 0.08;
+        colDir.rotation.z = 0.35;
+        torsoGroup.add(colEsq, colDir);
+
+        // Carcela de botões central
+        const carcela = new T.Mesh(new T.BoxGeometry(0.04, 0.70, 0.015), new T.MeshBasicMaterial({ color: 0xffffff }));
+        carcela.position.set(0, 1.28, 0.208);
+        torsoGroup.add(carcela);
+
+        // Gravata dourada Bia Paper
+        const gravata = new T.Mesh(new T.BoxGeometry(0.065, 0.38, 0.025), matOuro);
+        gravata.position.set(0, 1.42, 0.218);
+        const noGravata = new T.Mesh(new T.ConeGeometry(0.045, 0.06, 4), matOuro);
+        noGravata.position.set(0, 1.60, 0.222);
+        torsoGroup.add(gravata, noGravata);
+      }
+
+      // Crachá Isapel com lanyard navy e presilha dourada
+      if (cfg.cracha !== false) {
+        this._adicionarCrachaIsapel(torsoGroup, matOuro, T);
+      }
+
+      bodyGroup.add(torsoGroup);
+      return corManga;
+    },
+
+    _adicionarCrachaIsapel: function (parent, matOuro, T) {
+      const crachaGroup = new T.Group();
+      crachaGroup.name = 'cracha_isapel';
+
+      // Fita no pescoço
+      const fita = new T.Mesh(new T.BoxGeometry(0.05, 0.24, 0.015), new T.MeshStandardMaterial({ color: 0x003360 }));
+      fita.position.set(0.14, 1.42, 0.34);
+
+      // Cartão branco com topo azul Isapel
+      const card = new T.Mesh(new T.BoxGeometry(0.13, 0.17, 0.02), new T.MeshBasicMaterial({ color: 0xffffff }));
+      card.position.set(0.14, 1.24, 0.35);
+
+      const cardHeader = new T.Mesh(new T.BoxGeometry(0.13, 0.04, 0.022), new T.MeshBasicMaterial({ color: 0x0284c7 }));
+      cardHeader.position.set(0.14, 1.30, 0.352);
+
+      const clip = new T.Mesh(new T.BoxGeometry(0.03, 0.025, 0.025), matOuro);
+      clip.position.set(0.14, 1.33, 0.354);
+
+      crachaGroup.add(fita, card, cardHeader, clip);
+      parent.add(crachaGroup);
+    },
+
+    _criarBracoArticulado: function (matManga, matPele, isLeft, T) {
+      const shoulderPivot = new T.Group();
+      shoulderPivot.name = isLeft ? 'shoulder_left' : 'shoulder_right';
+
+      const mangaGeo = new T.CylinderGeometry(0.12, 0.1, 0.42, 10);
+      const mangaMesh = new T.Mesh(mangaGeo, matManga);
+      mangaMesh.position.y = -0.2;
+      shoulderPivot.add(mangaMesh);
+
+      const antebracoGeo = new T.CylinderGeometry(0.09, 0.08, 0.35, 10);
+      const antebracoMesh = new T.Mesh(antebracoGeo, matPele);
+      antebracoMesh.position.y = -0.52;
+      shoulderPivot.add(antebracoMesh);
+
+      const maoGeo = new T.SphereGeometry(0.085, 10, 10);
+      maoGeo.scale(1, 1.2, 0.9);
+      const maoMesh = new T.Mesh(maoGeo, matPele);
+      maoMesh.position.y = -0.72;
+      shoulderPivot.add(maoMesh);
+
+      return shoulderPivot;
+    },
+
+    _adicionarRosto: function (headGroup, matPele, matCabelo, T) {
+      // Cabeça esférica proporcional
+      const faceGeo = new T.SphereGeometry(0.36, 20, 20);
+      faceGeo.scale(1, 1.05, 0.98);
+      const faceMesh = new T.Mesh(faceGeo, matPele);
+      headGroup.add(faceMesh);
+
+      // Olhos focados e expressivos
+      const matOlhos = new T.MeshBasicMaterial({ color: 0x0f172a });
+      const matBrilho = new T.MeshBasicMaterial({ color: 0xffffff });
+      const olhoGeo = new T.SphereGeometry(0.045, 12, 12);
+
+      const olhoEsq = new T.Mesh(olhoGeo, matOlhos);
+      olhoEsq.position.set(-0.13, 0.06, 0.33);
+      const olhoDir = olhoEsq.clone();
+      olhoDir.position.x = 0.13;
+
+      const brilhoGeo = new T.SphereGeometry(0.015, 8, 8);
+      const brilhoEsq = new T.Mesh(brilhoGeo, matBrilho);
+      brilhoEsq.position.set(-0.11, 0.08, 0.365);
+      const brilhoDir = brilhoEsq.clone();
+      brilhoDir.position.x = 0.15;
+
+      // Sobrancelhas
+      const sobrancGeo = new T.BoxGeometry(0.11, 0.025, 0.03);
+      const sobrancEsq = new T.Mesh(sobrancGeo, matCabelo);
+      sobrancEsq.position.set(-0.13, 0.13, 0.34);
+      sobrancEsq.rotation.z = 0.06;
+      const sobrancDir = sobrancEsq.clone();
+      sobrancDir.position.x = 0.13;
+      sobrancDir.rotation.z = -0.06;
+
+      // Sorriso corporativo
+      const bocaGeo = new T.BoxGeometry(0.09, 0.02, 0.02);
+      const bocaMesh = new T.Mesh(bocaGeo, new T.MeshBasicMaterial({ color: 0x7f1d1d }));
+      bocaMesh.position.set(0, -0.13, 0.34);
+
+      headGroup.add(olhoEsq, olhoDir, brilhoEsq, brilhoDir, sobrancEsq, sobrancDir, bocaMesh);
+    },
+
+    _adicionarCabelo: function (headGroup, estilo, matCabelo, T) {
+      const cabeloExistente = headGroup.getObjectByName('cabelo_group');
+      if (cabeloExistente) headGroup.remove(cabeloExistente);
+
+      const cabeloGroup = new T.Group();
+      cabeloGroup.name = 'cabelo_group';
+
+      const est = (estilo || 'cacheado-curto').toLowerCase();
+
+      if (est.includes('curto-executivo') || est.includes('curto_social')) {
+        // Curto executivo com risca lateral e volume elegante
+        const topo = new T.Mesh(new T.SphereGeometry(0.375, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.55), matCabelo);
+        topo.position.set(0, 0.02, -0.02);
+        const franja = new T.Mesh(new T.BoxGeometry(0.32, 0.08, 0.14), matCabelo);
+        franja.position.set(0.04, 0.28, 0.25);
+        franja.rotation.z = -0.12;
+        cabeloGroup.add(topo, franja);
+
+      } else if (est.includes('cacheado-curto')) {
+        // Cachos canônicos texturizados do Gabriel Maciel (16 esferas)
+        const cachosMaciel = [
+          [0, 0.3, 0.0, 0.16],
+          [-0.14, 0.28, 0.06, 0.14],
+          [0.14, 0.28, 0.06, 0.14],
+          [-0.18, 0.24, -0.1, 0.15],
+          [0.18, 0.24, -0.1, 0.15],
+          [0, 0.26, -0.16, 0.16],
+          [-0.1, 0.24, 0.2, 0.12],
+          [0.1, 0.24, 0.2, 0.12],
+          [0, 0.25, 0.22, 0.13],
+          [-0.26, 0.14, 0.05, 0.13],
+          [0.26, 0.14, 0.05, 0.13],
+          [-0.27, 0.06, -0.1, 0.14],
+          [0.27, 0.06, -0.1, 0.14],
+          [0, 0.12, -0.25, 0.15],
+          [-0.12, 0.08, -0.22, 0.14],
+          [0.12, 0.08, -0.22, 0.14]
+        ];
+        cachosMaciel.forEach(([cx, cy, cz, cr]) => {
+          const c = new T.Mesh(new T.SphereGeometry(cr, 8, 8), matCabelo);
+          c.position.set(cx, cy, cz);
+          cabeloGroup.add(c);
+        });
+
+      } else if (est.includes('cacheado-volumoso')) {
+        // Cachos volumosos e dinâmicos do Caio (22 esferas com projeção)
+        const cachosCaio = [
+          [0, 0.36, 0.0, 0.22],
+          [-0.18, 0.34, 0.08, 0.19],
+          [0.18, 0.34, 0.08, 0.19],
+          [-0.22, 0.30, -0.12, 0.2],
+          [0.22, 0.30, -0.12, 0.2],
+          [0, 0.32, -0.18, 0.21],
+          [-0.12, 0.28, 0.24, 0.16],
+          [0.12, 0.28, 0.24, 0.16],
+          [0, 0.30, 0.26, 0.17],
+          [-0.32, 0.18, 0.06, 0.17],
+          [0.32, 0.18, 0.06, 0.17],
+          [-0.33, 0.08, -0.12, 0.18],
+          [0.33, 0.08, -0.12, 0.18],
+          [0, 0.16, -0.30, 0.20],
+          [-0.16, 0.12, -0.26, 0.18],
+          [0.16, 0.12, -0.26, 0.18],
+          [-0.24, 0.22, 0.18, 0.15],
+          [0.24, 0.22, 0.18, 0.15],
+          [0, 0.40, 0.08, 0.16],
+          [-0.14, 0.38, -0.06, 0.16],
+          [0.14, 0.38, -0.06, 0.16],
+          [0, 0.20, 0.30, 0.14]
+        ];
+        cachosCaio.forEach(([cx, cy, cz, cr]) => {
+          const c = new T.Mesh(new T.SphereGeometry(cr, 8, 8), matCabelo);
+          c.position.set(cx, cy, cz);
+          cabeloGroup.add(c);
+        });
+
+      } else if (est.includes('liso-comprido') || est.includes('longo_feminino')) {
+        // Cabelo longo estilizado de Fernanda (franja frontal + mechas sobre os ombros)
+        const calota = new T.Mesh(new T.SphereGeometry(0.385, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.58), matCabelo);
+        calota.position.set(0, 0.02, -0.02);
+
+        // Franja lateral
+        const franja = new T.Mesh(new T.BoxGeometry(0.34, 0.09, 0.12), matCabelo);
+        franja.position.set(-0.06, 0.26, 0.28);
+        franja.rotation.z = 0.2;
+
+        // Mechas longas frontais descendo pelos ombros (esquerda e direita)
+        const mechaGeo = new T.CylinderGeometry(0.09, 0.07, 0.70, 8);
+        const mechaEsq = new T.Mesh(mechaGeo, matCabelo);
+        mechaEsq.position.set(-0.26, -0.16, 0.12);
+        mechaEsq.rotation.z = -0.08;
+        const mechaDir = mechaEsq.clone();
+        mechaDir.position.x = 0.26;
+        mechaDir.rotation.z = 0.08;
+
+        // Cortina traseira longa
+        const costas = new T.Mesh(new T.BoxGeometry(0.46, 0.62, 0.14), matCabelo);
+        costas.position.set(0, -0.12, -0.22);
+
+        cabeloGroup.add(calota, franja, mechaEsq, mechaDir, costas);
+
+      } else if (est.includes('ondulado-medio')) {
+        // Chanel ondulado médio moderno
+        const calota = new T.Mesh(new T.SphereGeometry(0.38, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.65), matCabelo);
+        calota.position.set(0, 0.02, -0.02);
+        const ondas = [
+          [-0.26, -0.04, 0.08, 0.13],
+          [0.26, -0.04, 0.08, 0.13],
+          [-0.28, -0.15, -0.02, 0.14],
+          [0.28, -0.15, -0.02, 0.14],
+          [0, -0.12, -0.24, 0.16]
+        ];
+        ondas.forEach(([ox, oy, oz, or]) => {
+          const o = new T.Mesh(new T.SphereGeometry(or, 8, 8), matCabelo);
+          o.position.set(ox, oy, oz);
+          cabeloGroup.add(o);
+        });
+        cabeloGroup.add(calota);
+
+      } else {
+        // Raspado / Buzz Cut Militar
+        const buzz = new T.Mesh(new T.SphereGeometry(0.368, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.52), matCabelo);
+        buzz.position.set(0, 0.01, -0.01);
+        cabeloGroup.add(buzz);
+      }
+
+      headGroup.add(cabeloGroup);
+    },
+
+    _adicionarBarba: function (headGroup, estilo, matBarba, T) {
+      const barbaExistente = headGroup.getObjectByName('barba_group') || headGroup.getObjectByName('bigode_maciel');
+      if (barbaExistente) headGroup.remove(barbaExistente);
+
+      const est = (estilo || 'sem-barba').toLowerCase();
+      if (est === 'sem-barba' || est === 'nenhum') return;
+
+      const barbaGroup = new T.Group();
+      barbaGroup.name = est.includes('bigode') ? 'bigode_maciel' : 'barba_group';
+
+      if (est.includes('bigode')) {
+        // ====================================================================
+        // O BIGODE NÍTIDO E CARACTERÍSTICO DE GABRIEL MACIEL (Canônico 3D)
+        // ====================================================================
+        const bigodeLadoGeo = new T.BoxGeometry(0.12, 0.045, 0.06);
+        const bEsq = new T.Mesh(bigodeLadoGeo, matBarba);
+        bEsq.position.set(-0.065, -0.07, 0.355);
+        bEsq.rotation.z = -0.15;
+
+        const pontaGeo = new T.ConeGeometry(0.025, 0.06, 6);
+        const pEsq = new T.Mesh(pontaGeo, matBarba);
+        pEsq.position.set(-0.135, -0.085, 0.35);
+        pEsq.rotation.z = Math.PI / 2 + 0.3;
+
+        const bDir = bEsq.clone();
+        bDir.position.x = 0.065;
+        bDir.rotation.z = 0.15;
+
+        const pDir = pEsq.clone();
+        pDir.position.x = 0.135;
+        pDir.rotation.z = -(Math.PI / 2 + 0.3);
+
+        const centro = new T.Mesh(new T.BoxGeometry(0.04, 0.04, 0.05), matBarba);
+        centro.position.set(0, -0.062, 0.36);
+
+        barbaGroup.add(bEsq, bDir, pEsq, pDir, centro);
+
+      } else if (est.includes('cavanhaque')) {
+        // Cavanhaque moderno: bigode superior fino + queixo estruturado
+        const bigode = new T.Mesh(new T.BoxGeometry(0.18, 0.04, 0.05), matBarba);
+        bigode.position.set(0, -0.068, 0.355);
+
+        const queixo = new T.Mesh(new T.BoxGeometry(0.12, 0.14, 0.06), matBarba);
+        queixo.position.set(0, -0.22, 0.32);
+
+        barbaGroup.add(bigode, queixo);
+
+      } else if (est.includes('barba-cheia') || est.includes('barba_cheia')) {
+        // Barba cheia corporativa contornando a mandíbula e queixo
+        const bigode = new T.Mesh(new T.BoxGeometry(0.22, 0.045, 0.06), matBarba);
+        bigode.position.set(0, -0.065, 0.355);
+
+        const queixo = new T.Mesh(new T.BoxGeometry(0.24, 0.16, 0.10), matBarba);
+        queixo.position.set(0, -0.22, 0.31);
+
+        const latEsq = new T.Mesh(new T.BoxGeometry(0.08, 0.22, 0.28), matBarba);
+        latEsq.position.set(-0.31, -0.10, 0.10);
+        const latDir = latEsq.clone();
+        latDir.position.x = 0.31;
+
+        barbaGroup.add(bigode, queixo, latEsq, latDir);
+      }
+
+      headGroup.add(barbaGroup);
+    },
+
+    _adicionarAcessorios: function (headGroup, cfg, matOuro, T) {
+      const oculosExistente = headGroup.getObjectByName('oculos_group');
+      if (oculosExistente) headGroup.remove(oculosExistente);
+
+      const oc = (cfg.oculos || 'nenhum').toLowerCase();
+      if (oc === 'nenhum') return;
+
+      const oculosGroup = new T.Group();
+      oculosGroup.name = 'oculos_group';
+
+      if (oc.includes('executivo-dourado') || oc.includes('executivo-preto')) {
+        const isGold = oc.includes('dourado');
+        const matArmacao = isGold 
+          ? matOuro 
+          : new T.MeshStandardMaterial({ color: 0x111827, roughness: 0.35 });
+
+        // Lentes e armação retangular fina executiva
+        const aroEsq = new T.Mesh(new T.BoxGeometry(0.14, 0.08, 0.02), matArmacao);
+        aroEsq.position.set(-0.13, 0.06, 0.355);
+        const aroDir = aroEsq.clone();
+        aroDir.position.x = 0.13;
+
+        const ponte = new T.Mesh(new T.BoxGeometry(0.08, 0.015, 0.02), matArmacao);
+        ponte.position.set(0, 0.06, 0.355);
+
+        // Hastes até a orelha
+        const hasteEsq = new T.Mesh(new T.BoxGeometry(0.015, 0.015, 0.28), matArmacao);
+        hasteEsq.position.set(-0.20, 0.06, 0.22);
+        const hasteDir = hasteEsq.clone();
+        hasteDir.position.x = 0.20;
+
+        oculosGroup.add(aroEsq, aroDir, ponte, hasteEsq, hasteDir);
+
+      } else if (oc.includes('redondo')) {
+        const matArmacao = new T.MeshStandardMaterial({ color: 0x2b1e16, roughness: 0.3 });
+
+        const aroEsq = new T.Mesh(new T.TorusGeometry(0.055, 0.01, 8, 16), matArmacao);
+        aroEsq.position.set(-0.13, 0.06, 0.355);
+        const aroDir = aroEsq.clone();
+        aroDir.position.x = 0.13;
+
+        const ponte = new T.Mesh(new T.BoxGeometry(0.08, 0.015, 0.02), matArmacao);
+        ponte.position.set(0, 0.06, 0.355);
+
+        oculosGroup.add(aroEsq, aroDir, ponte);
+      }
+
+      headGroup.add(oculosGroup);
+    }
+  };
+
+  // ==========================================================================
+  // ENGINE DE LIVE PREVIEW TRIDIMENSIONAL (AVATARPREVIEWENGINE)
+  // ==========================================================================
+  class AvatarPreviewEngine {
+    constructor(canvasOrId) {
+      let canvasEl = typeof canvasOrId === 'string' ? document.getElementById(canvasOrId) : canvasOrId;
+      if (!canvasEl) {
+        console.warn('[AvatarPreviewEngine] Elemento de canvas não encontrado para id:', canvasOrId);
+        return;
+      }
+      this.canvas = canvasEl;
+      const w = canvasEl.clientWidth || 380;
+      const h = canvasEl.clientHeight || 440;
+
+      const T = (typeof window !== 'undefined' && window.THREE) ? window.THREE : THREE;
+      this.THREE = T;
+
+      this.renderer = new T.WebGLRenderer({
+        canvas: this.canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+      this.renderer.setSize(w, h);
+      this.renderer.setPixelRatio(Math.min((typeof window !== 'undefined' ? window.devicePixelRatio : 1), 2));
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = T.PCFSoftShadowMap;
+
+      this.scene = new T.Scene();
+      this.scene.background = null;
+
+      this.camera = new T.PerspectiveCamera(34, w / h, 0.1, 50);
+      this.camera.position.set(0, 1.7, 4.6);
+      this.camera.lookAt(0, 1.45, 0);
+
+      // Iluminação de estúdio profissional
+      const amb = new T.AmbientLight(0xdbeafe, 0.75);
+      const key = new T.DirectionalLight(0xffffff, 1.15);
+      key.position.set(3.5, 6, 4.5);
+      key.castShadow = true;
+      const fill = new T.DirectionalLight(0x38bdf8, 0.65);
+      fill.position.set(-4, 3, 3);
+      const rim = new T.DirectionalLight(0xffffff, 0.85);
+      rim.position.set(0, 4.5, -4);
+      this.scene.add(amb, key, fill, rim);
+
+      // Pedestal circular elegante com borda em Ouro Bia Paper (#E3A52B)
+      const baseGeo = new T.CylinderGeometry(1.25, 1.3, 0.14, 32);
+      const baseMat = new T.MeshStandardMaterial({
+        color: 0x0c1e34,
+        metalness: 0.8,
+        roughness: 0.25
+      });
+      this.pedestal = new T.Mesh(baseGeo, baseMat);
+      this.pedestal.position.y = -0.07;
+      const ringGeo = new T.TorusGeometry(1.26, 0.025, 8, 32);
+      const ringMat = new T.MeshStandardMaterial({
+        color: 0xe3a52b,
+        metalness: 0.9,
+        roughness: 0.2
+      });
+      const ring = new T.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = -0.01;
+      this.scene.add(this.pedestal, ring);
+
+      this.currentMesh = null;
+      this.currentConfig = null;
+      this.currentVendedorId = 'maciel';
+      this.isAutoRotating = true;
+      this.isRunning = false;
+      this.rotSpeed = 0.007;
+
+      this._setupOrbitControls();
+      this.animar = this.animar.bind(this);
+    }
+
+    carregarConfig(vendedorId, config) {
+      this.currentVendedorId = vendedorId || this.currentVendedorId || 'maciel';
+      this.currentConfig = normalizarConfigAvatar(config || {}, this.currentVendedorId);
+
+      if (this.currentMesh) {
+        this.scene.remove(this.currentMesh);
+        this.currentMesh = null;
+      }
+
+      this.currentMesh = AvatarBuilder.construirAvatar(this.currentConfig, this.THREE);
+      if (this.currentMesh) {
+        this.currentMesh.position.set(0, 0, 0);
+        this.scene.add(this.currentMesh);
+      }
+
+      if (this.canvas) {
+        const w = this.canvas.clientWidth || 380;
+        const h = this.canvas.clientHeight || 440;
+        if (w > 0 && h > 0) {
+          this.renderer.setSize(w, h, false);
+          this.camera.aspect = w / h;
+          this.camera.updateProjectionMatrix();
+        }
+      }
+    }
+
+    atualizarTrait(chave, valor) {
+      if (!this.currentConfig) {
+        this.currentConfig = normalizarConfigAvatar({}, this.currentVendedorId);
+      }
+      this.currentConfig[chave] = valor;
+
+      // Se for alteração de cor, atualiza materiais existentes sem recriar malhas
+      if (chave === 'peleHex' && this.currentMesh) {
+        const c = parseColor(valor, 0xe6b994);
+        this.currentMesh.traverse(child => {
+          if (child.material && child.material.userData && child.material.userData.tipo === 'pele') {
+            child.material.color.set(c);
+          }
+        });
+        return;
+      }
+
+      if (chave === 'cabeloHex' && this.currentMesh) {
+        const c = parseColor(valor, 0x1a1514);
+        this.currentMesh.traverse(child => {
+          if (child.material && child.material.userData && child.material.userData.tipo === 'cabelo') {
+            child.material.color.set(c);
+          }
+        });
+        return;
+      }
+
+      if (chave === 'barbaHex' && this.currentMesh) {
+        const c = parseColor(valor, 0x161211);
+        this.currentMesh.traverse(child => {
+          if (child.material && child.material.userData && child.material.userData.tipo === 'barba') {
+            child.material.color.set(c);
+          }
+        });
+        return;
+      }
+
+      // Mudança estrutural (uniforme, corte de cabelo, estilo de barba, óculos, crachá):
+      // Preserva a rotação atual para experiência fluida sem saltos
+      const rotY = this.currentMesh ? this.currentMesh.rotation.y : 0;
+      if (this.currentMesh) {
+        this.scene.remove(this.currentMesh);
+      }
+      this.currentMesh = AvatarBuilder.construirAvatar(this.currentConfig, this.THREE);
+      if (this.currentMesh) {
+        this.currentMesh.rotation.y = rotY;
+        this.scene.add(this.currentMesh);
+      }
+    }
+
+    obterConfigAtual() {
+      return { ...this.currentConfig };
+    }
+
+    iniciar() {
+      if (this.isRunning) return;
+      this.isRunning = true;
+      if (this.canvas) {
+        const w = this.canvas.clientWidth || 380;
+        const h = this.canvas.clientHeight || 440;
+        if (w > 0 && h > 0) {
+          this.renderer.setSize(w, h, false);
+          this.camera.aspect = w / h;
+          this.camera.updateProjectionMatrix();
+        }
+      }
+      requestAnimationFrame(this.animar);
+    }
+
+    pausar() {
+      this.isRunning = false;
+    }
+
+    destruir() {
+      this.pausar();
+      if (this.currentMesh) {
+        this.scene.remove(this.currentMesh);
+        this.currentMesh = null;
+      }
+      if (this.renderer) {
+        this.renderer.dispose();
+      }
+    }
+
+    animar() {
+      if (!this.isRunning) return;
+      requestAnimationFrame(this.animar);
+
+      if (this.currentMesh && this.isAutoRotating) {
+        this.currentMesh.rotation.y += this.rotSpeed;
+      }
+
+      this.renderer.render(this.scene, this.camera);
+    }
+
+    _setupOrbitControls() {
+      let isDown = false;
+      let prevX = 0;
+      let idleTimeout = null;
+
+      const onPointerDown = (clientX) => {
+        isDown = true;
+        prevX = clientX;
+        this.isAutoRotating = false;
+        if (idleTimeout) clearTimeout(idleTimeout);
+      };
+
+      const onPointerMove = (clientX) => {
+        if (!isDown || !this.currentMesh) return;
+        const dx = clientX - prevX;
+        prevX = clientX;
+        this.currentMesh.rotation.y += dx * 0.018;
+      };
+
+      const onPointerUp = () => {
+        isDown = false;
+        idleTimeout = setTimeout(() => {
+          this.isAutoRotating = true;
+        }, 3500);
+      };
+
+      this.canvas.addEventListener('mousedown', e => onPointerDown(e.clientX));
+      window.addEventListener('mousemove', e => onPointerMove(e.clientX));
+      window.addEventListener('mouseup', onPointerUp);
+
+      this.canvas.addEventListener('touchstart', e => {
+        if (e.touches.length > 0) onPointerDown(e.touches[0].clientX);
+      }, { passive: true });
+      window.addEventListener('touchmove', e => {
+        if (e.touches.length > 0) onPointerMove(e.touches[0].clientX);
+      }, { passive: true });
+      window.addEventListener('touchend', onPointerUp);
+    }
+  }
+
+  // ==========================================================================
+  // SINCRONIZAÇÃO EM TEMPO REAL COM A ARENA 3D PRINCIPAL (ZERO RELOAD)
+  // ==========================================================================
+  function atualizarAparencia(vendedorId, novaConfig) {
+    if (!vendedorId) return;
+    const vid = String(vendedorId).trim().toLowerCase();
+    const cfg = normalizarConfigAvatar(novaConfig || {}, vid);
+
+    const meshAntigo = characterMeshes[vid];
+    if (!meshAntigo) {
+      if (scene && THREE) {
+        const novoMesh = AvatarBuilder.construirAvatar(cfg, THREE);
+        characterMeshes[vid] = novoMesh;
+        scene.add(novoMesh);
+        const ordenados = calcularRanking(vendedoresData, criterioOrdenacao);
+        sincronizarPosicoesPersonagens(ordenados);
+      }
+      return;
+    }
+
+    const posicaoAtual = meshAntigo.position.clone();
+    const rotacaoAtual = meshAntigo.rotation.y;
+    const userDataPreservado = { ...meshAntigo.userData };
+
+    scene.remove(meshAntigo);
+
+    const novoMesh = AvatarBuilder.construirAvatar(cfg, THREE);
+    novoMesh.position.copy(posicaoAtual);
+    novoMesh.rotation.y = rotacaoAtual;
+    novoMesh.userData = userDataPreservado;
+
+    characterMeshes[vid] = novoMesh;
+    scene.add(novoMesh);
+
+    // Feedback visual imediato com salto de comemoração
+    focarAnimacaoPersonagem(vid);
+  }
+
+  // Listener global de evento de sincronização
+  if (typeof window !== 'undefined') {
+    window.addEventListener('isapel:avatar-updated', function (e) {
+      if (e && e.detail && e.detail.vendedorId && e.detail.config) {
+        atualizarAparencia(e.detail.vendedorId, e.detail.config);
+      }
+    });
+  }
+
   /**
    * Constrói o modelo 3D estilizado de FERNANDA
    * Menina loira de 21 anos, cabelos loiros compridos estilizados, camisa pólo Isapel Azul Claro
    */
   function criarModeloFernanda(materiais) {
-    const root = new THREE.Group();
-    root.name = 'char_fernanda';
-
-    const bodyGroup = new THREE.Group();
-    bodyGroup.name = 'body_pivot';
-    root.add(bodyGroup);
+    const config = obterConfigAvatarSalva('fernanda');
+    return AvatarBuilder.construirAvatar(config, THREE);
 
     // Sombra de contato no piso do pódio
     const shadowGeo = new THREE.CircleGeometry(0.55, 24);
@@ -448,12 +1476,8 @@
    * Jovem de 19 anos, cabelos escuros enrolados/cacheados volumosos, postura jovem e dinâmica
    */
   function criarModeloCaio(materiais) {
-    const root = new THREE.Group();
-    root.name = 'char_caio';
-
-    const bodyGroup = new THREE.Group();
-    bodyGroup.name = 'body_pivot';
-    root.add(bodyGroup);
+    const config = obterConfigAvatarSalva('caio');
+    return AvatarBuilder.construirAvatar(config, THREE);
 
     // Sombra de contato
     const shadowGeo = new THREE.CircleGeometry(0.55, 24);
@@ -603,12 +1627,8 @@
    * blazer azul marinho Isapel (#003360), crachá executivo dourado Bia Paper, visual líder
    */
   function criarModeloMaciel(materiais) {
-    const root = new THREE.Group();
-    root.name = 'char_maciel';
-
-    const bodyGroup = new THREE.Group();
-    bodyGroup.name = 'body_pivot';
-    root.add(bodyGroup);
+    const config = obterConfigAvatarSalva('maciel');
+    return AvatarBuilder.construirAvatar(config, THREE);
 
     // Sombra de contato
     const shadowGeo = new THREE.CircleGeometry(0.55, 24);
@@ -1200,11 +2220,17 @@
     rankingAtual = rankingOrdenado.map(v => v.id);
 
     rankingOrdenado.forEach((vendedor, index) => {
-      const rank = index + 1; // 1, 2 ou 3
-      const mesh = characterMeshes[vendedor.id];
+      const rank = index + 1; // 1, 2, 3 ou 4+
+      let mesh = characterMeshes[vendedor.id];
+      if (!mesh && scene && THREE) {
+        const cfg = obterConfigAvatarSalva(vendedor.id);
+        mesh = AvatarBuilder.construirAvatar(cfg, THREE);
+        characterMeshes[vendedor.id] = mesh;
+        scene.add(mesh);
+      }
       if (!mesh) return;
 
-      const slot = PODIUM_SLOTS[rank];
+      const slot = obterSlotPodio(rank);
       mesh.userData.rank = rank;
       mesh.userData.targetPos.set(slot.x, slot.y, slot.z);
 
@@ -1219,7 +2245,7 @@
       const firstId = rankingOrdenado[0].id;
       const firstMesh = characterMeshes[firstId];
       if (firstMesh) {
-        const slot1 = PODIUM_SLOTS[1];
+        const slot1 = obterSlotPodio(1);
         trophyGroup.userData = trophyGroup.userData || {};
         trophyGroup.userData.targetX = slot1.x;
         trophyGroup.userData.targetY = slot1.y + 3.2;
@@ -2203,6 +3229,9 @@
   return {
     init: init,
     atualizar: atualizar,
+    atualizarAparencia: atualizarAparencia,
+    AvatarBuilder: AvatarBuilder,
+    AvatarPreviewEngine: AvatarPreviewEngine,
     dispararConfetes: function (posX, posY, posZ) {
       dispararConfetes3D(posX || 0, posY || 3.8, posZ || 0);
     },

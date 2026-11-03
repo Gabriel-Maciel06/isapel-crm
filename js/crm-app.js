@@ -30,11 +30,15 @@
     leadEmNotasId: null,
     ultimoFechamentoGerado: null,
     audioContext: null,
+    avatarPreviewEngine: null,
+    vendedorCustomizandoId: 'maciel',
     analytics: {
       periodo: 'hoje',
       dataInicio: null,
       dataFim: null,
-      vendedorFiltro: 'todos'
+      vendedorFiltro: 'todos',
+      regiaoFiltro: 'todas',
+      sideTabAtiva: 'equipe'
     }
   };
 
@@ -715,6 +719,18 @@
   }
 
   function alternarAba(tabId) {
+    // Guarda de rota estrita de RBAC para a Aba de Gestão (somente Diretoria)
+    if (tabId === 'tab-gestao') {
+      const perfil = (typeof window !== 'undefined' && window.IsapelAuth && typeof window.IsapelAuth.obterPerfil === 'function')
+        ? window.IsapelAuth.obterPerfil()
+        : null;
+      if (perfil !== 'diretoria') {
+        showToast('Acesso restrito à Diretoria Comercial.', 'warning');
+        alternarAba('tab-funil');
+        return;
+      }
+    }
+
     AppState.abaAtiva = tabId;
 
     // Atualiza botões e atributos ARIA
@@ -737,9 +753,11 @@
       if (isActive) {
         sec.classList.add('is-active');
         sec.removeAttribute('hidden');
+        sec.style.display = 'block';
       } else {
         sec.classList.remove('is-active');
         sec.setAttribute('hidden', 'until-found');
+        sec.style.display = 'none';
       }
     });
 
@@ -753,7 +771,14 @@
     } else if (tabId === 'tab-fechamento') {
       renderizarAnalytics();
       atualizarPainelFechamento();
+    } else if (tabId === 'tab-gestao') {
+      renderizarTabelaVendedores();
     }
+  }
+
+  // Exposição global para navegação e automação de testes
+  if (typeof window !== 'undefined') {
+    window.alternarAba = alternarAba;
   }
 
   // ==========================================================================
@@ -1028,7 +1053,54 @@
       });
     }
 
-    // 4. Accordion Recolhível de Fechamento Operacional
+    // 4. Filtro por Região dos Leads
+    const selectRegiao = document.getElementById('analytics-regiao-select');
+    if (selectRegiao) {
+      selectRegiao.addEventListener('change', (e) => {
+        AppState.analytics.regiaoFiltro = e.target.value;
+        renderizarAnalytics();
+      });
+    }
+
+    // 5. Abas Laterais: Equipe Comercial vs. Regiões dos Leads
+    const btnSideEquipe = document.getElementById('btn-sidecard-equipe');
+    const btnSideRegioes = document.getElementById('btn-sidecard-regioes');
+    const contSideEquipe = document.getElementById('analytics-seller-distribution-container');
+    const contSideRegioes = document.getElementById('analytics-regions-distribution-container');
+    const sideTitle = document.getElementById('analytics-seller-card-title');
+    const sideSubtitle = document.getElementById('analytics-seller-card-subtitle');
+
+    if (btnSideEquipe && btnSideRegioes) {
+      btnSideEquipe.addEventListener('click', () => {
+        btnSideEquipe.classList.add('is-active');
+        btnSideRegioes.classList.remove('is-active');
+        AppState.analytics.sideTabAtiva = 'equipe';
+        if (contSideEquipe) contSideEquipe.style.display = 'flex';
+        if (contSideRegioes) contSideRegioes.style.display = 'none';
+        if (sideSubtitle) sideSubtitle.textContent = 'Desempenho comparativo e pipeline por consultor';
+      });
+
+      btnSideRegioes.addEventListener('click', () => {
+        btnSideRegioes.classList.add('is-active');
+        btnSideEquipe.classList.remove('is-active');
+        AppState.analytics.sideTabAtiva = 'regioes';
+        if (contSideEquipe) contSideEquipe.style.display = 'none';
+        if (contSideRegioes) contSideRegioes.style.display = 'flex';
+        if (sideSubtitle) sideSubtitle.textContent = 'Concentração geográfica e volume financeiro por praça';
+      });
+    }
+
+    // Clique no Card de Regiões abre a aba de regiões
+    const cardKpiRegioes = document.getElementById('analytics-kpi-card-regioes');
+    if (cardKpiRegioes && btnSideRegioes) {
+      cardKpiRegioes.addEventListener('click', () => {
+        btnSideRegioes.click();
+        const sellerCard = document.getElementById('analytics-seller-card');
+        if (sellerCard) sellerCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
+
+    // 6. Accordion Recolhível de Fechamento Operacional
     if (btnToggleAccordion && contentAccordion) {
       btnToggleAccordion.addEventListener('click', () => {
         const isExpanded = btnToggleAccordion.getAttribute('aria-expanded') === 'true';
@@ -1043,7 +1115,7 @@
       });
     }
 
-    // 5. Listener Reativo de Atualizações Analíticas
+    // 7. Listener Reativo de Atualizações Analíticas
     if (window.IsapelAnalytics && typeof window.IsapelAnalytics.registrarListener === 'function') {
       window.IsapelAnalytics.registrarListener(() => {
         renderizarAnalytics();
@@ -1088,10 +1160,40 @@
       dataInicio: AppState.analytics.dataInicio,
       dataFim: AppState.analytics.dataFim,
       vendedorId: AppState.analytics.vendedorFiltro,
+      regiao: AppState.analytics.regiaoFiltro,
       sessao: sessao
     });
 
     if (!resultado || !resultado.kpis) return;
+
+    // Atualiza opções do seletor de regiões dinamicamente
+    const selectRegiao = document.getElementById('analytics-regiao-select');
+    if (selectRegiao) {
+      const todosLeads = (window.IsapelAnalytics && typeof window.IsapelAnalytics.obterLeads === 'function')
+        ? window.IsapelAnalytics.obterLeads()
+        : (AppState.leads || []);
+
+      const regioesTodas = new Map();
+      todosLeads.forEach(l => {
+        const ddd = l.ddd ? String(l.ddd).trim() : '';
+        const reg = l.regiao || l.cidade || (ddd ? `DDD ${ddd}` : '');
+        if (reg) {
+          const label = ddd ? `DDD ${ddd} - ${reg}` : reg;
+          regioesTodas.set(label, (regioesTodas.get(label) || 0) + 1);
+        }
+      });
+
+      const valorAtual = AppState.analytics.regiaoFiltro || 'todas';
+      selectRegiao.innerHTML = `<option value="todas">Todas as Regiões (${todosLeads.length} leads)</option>`;
+      Array.from(regioesTodas.entries()).sort((a, b) => b[1] - a[1]).forEach(([regNome, count]) => {
+        const opt = document.createElement('option');
+        opt.value = regNome;
+        opt.textContent = `${regNome} (${count})`;
+        if (regNome === valorAtual) opt.selected = true;
+        selectRegiao.appendChild(opt);
+      });
+      selectRegiao.value = valorAtual;
+    }
 
     // 1. Atualização dos 6 Bento KPIs
     const elKpiRecebidos = document.getElementById('analytics-kpi-recebidos');
@@ -1128,7 +1230,11 @@
     if (elKpiTicketMedioHint) elKpiTicketMedioHint.textContent = 'Média por proposta ativa';
 
     if (elKpiRotas) elKpiRotas.textContent = `${resultado.kpis.regioesAtendidasCount} Regiões`;
-    if (elKpiRotasHint) elKpiRotasHint.textContent = 'Frota Própria Isapel';
+    if (elKpiRotasHint) {
+      elKpiRotasHint.textContent = AppState.analytics.regiaoFiltro !== 'todas'
+        ? `Filtro ativo: ${AppState.analytics.regiaoFiltro.split('-')[0].trim()}`
+        : `${resultado.kpis.totalRecebidos} leads mapeados`;
+    }
 
     // 2. Gráfico do Funil de 6 Etapas
     const totalLeadsBadge = document.getElementById('analytics-funnel-total-leads');
@@ -1232,7 +1338,7 @@
             <div class="crm-seller-row__avatar" style="width: 44px; height: 44px; font-size: 1rem;">${vendedorAvatar}</div>
             <div class="crm-seller-row__info">
               <span class="crm-seller-row__name" style="font-size: 1rem;">${vendedorNome}</span>
-              <span class="crm-seller-row__cargo">${vendedorCargo} &bull; Frota Própria CIF</span>
+              <span class="crm-seller-row__cargo">${vendedorCargo} &bull; Região de Atuação</span>
             </div>
           </div>
           <div class="crm-seller-scorecard__grid">
@@ -1255,6 +1361,56 @@
           </div>
         `;
         sellerContainer.appendChild(scorecard);
+      }
+    }
+
+    // 4. Renderiza Lista de Regiões de Leads Recebidos
+    const regionsContainer = document.getElementById('analytics-regions-distribution-container');
+    if (regionsContainer) {
+      regionsContainer.innerHTML = '';
+      if (!resultado.distribuicaoRegioes || resultado.distribuicaoRegioes.length === 0) {
+        regionsContainer.innerHTML = '<div style="font-size:0.85rem; color:var(--text-muted); padding:1.5rem; text-align:center;">Nenhum lead com região mapeada para os filtros selecionados.</div>';
+      } else {
+        resultado.distribuicaoRegioes.forEach(reg => {
+          const row = document.createElement('div');
+          row.className = 'crm-region-row';
+          const isSelected = AppState.analytics.regiaoFiltro === reg.chave || AppState.analytics.regiaoFiltro === reg.regiao;
+          if (isSelected) row.classList.add('is-selected');
+
+          row.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div style="display:flex; align-items:center; gap:0.45rem;">
+                ${reg.ddd ? `<span style="font-size:0.7rem; font-weight:800; background:rgba(2,132,199,0.12); color:var(--isapel-sky-dark); padding:2px 6px; border-radius:4px;">DDD ${reg.ddd}</span>` : ''}
+                <strong style="font-size:0.85rem; color:var(--text-main);">${reg.regiao}</strong>
+                ${isSelected ? '<span style="font-size:0.68rem; font-weight:700; color:var(--isapel-emerald); background:rgba(5,150,105,0.1); padding:2px 6px; border-radius:4px;">✓ Filtro Ativo</span>' : ''}
+              </div>
+              <span style="font-family:var(--font-condensed); font-size:0.95rem; font-weight:800; color:var(--isapel-navy);">${formatarMoeda(reg.valorTotal)}</span>
+            </div>
+            <div style="width:100%; height:6px; background:#E2E8F0; border-radius:3px; overflow:hidden; margin:0.25rem 0;">
+              <div style="width:${Math.max(reg.pctTotal, 4)}%; height:100%; background:linear-gradient(90deg, var(--isapel-sky), var(--isapel-sky-dark)); border-radius:3px;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.74rem; color:var(--text-muted);">
+              <span>${reg.count} ${reg.count === 1 ? 'lead recebido' : 'leads recebidos'} (${reg.pctTotal}%)</span>
+              <span style="font-weight:600; color:var(--isapel-sky-dark);">${isSelected ? 'Remover filtro' : 'Filtrar por esta praça →'}</span>
+            </div>
+          `;
+
+          row.addEventListener('click', () => {
+            const sReg = document.getElementById('analytics-regiao-select');
+            if (isSelected) {
+              AppState.analytics.regiaoFiltro = 'todas';
+              if (sReg) sReg.value = 'todas';
+              showToast('Filtro de região removido.', 'info', 1500);
+            } else {
+              AppState.analytics.regiaoFiltro = reg.chave;
+              if (sReg) sReg.value = reg.chave;
+              showToast(`Filtrando leads de ${reg.regiao}.`, 'info', 1500);
+            }
+            renderizarAnalytics();
+          });
+
+          regionsContainer.appendChild(row);
+        });
       }
     }
   }
@@ -1889,6 +2045,784 @@
   }
 
   // ==========================================================================
+  // 15. GESTÃO COMERCIAL, NOVOS CONSULTORES & RBAC
+  // ==========================================================================
+  function gerarIniciaisNome(nome) {
+    if (!nome) return 'CO';
+    const partes = String(nome).trim().split(/\s+/).filter(Boolean);
+    if (partes.length === 1) return partes[0].substring(0, 2).toUpperCase();
+    return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+  }
+
+  function inicializarRBAC(sessao) {
+    if (!sessao) return;
+
+    const headerUserName = document.getElementById('header-user-name');
+    const headerUserAvatar = document.getElementById('header-user-avatar');
+    const headerUserRoleBadge = document.getElementById('header-user-role-badge');
+    const wrapperVendedorSelect = document.getElementById('wrapper-vendedor-select');
+    const selectVendedor = document.getElementById('vendedor-select');
+    const avatarAtivo = document.getElementById('header-active-avatar');
+    const tabNavGestao = document.getElementById('tab-nav-gestao');
+    const tabGestao = document.getElementById('tab-gestao');
+
+    if (headerUserName) headerUserName.textContent = sessao.nome;
+    if (headerUserAvatar) headerUserAvatar.textContent = sessao.avatar;
+    if (headerUserRoleBadge) {
+      headerUserRoleBadge.textContent = sessao.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
+      headerUserRoleBadge.className = `crm-role-badge crm-role-badge--${sessao.perfil}`;
+    }
+
+    if (sessao.perfil === 'vendedor') {
+      // Vendedor: restrito estritamente ao seu próprio vendedorId
+      AppState.vendedorAtivo = sessao.vendedorId;
+      if (selectVendedor) {
+        selectVendedor.value = sessao.vendedorId;
+        selectVendedor.disabled = true;
+      }
+      if (avatarAtivo) {
+        avatarAtivo.textContent = sessao.avatar;
+      }
+      if (wrapperVendedorSelect) {
+        wrapperVendedorSelect.style.display = 'none';
+      }
+      if (tabNavGestao) {
+        tabNavGestao.style.display = 'none';
+        tabNavGestao.setAttribute('aria-hidden', 'true');
+      }
+      if (tabGestao) {
+        tabGestao.style.display = 'none';
+        tabGestao.setAttribute('hidden', 'until-found');
+      }
+    } else if (sessao.perfil === 'diretoria') {
+      // Diretoria: visão global irrestrita com permissão de alternar o filtro
+      AppState.vendedorAtivo = 'todos';
+      if (selectVendedor) {
+        selectVendedor.value = 'todos';
+        selectVendedor.disabled = false;
+      }
+      if (avatarAtivo) {
+        avatarAtivo.textContent = 'ALL';
+      }
+      if (wrapperVendedorSelect) {
+        wrapperVendedorSelect.style.display = 'flex';
+      }
+      if (tabNavGestao) {
+        tabNavGestao.style.display = 'flex';
+        tabNavGestao.removeAttribute('aria-hidden');
+      }
+      if (tabGestao) {
+        tabGestao.style.display = '';
+      }
+    }
+  }
+
+  function renderizarTabelaVendedores() {
+    const tbody = document.getElementById('tabela-equipe-vendedores-tbody') || 
+                  (document.getElementById('tabela-equipe-vendedores') ? document.getElementById('tabela-equipe-vendedores').querySelector('tbody') : null);
+    if (!tbody) return;
+
+    if (!window.IsapelAuth || typeof window.IsapelAuth.obterVendedores !== 'function') return;
+    const vendedores = window.IsapelAuth.obterVendedores();
+
+    tbody.innerHTML = vendedores.map(v => {
+      const login = v.login || v.usuario || v.id;
+      const nome = v.nome || login;
+      const cargo = v.cargo || 'Consultor Comercial B2B';
+      const iniciais = v.avatarIniciais || v.avatar || gerarIniciaisNome(nome);
+      const cor = v.avatarCor || '#0284C7';
+      const metaFardos = Number(v.metaMensalFardos) || 0;
+      const metaReais = Number(v.metaMensalReais) || 0;
+      const metaTexto = metaReais > 0 
+        ? `R$ ${metaReais.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` 
+        : `${metaFardos.toLocaleString('pt-BR')} fardos`;
+
+      return `
+        <tr data-vendedor-id="${login}">
+          <td>
+            <div class="crm-seller-cell">
+              <span class="crm-seller-avatar-badge" style="background: ${cor};">${iniciais}</span>
+              <div class="crm-seller-info">
+                <strong class="crm-seller-name">${nome}</strong>
+                <span class="crm-seller-login">@${login}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="crm-cargo-badge">${cargo}</span>
+          </td>
+          <td>
+            <div class="crm-meta-cell">
+              <strong>${metaTexto}</strong>
+              ${metaFardos > 0 && metaReais > 0 ? `<small class="crm-meta-sub">${metaFardos.toLocaleString('pt-BR')} fardos</small>` : ''}
+            </div>
+          </td>
+          <td>
+            <span class="crm-status-pill crm-status-pill--ativo">
+              <span class="crm-status-dot" aria-hidden="true"></span>
+              Ativo
+            </span>
+          </td>
+          <td>
+            <button type="button" class="crm-btn crm-btn--sm crm-btn--outline btn-customizar-avatar-tabela btn-customizar-avatar" data-vendedor="${login}" title="Personalizar Avatar 3D do Consultor">
+              🎨 Customizar
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function atualizarSeletoresVendedores() {
+    if (!window.IsapelAuth || typeof window.IsapelAuth.obterVendedores !== 'function') return;
+    const vendedores = window.IsapelAuth.obterVendedores();
+
+    // 1. #vendedor-select no Header
+    const selectHeader = document.getElementById('vendedor-select');
+    if (selectHeader) {
+      const valorAtual = selectHeader.value;
+      let html = '<option value="todos">Todos os Vendedores</option>';
+      vendedores.forEach(v => {
+        const id = v.id || v.login || v.usuario;
+        html += `<option value="${id}">${v.nome}</option>`;
+      });
+      selectHeader.innerHTML = html;
+      if (valorAtual && Array.from(selectHeader.options).some(o => o.value === valorAtual)) {
+        selectHeader.value = valorAtual;
+      }
+    }
+
+    // 2. #analytics-vendedor-select na aba de Analytics
+    const selectAnalytics = document.getElementById('analytics-vendedor-select');
+    if (selectAnalytics) {
+      const valorAtual = selectAnalytics.value;
+      let html = '<option value="todos">Toda a Equipe (Consolidado)</option>';
+      vendedores.forEach(v => {
+        const id = v.id || v.login || v.usuario;
+        html += `<option value="${id}">${v.nome}</option>`;
+      });
+      selectAnalytics.innerHTML = html;
+      if (valorAtual && Array.from(selectAnalytics.options).some(o => o.value === valorAtual)) {
+        selectAnalytics.value = valorAtual;
+      }
+    }
+
+    // 3. #edit-lead-vendedor no Modal de Edição
+    const selectEdit = document.getElementById('edit-lead-vendedor');
+    if (selectEdit) {
+      const valorAtual = selectEdit.value;
+      let html = '';
+      vendedores.forEach(v => {
+        const id = v.id || v.login || v.usuario;
+        html += `<option value="${id}">${v.nome}</option>`;
+      });
+      selectEdit.innerHTML = html;
+      if (valorAtual && Array.from(selectEdit.options).some(o => o.value === valorAtual)) {
+        selectEdit.value = valorAtual;
+      }
+    }
+  }
+
+  function inicializarFormularioNovoVendedor() {
+    const form = document.getElementById('form-novo-vendedor');
+
+    // Password toggle
+    const btnToggle = document.getElementById('btn-toggle-senha-vendedor');
+    const inputSenha = document.getElementById('vendedor-novo-senha');
+    const iconEye = document.getElementById('icon-toggle-senha-eye');
+    const iconEyeOff = document.getElementById('icon-toggle-senha-eye-off');
+
+    if (btnToggle && inputSenha) {
+      btnToggle.addEventListener('click', () => {
+        const isPassword = inputSenha.type === 'password';
+        inputSenha.type = isPassword ? 'text' : 'password';
+        btnToggle.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Ver senha');
+        btnToggle.setAttribute('title', isPassword ? 'Ocultar senha' : 'Ver senha');
+        if (iconEye && iconEyeOff) {
+          iconEye.style.display = isPassword ? 'none' : 'block';
+          iconEyeOff.style.display = isPassword ? 'block' : 'none';
+        }
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const nomeInput = document.getElementById('vendedor-novo-nome');
+        const loginInput = document.getElementById('vendedor-novo-login');
+        const senhaInput = document.getElementById('vendedor-novo-senha');
+        const cargoInput = document.getElementById('vendedor-novo-cargo');
+        const metaInput = document.getElementById('vendedor-novo-meta');
+
+        const nome = nomeInput ? nomeInput.value.trim() : '';
+        const login = loginInput ? loginInput.value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '') : '';
+        const senha = senhaInput ? senhaInput.value.trim() : '';
+        const cargo = cargoInput ? cargoInput.value.trim() : 'Consultor Comercial B2B';
+        const metaRaw = metaInput ? parseFloat(metaInput.value) || 0 : 0;
+
+        if (!nome || nome.length < 3) {
+          showToast('Nome completo deve ter no mínimo 3 caracteres.', 'error');
+          if (nomeInput) nomeInput.focus();
+          return;
+        }
+
+        if (!login || login.length < 3) {
+          showToast('Identificador / Login deve ter no mínimo 3 caracteres alfanuméricos.', 'error');
+          if (loginInput) loginInput.focus();
+          return;
+        }
+
+        if (!senha || senha.length < 6) {
+          showToast('Senha inicial deve ter no mínimo 6 caracteres.', 'error');
+          if (senhaInput) senhaInput.focus();
+          return;
+        }
+
+        const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+          ? window.IsapelAuth.obterSessao()
+          : null;
+
+        if (!sessao || sessao.perfil !== 'diretoria') {
+          showToast('Acesso restrito à Diretoria Comercial.', 'warning');
+          return;
+        }
+
+        const metaMensalReais = metaRaw > 5000 ? metaRaw : (metaRaw > 0 ? metaRaw * 25 : 40000);
+        const metaMensalFardos = metaRaw > 5000 ? Math.round(metaRaw / 25) : (metaRaw > 0 ? metaRaw : 1500);
+
+        const dadosVendedor = {
+          nome,
+          login,
+          senhaInicial: senha,
+          cargo,
+          metaMensalReais,
+          metaMensalFardos,
+          avatarCor: '#0284C7',
+          avatarIniciais: gerarIniciaisNome(nome)
+        };
+
+        if (!window.IsapelAuth || typeof window.IsapelAuth.cadastrarVendedor !== 'function') {
+          showToast('Módulo de autenticação indisponível.', 'error');
+          return;
+        }
+
+        const resultado = window.IsapelAuth.cadastrarVendedor(dadosVendedor, sessao);
+
+        if (resultado && resultado.ok) {
+          showToast(`Vendedor "${resultado.vendedor.nome}" cadastrado com sucesso!`, 'success');
+          form.reset();
+          renderizarTabelaVendedores();
+          atualizarSeletoresVendedores();
+        } else {
+          const erroMsg = (resultado && resultado.erro) ? resultado.erro : 'Erro ao cadastrar novo vendedor.';
+          showToast(erroMsg, 'error');
+        }
+      });
+    }
+
+    // Escuta evento global disparado por crm-auth.js ou sincronização externa
+    window.addEventListener('isapel:vendedor-cadastrado', () => {
+      renderizarTabelaVendedores();
+      atualizarSeletoresVendedores();
+    });
+  }
+
+  // ==========================================================================
+  // 15.5. CUSTOMIZADOR DE AVATARES 3D & ESTÚDIO DE LIVE PREVIEW
+  // ==========================================================================
+
+  function obterConfigAvatarVendedor(vendedorId) {
+    const vid = vendedorId || 'maciel';
+
+    // 1. Tentar obter do IsapelSync
+    if (window.IsapelSync && typeof window.IsapelSync.obterPerfilAvatar === 'function') {
+      const cfg = window.IsapelSync.obterPerfilAvatar(vid);
+      if (cfg) return { ...cfg };
+    }
+
+    // 2. Tentar obter do localStorage
+    try {
+      const raw1 = localStorage.getItem('isapel_crm_avatar_profiles');
+      if (raw1) {
+        const p1 = JSON.parse(raw1);
+        if (p1 && p1[vid]) return { ...p1[vid] };
+      }
+      const raw2 = localStorage.getItem('isapel_avatar_customizations');
+      if (raw2) {
+        const p2 = JSON.parse(raw2);
+        if (p2 && p2[vid]) return { ...p2[vid] };
+      }
+      const raw3 = localStorage.getItem('isapel_vendedores_custom_v1');
+      if (raw3) {
+        const p3 = JSON.parse(raw3);
+        if (p3 && p3[vid]) return { ...p3[vid] };
+      }
+    } catch (e) {
+      console.warn('[AvatarCustomizer] Erro ao ler avatar do localStorage:', e);
+    }
+
+    // 3. Presets oficiais de AvatarBuilder
+    if (window.Arena3D && window.Arena3D.AvatarBuilder && typeof window.Arena3D.AvatarBuilder.obterPresetsPadrao === 'function') {
+      const presets = window.Arena3D.AvatarBuilder.obterPresetsPadrao();
+      if (presets && presets[vid]) return { ...presets[vid] };
+    }
+
+    // 4. Fallback padrão seguro
+    return {
+      uniforme: 'polo-navy',
+      cabeloEstilo: vid === 'fernanda' ? 'liso-comprido' : (vid === 'caio' ? 'cacheado-volumoso' : 'cacheado-curto'),
+      cabeloHex: vid === 'fernanda' ? '#F7CF46' : '#1A1514',
+      barbaEstilo: vid === 'maciel' ? 'com-bigode' : 'sem-barba',
+      barbaHex: '#161211',
+      peleHex: vid === 'fernanda' ? '#F9D3B4' : (vid === 'caio' ? '#DFA980' : '#E6B994'),
+      oculos: 'nenhum',
+      cracha: true
+    };
+  }
+
+  function sincronizarControlesModal(cfg) {
+    if (!cfg) return;
+
+    // 1. Uniforme
+    const selUniforme = document.getElementById('avatar-uniforme-select');
+    if (selUniforme) {
+      selUniforme.value = cfg.uniforme || 'polo-navy';
+    }
+    document.querySelectorAll('.crm-uniforme-swatch-btn').forEach(btn => {
+      const val = btn.getAttribute('data-uniforme');
+      if (val === cfg.uniforme) {
+        btn.classList.add('is-active', 'is-selected');
+      } else {
+        btn.classList.remove('is-active', 'is-selected');
+      }
+    });
+
+    // 2. Cabelo
+    const selCabelo = document.getElementById('avatar-cabelo-estilo');
+    if (selCabelo && cfg.cabeloEstilo) {
+      selCabelo.value = cfg.cabeloEstilo;
+    }
+    const cabeloHexNorm = (cfg.cabeloHex || '#1A1514').toLowerCase();
+    document.querySelectorAll('#avatar-cabelo-cores .crm-color-swatch').forEach(btn => {
+      const cor = (btn.getAttribute('data-cor-cabelo') || btn.getAttribute('data-cabelo-cor') || '').toLowerCase();
+      if (cor === cabeloHexNorm) {
+        btn.classList.add('is-active', 'is-selected');
+      } else {
+        btn.classList.remove('is-active', 'is-selected');
+      }
+    });
+
+    // 3. Barba
+    const selBarba = document.getElementById('avatar-barba-estilo');
+    if (selBarba && cfg.barbaEstilo) {
+      selBarba.value = cfg.barbaEstilo;
+    }
+    const barbaHexNorm = (cfg.barbaHex || '#161211').toLowerCase();
+    document.querySelectorAll('#avatar-barba-cores .crm-color-swatch').forEach(btn => {
+      const cor = (btn.getAttribute('data-cor-barba') || '').toLowerCase();
+      if (cor === barbaHexNorm) {
+        btn.classList.add('is-active', 'is-selected');
+      } else {
+        btn.classList.remove('is-active', 'is-selected');
+      }
+    });
+
+    // 4. Pele
+    const selPele = document.getElementById('avatar-pele-tom');
+    if (selPele && cfg.peleHex) {
+      selPele.value = cfg.peleHex.toUpperCase();
+    }
+    const peleHexNorm = (cfg.peleHex || '#E6B994').toLowerCase();
+    document.querySelectorAll('#avatar-pele-swatches .crm-color-swatch').forEach(btn => {
+      const cor = (btn.getAttribute('data-pele') || btn.getAttribute('data-tom-pele') || '').toLowerCase();
+      if (cor === peleHexNorm) {
+        btn.classList.add('is-active', 'is-selected');
+      } else {
+        btn.classList.remove('is-active', 'is-selected');
+      }
+    });
+
+    // 5. Óculos & Crachá
+    const selOculos = document.getElementById('avatar-acessorio-oculos');
+    if (selOculos && cfg.oculos) {
+      selOculos.value = cfg.oculos;
+    }
+    const chkCracha = document.getElementById('avatar-cracha-check');
+    if (chkCracha) {
+      chkCracha.checked = cfg.cracha !== false;
+    }
+  }
+
+  function abrirModalCustomizador(vendedorIdAlvo) {
+    const backdrop = document.getElementById('modal-avatar-backdrop');
+    const modal = document.getElementById('modal-avatar-customizer');
+    if (!backdrop && !modal) return;
+
+    const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+    const perfil = (window.IsapelAuth && typeof window.IsapelAuth.obterPerfil === 'function')
+      ? window.IsapelAuth.obterPerfil()
+      : (sessao ? sessao.perfil : 'vendedor');
+    const usuarioLogado = sessao ? (sessao.login || sessao.usuario || sessao.id) : 'maciel';
+
+    const selVendedor = document.getElementById('avatar-custom-seller-select');
+    const badgeLocked = document.getElementById('avatar-seller-locked-name');
+    const nameLocked = document.getElementById('avatar-seller-name');
+    const rbacTag = document.getElementById('avatar-rbac-tag');
+
+    let vid = vendedorIdAlvo;
+
+    // RBAC: Diretoria possui seletor liberado; Vendedor fica travado exclusivamente no próprio perfil
+    if (perfil === 'diretoria' || (sessao && sessao.tipo === 'diretoria')) {
+      if (selVendedor) {
+        selVendedor.disabled = false;
+        // Popula todas as opções de vendedores disponíveis
+        if (window.IsapelAuth && typeof window.IsapelAuth.obterVendedores === 'function') {
+          const vends = window.IsapelAuth.obterVendedores();
+          selVendedor.innerHTML = vends.map(v => {
+            const vId = v.login || v.usuario || v.id;
+            const vNome = v.nome || vId;
+            return `<option value="${vId}">${vNome} (${vId})</option>`;
+          }).join('');
+        }
+        vid = vid || selVendedor.value || 'maciel';
+        selVendedor.value = vid;
+      }
+      if (badgeLocked) {
+        badgeLocked.style.display = 'none';
+      }
+      if (rbacTag) {
+        rbacTag.textContent = 'Diretoria (Irrestrito)';
+      }
+    } else {
+      // Perfil Vendedor: Bloqueado estritamente em seu próprio perfil
+      vid = usuarioLogado || 'maciel';
+      if (selVendedor) {
+        if (!Array.from(selVendedor.options).some(o => o.value === vid)) {
+          const opt = document.createElement('option');
+          opt.value = vid;
+          opt.textContent = `${sessao?.nome || vid} (${vid})`;
+          selVendedor.appendChild(opt);
+        }
+        selVendedor.value = vid;
+        selVendedor.disabled = true;
+      }
+      if (badgeLocked) {
+        badgeLocked.style.display = 'inline-flex';
+        if (nameLocked) {
+          nameLocked.textContent = sessao?.nome ? `${sessao.nome} (${vid})` : vid;
+        }
+      }
+      if (rbacTag) {
+        rbacTag.textContent = 'Consultor (Travado)';
+      }
+    }
+
+    AppState.vendedorCustomizandoId = vid;
+    const configAtual = obterConfigAvatarVendedor(vid);
+    sincronizarControlesModal(configAtual);
+
+    // Torna o modal e o backdrop visíveis
+    if (backdrop) {
+      backdrop.classList.add('is-open');
+      backdrop.setAttribute('aria-hidden', 'false');
+      backdrop.style.display = 'flex';
+    }
+    if (modal) {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      modal.style.display = 'flex';
+    }
+
+    // Inicializa o Canvas Three.js do Preview Engine
+    const canvas = document.getElementById('avatar-preview-canvas');
+    if (canvas && window.Arena3D && window.Arena3D.AvatarPreviewEngine) {
+      if (!AppState.avatarPreviewEngine) {
+        AppState.avatarPreviewEngine = new window.Arena3D.AvatarPreviewEngine(canvas);
+      }
+      if (AppState.avatarPreviewEngine) {
+        AppState.avatarPreviewEngine.carregarConfig(vid, configAtual);
+        AppState.avatarPreviewEngine.iniciar();
+      }
+    }
+  }
+
+  function fecharModalCustomizador() {
+    const backdrop = document.getElementById('modal-avatar-backdrop');
+    const modal = document.getElementById('modal-avatar-customizer');
+    if (backdrop) {
+      backdrop.classList.remove('is-open');
+      backdrop.setAttribute('aria-hidden', 'true');
+      backdrop.style.display = 'none';
+    }
+    if (modal) {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+    }
+    if (AppState.avatarPreviewEngine) {
+      AppState.avatarPreviewEngine.pausar();
+    }
+  }
+
+  function salvarCustomizacaoAvatar() {
+    const vid = AppState.vendedorCustomizandoId || 'maciel';
+    let configParaSalvar = null;
+
+    if (AppState.avatarPreviewEngine && typeof AppState.avatarPreviewEngine.obterConfigAtual === 'function') {
+      configParaSalvar = AppState.avatarPreviewEngine.obterConfigAtual();
+    }
+
+    if (!configParaSalvar) {
+      const selUnif = document.getElementById('avatar-uniforme-select');
+      const selCab = document.getElementById('avatar-cabelo-estilo');
+      const selBarb = document.getElementById('avatar-barba-estilo');
+      const selPele = document.getElementById('avatar-pele-tom');
+      const selOc = document.getElementById('avatar-acessorio-oculos');
+      const chkCracha = document.getElementById('avatar-cracha-check');
+
+      configParaSalvar = {
+        uniforme: selUnif ? selUnif.value : 'polo-navy',
+        cabeloEstilo: selCab ? selCab.value : 'cacheado-curto',
+        cabeloHex: '#1a1514',
+        barbaEstilo: selBarb ? selBarb.value : 'com-bigode',
+        barbaHex: '#161211',
+        peleHex: selPele ? selPele.value : '#e6b994',
+        oculos: selOc ? selOc.value : 'nenhum',
+        cracha: chkCracha ? chkCracha.checked : true
+      };
+    }
+
+    // 1. Gravar via IsapelSync (Supabase / Local)
+    if (window.IsapelSync && typeof window.IsapelSync.salvarPerfilAvatar === 'function') {
+      window.IsapelSync.salvarPerfilAvatar(vid, configParaSalvar);
+    }
+
+    // 2. Persistir rigorosamente no localStorage
+    try {
+      const raw1 = localStorage.getItem('isapel_crm_avatar_profiles');
+      const p1 = raw1 ? JSON.parse(raw1) : {};
+      p1[vid] = configParaSalvar;
+      localStorage.setItem('isapel_crm_avatar_profiles', JSON.stringify(p1));
+
+      const raw2 = localStorage.getItem('isapel_avatar_customizations');
+      const p2 = raw2 ? JSON.parse(raw2) : {};
+      p2[vid] = configParaSalvar;
+      localStorage.setItem('isapel_avatar_customizations', JSON.stringify(p2));
+
+      const raw3 = localStorage.getItem('isapel_vendedores_custom_v1');
+      const p3 = raw3 ? JSON.parse(raw3) : {};
+      p3[vid] = configParaSalvar;
+      localStorage.setItem('isapel_vendedores_custom_v1', JSON.stringify(p3));
+    } catch (err) {
+      console.warn('[AvatarCustomizer] Erro ao salvar storage:', err);
+    }
+
+    // 3. Atualizar ao vivo a Arena 3D sem recarregar a página (Zero Page Reload)
+    if (window.Arena3D && typeof window.Arena3D.atualizarAparencia === 'function') {
+      window.Arena3D.atualizarAparencia(vid, configParaSalvar);
+    }
+
+    // 4. Disparar evento para qualquer listener ativo
+    window.dispatchEvent(new CustomEvent('isapel:avatar-updated', {
+      detail: { vendedorId: vid, config: configParaSalvar }
+    }));
+
+    showToast(`Avatar 3D do consultor ${vid} salvo e sincronizado com a Arena!`, 'success');
+    fecharModalCustomizador();
+  }
+
+  function inicializarModalAvatar() {
+    // 1. Botões de fechamento
+    const btnFechar = document.getElementById('btn-fechar-customizador');
+    if (btnFechar) btnFechar.addEventListener('click', fecharModalCustomizador);
+
+    const btnCancelar = document.getElementById('btn-cancelar-customizador');
+    if (btnCancelar) btnCancelar.addEventListener('click', fecharModalCustomizador);
+
+    const backdrop = document.getElementById('modal-avatar-backdrop');
+    if (backdrop) {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) fecharModalCustomizador();
+      });
+    }
+
+    // 2. Botão de salvar
+    const btnSalvar = document.getElementById('btn-salvar-avatar');
+    if (btnSalvar) btnSalvar.addEventListener('click', salvarCustomizacaoAvatar);
+
+    // 3. Seletor de consultor (Diretoria)
+    const selVendedor = document.getElementById('avatar-custom-seller-select');
+    if (selVendedor) {
+      selVendedor.addEventListener('change', (e) => {
+        const vid = e.target.value;
+        AppState.vendedorCustomizandoId = vid;
+        const cfg = obterConfigAvatarVendedor(vid);
+        sincronizarControlesModal(cfg);
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.carregarConfig(vid, cfg);
+        }
+      });
+    }
+
+    // 4. Seletor e Swatches de Uniforme
+    const selUniforme = document.getElementById('avatar-uniforme-select');
+    if (selUniforme) {
+      selUniforme.addEventListener('change', (e) => {
+        const val = e.target.value;
+        document.querySelectorAll('.crm-uniforme-swatch-btn').forEach(btn => {
+          btn.classList.toggle('is-active', btn.getAttribute('data-uniforme') === val);
+          btn.classList.toggle('is-selected', btn.getAttribute('data-uniforme') === val);
+        });
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('uniforme', val);
+        }
+      });
+    }
+
+    document.querySelectorAll('.crm-uniforme-swatch-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-uniforme');
+        if (!val) return;
+        if (selUniforme) selUniforme.value = val;
+        document.querySelectorAll('.crm-uniforme-swatch-btn').forEach(b => {
+          b.classList.toggle('is-active', b === btn);
+          b.classList.toggle('is-selected', b === btn);
+        });
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('uniforme', val);
+        }
+      });
+    });
+
+    // 5. Cabelo (Estilo e Cor)
+    const selCabelo = document.getElementById('avatar-cabelo-estilo');
+    if (selCabelo) {
+      selCabelo.addEventListener('change', (e) => {
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('cabeloEstilo', e.target.value);
+        }
+      });
+    }
+
+    document.querySelectorAll('#avatar-cabelo-cores .crm-color-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cor = btn.getAttribute('data-cor-cabelo') || btn.getAttribute('data-cabelo-cor');
+        if (!cor) return;
+        document.querySelectorAll('#avatar-cabelo-cores .crm-color-swatch').forEach(b => {
+          b.classList.toggle('is-active', b === btn);
+          b.classList.toggle('is-selected', b === btn);
+        });
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('cabeloHex', cor);
+        }
+      });
+    });
+
+    // 6. Barba (Estilo e Cor)
+    const selBarba = document.getElementById('avatar-barba-estilo');
+    if (selBarba) {
+      selBarba.addEventListener('change', (e) => {
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('barbaEstilo', e.target.value);
+        }
+      });
+    }
+
+    document.querySelectorAll('#avatar-barba-cores .crm-color-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cor = btn.getAttribute('data-cor-barba');
+        if (!cor) return;
+        document.querySelectorAll('#avatar-barba-cores .crm-color-swatch').forEach(b => {
+          b.classList.toggle('is-active', b === btn);
+          b.classList.toggle('is-selected', b === btn);
+        });
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('barbaHex', cor);
+        }
+      });
+    });
+
+    // 7. Tom de Pele
+    const selPele = document.getElementById('avatar-pele-tom');
+    if (selPele) {
+      selPele.addEventListener('change', (e) => {
+        const cor = e.target.value;
+        document.querySelectorAll('#avatar-pele-swatches .crm-color-swatch').forEach(b => {
+          const bCor = b.getAttribute('data-pele') || b.getAttribute('data-tom-pele');
+          b.classList.toggle('is-active', (bCor || '').toLowerCase() === cor.toLowerCase());
+        });
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('peleHex', cor);
+        }
+      });
+    }
+
+    document.querySelectorAll('#avatar-pele-swatches .crm-color-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cor = btn.getAttribute('data-pele') || btn.getAttribute('data-tom-pele');
+        if (!cor) return;
+        if (selPele) selPele.value = cor.toUpperCase();
+        document.querySelectorAll('#avatar-pele-swatches .crm-color-swatch').forEach(b => {
+          b.classList.toggle('is-active', b === btn);
+          b.classList.toggle('is-selected', b === btn);
+        });
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('peleHex', cor);
+        }
+      });
+    });
+
+    // 8. Óculos & Crachá
+    const selOculos = document.getElementById('avatar-acessorio-oculos');
+    if (selOculos) {
+      selOculos.addEventListener('change', (e) => {
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('oculos', e.target.value);
+        }
+      });
+    }
+
+    const chkCracha = document.getElementById('avatar-cracha-check');
+    if (chkCracha) {
+      chkCracha.addEventListener('change', (e) => {
+        if (AppState.avatarPreviewEngine) {
+          AppState.avatarPreviewEngine.atualizarTrait('cracha', e.target.checked);
+        }
+      });
+    }
+
+    // 9. Gatilhos de Abertura do Modal (Header, Arena, Tabela)
+    const btnHeader = document.getElementById('btn-customizar-avatar-header');
+    if (btnHeader) {
+      btnHeader.addEventListener('click', (e) => {
+        e.preventDefault();
+        abrirModalCustomizador();
+      });
+    }
+
+    const btnArena = document.getElementById('btn-abrir-customizador-arena');
+    if (btnArena) {
+      btnArena.addEventListener('click', (e) => {
+        e.preventDefault();
+        abrirModalCustomizador();
+      });
+    }
+
+    // Delegação global para botões de customização na tabela ou em qualquer lugar
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-customizar-avatar-tabela, .btn-customizar-avatar, #btn-abrir-customizador');
+      if (btn && btn !== btnHeader && btn !== btnArena) {
+        e.preventDefault();
+        const vid = btn.getAttribute('data-vendedor');
+        abrirModalCustomizador(vid);
+      }
+    });
+  }
+
+  // ==========================================================================
   // 16. INICIALIZAÇÃO GERAL DO APLICATIVO
   // ==========================================================================
   function initApp() {
@@ -1900,47 +2834,7 @@
       : null;
 
     if (sessao) {
-      const headerUserName = document.getElementById('header-user-name');
-      const headerUserAvatar = document.getElementById('header-user-avatar');
-      const headerUserRoleBadge = document.getElementById('header-user-role-badge');
-      const wrapperVendedorSelect = document.getElementById('wrapper-vendedor-select');
-      const selectVendedor = document.getElementById('vendedor-select');
-      const avatarAtivo = document.getElementById('header-active-avatar');
-
-      if (headerUserName) headerUserName.textContent = sessao.nome;
-      if (headerUserAvatar) headerUserAvatar.textContent = sessao.avatar;
-      if (headerUserRoleBadge) {
-        headerUserRoleBadge.textContent = sessao.perfil === 'diretoria' ? 'Diretoria' : 'Vendedor';
-        headerUserRoleBadge.className = `crm-role-badge crm-role-badge--${sessao.perfil}`;
-      }
-
-      if (sessao.perfil === 'vendedor') {
-        // Vendedor: restrito estritamente ao seu próprio vendedorId
-        AppState.vendedorAtivo = sessao.vendedorId;
-        if (selectVendedor) {
-          selectVendedor.value = sessao.vendedorId;
-          selectVendedor.disabled = true;
-        }
-        if (avatarAtivo) {
-          avatarAtivo.textContent = sessao.avatar;
-        }
-        if (wrapperVendedorSelect) {
-          wrapperVendedorSelect.style.display = 'none';
-        }
-      } else if (sessao.perfil === 'diretoria') {
-        // Diretoria: visão global irrestrita com permissão de alternar o filtro
-        AppState.vendedorAtivo = 'todos';
-        if (selectVendedor) {
-          selectVendedor.value = 'todos';
-          selectVendedor.disabled = false;
-        }
-        if (avatarAtivo) {
-          avatarAtivo.textContent = 'ALL';
-        }
-        if (wrapperVendedorSelect) {
-          wrapperVendedorSelect.style.display = 'flex';
-        }
-      }
+      inicializarRBAC(sessao);
     }
 
     // Configurar ação do botão de Logout
@@ -1959,12 +2853,16 @@
     inicializarFormularioCadastro();
     inicializarAbas();
     inicializarSeletorVendedor();
+    inicializarFormularioNovoVendedor();
+    atualizarSeletoresVendedores();
+    renderizarTabelaVendedores();
     inicializarKanbanDropTargets();
     inicializarBotoesArena();
     inicializarFechamentoDoDia();
     inicializarAnalytics();
     inicializarModalNotas();
     inicializarModalEditar();
+    inicializarModalAvatar();
     inicializarBusca();
 
     // Suporte universal à tecla Escape para fechar modais
@@ -1972,11 +2870,15 @@
       if (e.key === 'Escape' || e.key === 'Esc') {
         const modalNotas = document.getElementById('modal-notas-backdrop');
         const modalEditar = document.getElementById('modal-editar-backdrop');
+        const modalAvatar = document.getElementById('modal-avatar-backdrop') || document.getElementById('modal-avatar-customizer');
         if (modalNotas && modalNotas.classList.contains('is-open')) {
           fecharModalNotas();
         }
         if (modalEditar && modalEditar.classList.contains('is-open')) {
           fecharModalEditar();
+        }
+        if (modalAvatar && modalAvatar.classList.contains('is-open')) {
+          fecharModalCustomizador();
         }
       }
     });
@@ -2026,6 +2928,13 @@
           renderizarAnalytics();
         }
       }, 15000);
+    }
+
+    if (typeof window !== 'undefined') {
+      window.renderizarTabelaVendedores = renderizarTabelaVendedores;
+      window.atualizarSeletoresVendedores = atualizarSeletoresVendedores;
+      window.abrirModalCustomizador = abrirModalCustomizador;
+      window.fecharModalCustomizador = fecharModalCustomizador;
     }
 
     console.log('[Isapel CRM] Frontend pronto e operando.');

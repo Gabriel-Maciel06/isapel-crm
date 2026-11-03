@@ -2443,6 +2443,36 @@ a:hover {
   color: var(--text-muted);
 }
 
+.crm-regions-distribution-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.crm-region-row {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-column);
+  border: 1px solid var(--border-subtle);
+  gap: 0.45rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.crm-region-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(2, 132, 199, 0.4);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+
+.crm-region-row.is-selected {
+  border-color: var(--isapel-sky-dark);
+  background: rgba(2, 132, 199, 0.04);
+  box-shadow: 0 0 0 1px var(--isapel-sky-dark);
+}
+
 /* Card Scorecard Individual (Quando 1 vendedor filtrado) */
 .crm-seller-scorecard {
   display: flex;
@@ -2578,4 +2608,741 @@ a:hover {
   gap: 1.5rem;
   border-top: 1px solid var(--border-subtle);
   animation: fadeIn 250ms ease;
+}
+
+/* ==========================================================================
+   14. ABA DE GESTÃO DE EQUIPE & NOVOS CONSULTORES (RESTRITA À DIRETORIA)
+   ========================================================================== */
+#tab-gestao {
+  width: 100%;
+}
+
+.crm-gestao-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 1.5rem 1.75rem 3rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header da Seção de Gestão */
+.crm-gestao-header {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.crm-gestao-header__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.crm-gestao-header__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--isapel-gold);
+  background: rgba(227, 165, 43, 0.12);
+  border: 1px solid rgba(227, 165, 43, 0.3);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.crm-gestao-header__title {
+  font-family: var(--font-condensed);
+  font-size: 1.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--isapel-navy);
+  margin: 0;
+}
+
+.crm-gestao-header__subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 720px;
+}
+
+/* Grid Bento: Formulário + Tabela */
+.crm-gestao-grid {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .crm-gestao-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards Bento de Gestão */
+.crm-gestao-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-gestao-card__header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #F8FAFC 0%, #EDF2F7 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.crm-gestao-card__icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: var(--isapel-sky-soft);
+  color: var(--isapel-sky-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.crm-gestao-card__title {
+  font-family: var(--font-condensed);
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--isapel-navy);
+  margin: 0;
+}
+
+.crm-gestao-card__desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Formulário de Cadastro de Vendedor */
+#form-novo-vendedor {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.crm-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.crm-form-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--slate-800);
+}
+
+.crm-required {
+  color: #EF4444;
+  margin-left: 2px;
+}
+
+.crm-form-input,
+.crm-form-select {
+  width: 100%;
+  height: 42px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  color: var(--slate-900);
+  background: #FFFFFF;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.crm-form-input:focus,
+.crm-form-select:focus {
+  border-color: var(--isapel-sky);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.crm-form-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* Wrapper de Senha e Toggle Button */
+.crm-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.crm-password-input {
+  padding-right: 2.75rem;
+}
+
+.crm-password-toggle-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.crm-password-toggle-btn:hover {
+  color: var(--isapel-navy);
+  background: #F1F5F9;
+}
+
+.crm-password-toggle-btn:focus-visible {
+  outline: 2px solid var(--isapel-sky);
+  outline-offset: 1px;
+}
+
+.crm-gestao-form__actions {
+  margin-top: 0.65rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#btn-cadastrar-vendedor {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Tabela de Equipe de Vendedores */
+.crm-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#tabela-equipe-vendedores {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+#tabela-equipe-vendedores th {
+  padding: 0.9rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+#tabela-equipe-vendedores td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+  vertical-align: middle;
+  font-size: 0.88rem;
+  color: var(--slate-800);
+}
+
+#tabela-equipe-vendedores tbody tr {
+  transition: background var(--transition-fast);
+}
+
+#tabela-equipe-vendedores tbody tr:hover {
+  background: #F8FAFC;
+}
+
+#tabela-equipe-vendedores tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Célula do Vendedor */
+.crm-seller-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crm-seller-avatar-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.crm-seller-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-seller-name {
+  color: var(--isapel-navy);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.crm-seller-login {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* Badge de Cargo */
+.crm-cargo-badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  background: #F1F5F9;
+  color: var(--slate-700);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+}
+
+/* Célula de Meta */
+.crm-meta-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-meta-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Badge de Status Ativo */
+.crm-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.crm-status-pill--ativo {
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #A7F3D0;
+}
+
+.crm-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ==========================================================================
+   ISAPEL PAPÉIS - 3D AVATAR CUSTOMIZER & LIVE STUDIO MODAL
+   ========================================================================== */
+
+#modal-avatar-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(6px);
+  display: flex !important;
+}
+
+#modal-avatar-backdrop.is-open #modal-avatar-customizer {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  visibility: visible;
+  display: flex !important;
+}
+
+.crm-modal--avatar {
+  max-width: 960px;
+  width: 95vw;
+  max-height: 92vh;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0, 34, 68, 0.35);
+  background: #FFFFFF;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-modal__subtitle {
+  font-size: 0.8rem;
+  color: #93C5FD;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.crm-avatar-split-view {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: 480px;
+  max-height: calc(90vh - 140px);
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+/* Stage do Canvas 3D */
+.crm-avatar-stage-panel {
+  background: radial-gradient(circle at 50% 30%, #0B2545 0%, #001A33 70%, #000E1C 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  border-right: 1px solid rgba(2, 132, 199, 0.2);
+  overflow: hidden;
+}
+
+.crm-avatar-stage-canvas-wrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#avatar-preview-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 240px;
+  min-height: 360px;
+  display: block;
+  outline: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+#avatar-preview-canvas:active {
+  cursor: grabbing;
+}
+
+.crm-avatar-drag-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 34, 68, 0.85);
+  backdrop-filter: blur(6px);
+  color: #BAE6FD;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.crm-avatar-stage-meta {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.crm-avatar-stage-meta__text {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+/* Painel de Controles Bento */
+.crm-avatar-controls-panel {
+  background: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.crm-avatar-controls-scroll {
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crm-avatar-bento-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 51, 96, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.crm-avatar-bento-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 6px rgba(0, 51, 96, 0.06);
+}
+
+.crm-avatar-bento-card__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--isapel-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crm-avatar-bento-card__sublabel {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #64748B;
+  margin-bottom: 2px;
+}
+
+.crm-seller-select-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#avatar-custom-seller-select {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0F172A;
+  background: #FFFFFF;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#avatar-custom-seller-select:focus {
+  border-color: #0284C7;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+#avatar-custom-seller-select:disabled {
+  background: #F1F5F9;
+  color: #64748B;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+#avatar-seller-locked-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #E0F2FE;
+  color: #0369A1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+  margin-top: 4px;
+}
+
+/* Swatches de Uniforme */
+.crm-uniforme-swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+}
+
+.crm-uniforme-swatch-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.75rem 0.5rem;
+  border: 2px solid #E2E8F0;
+  border-radius: 10px;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: center;
+}
+
+.crm-uniforme-swatch-btn:hover {
+  border-color: #38BDF8;
+  background: #F0F9FF;
+  transform: translateY(-1px);
+}
+
+.crm-uniforme-swatch-btn.is-selected,
+.crm-uniforme-swatch-btn.active {
+  border-color: #0284C7;
+  background: #E0F2FE;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.3);
+}
+
+.crm-uniforme-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.crm-uniforme-icon--marinho {
+  background: #003360;
+}
+
+.crm-uniforme-icon--sky {
+  background: #0284C7;
+}
+
+.crm-uniforme-icon--social {
+  background: linear-gradient(135deg, #FFFFFF 60%, #E3A52B 100%);
+  border: 1px solid #CBD5E1;
+}
+
+.crm-uniforme-swatch-btn span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.2;
+}
+
+/* Swatches de Cor (Pele, Cabelo, Barba) */
+.crm-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.crm-color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 1px #CBD5E1, 0 1px 2px rgba(0,0,0,0.1);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+.crm-color-swatch:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px #0284C7;
+}
+
+.crm-color-swatch.is-selected,
+.crm-color-swatch.active {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 3px #0284C7, 0 2px 6px rgba(0, 51, 96, 0.3);
+}
+
+/* Checkboxes Elegantes */
+.crm-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1E293B;
+  user-select: none;
+}
+
+.crm-checkbox-label input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: #0284C7;
+  cursor: pointer;
+}
+
+/* Botão na Tabela de Vendedores */
+.crm-btn-avatar-mini,
+.btn-customizar-avatar-tabela {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid #0284C7;
+  color: #0284C7;
+  background: #F0F9FF;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.crm-btn-avatar-mini:hover,
+.btn-customizar-avatar-tabela:hover {
+  background: #0284C7;
+  color: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+}
+
+/* Responsividade Mobile / Tablet */
+@media (max-width: 860px) {
+  .crm-avatar-split-view {
+    grid-template-columns: 1fr;
+    max-height: 75vh;
+    overflow-y: auto;
+  }
+  .crm-avatar-stage-panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(2, 132, 199, 0.2);
+    min-height: 320px;
+  }
+  .crm-avatar-stage-canvas-wrap {
+    min-height: 300px;
+  }
 }
