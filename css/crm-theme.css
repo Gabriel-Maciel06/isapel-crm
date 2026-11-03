@@ -1839,3 +1839,743 @@ a:hover {
     animation: none !important;
   }
 }
+
+
+/* ==========================================================================
+   11. ABA DE EXIBIÇÃO TOTAL & ANALYTICS DE VENDAS ISAPEL (ANTI-SLOP & WCAG AA)
+   ========================================================================== */
+
+/* Header Card e Apresentação */
+.crm-analytics-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.crm-analytics-header__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.crm-analytics-header__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 820px;
+}
+
+.crm-analytics-title {
+  font-family: var(--font-condensed);
+  font-size: 1.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--isapel-navy);
+  margin: 0;
+  line-height: 1.15;
+}
+
+.crm-analytics-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.crm-analytics-live-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: rgba(5, 150, 105, 0.1);
+  color: var(--isapel-emerald-text);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid rgba(5, 150, 105, 0.25);
+}
+
+.crm-analytics-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--isapel-emerald);
+  box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+  animation: pulseEmerald 2s infinite;
+}
+
+@keyframes pulseEmerald {
+  0% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(5, 150, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+  }
+}
+
+/* Barra de Filtros Dinâmicos */
+.crm-analytics-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.crm-analytics-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.crm-analytics-filter-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.crm-analytics-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.crm-analytics-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 2.25rem 0.5rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.crm-analytics-select:hover:not(:disabled) {
+  border-color: var(--isapel-sky);
+}
+
+.crm-analytics-select:focus-visible {
+  outline: 2px solid var(--isapel-sky);
+  outline-offset: 1px;
+  border-color: var(--isapel-sky-dark);
+}
+
+.crm-analytics-select:disabled {
+  background-color: #F1F5F9;
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.crm-analytics-select-chevron {
+  position: absolute;
+  right: 0.75rem;
+  pointer-events: none;
+  color: var(--text-muted);
+}
+
+/* Pills de Período */
+.crm-analytics-pills {
+  display: inline-flex;
+  background: var(--bg-column);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  gap: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+.crm-pill-btn {
+  border: none;
+  background: transparent;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  white-space: nowrap;
+}
+
+.crm-pill-btn:hover:not(.is-active) {
+  color: var(--isapel-navy);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.crm-pill-btn.is-active {
+  background: var(--isapel-navy);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-xs);
+  font-weight: 700;
+}
+
+.crm-pill-btn:focus-visible {
+  outline: 2px solid var(--isapel-sky);
+  outline-offset: 1px;
+}
+
+/* Inputs de Intervalo Personalizado */
+.crm-analytics-custom-dates {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--bg-column);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  animation: fadeIn 200ms ease;
+}
+
+.crm-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.crm-date-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.crm-date-input {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.55rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--text-main);
+  background: var(--bg-surface);
+}
+
+.crm-date-input:focus-visible {
+  outline: 2px solid var(--isapel-sky);
+  outline-offset: 1px;
+}
+
+.crm-date-separator {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0 0.15rem;
+}
+
+/* Grade Bento de 6 KPIs */
+.crm-analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1400px) {
+  .crm-analytics-kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .crm-analytics-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .crm-analytics-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crm-kpi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.25rem;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.crm-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(2, 132, 199, 0.35);
+}
+
+.crm-kpi-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.crm-kpi-card__lbl {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.crm-kpi-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.crm-kpi-icon--sky {
+  background: var(--isapel-sky-soft);
+  color: var(--isapel-sky-dark);
+}
+
+.crm-kpi-icon--gold {
+  background: var(--isapel-gold-soft);
+  color: var(--isapel-gold-text);
+}
+
+.crm-kpi-icon--indigo {
+  background: var(--isapel-indigo-soft);
+  color: var(--isapel-indigo-text);
+}
+
+.crm-kpi-icon--emerald {
+  background: var(--isapel-emerald-soft);
+  color: var(--isapel-emerald-text);
+}
+
+.crm-kpi-icon--navy {
+  background: rgba(0, 51, 96, 0.08);
+  color: var(--isapel-navy);
+}
+
+.crm-kpi-icon--slate {
+  background: var(--isapel-slate-soft);
+  color: var(--isapel-slate-text);
+}
+
+.crm-kpi-card__val {
+  font-family: var(--font-condensed);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--isapel-navy);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.crm-kpi-card__hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* Grid de Gráficos (Funil e Equipe) */
+.crm-analytics-charts-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 1080px) {
+  .crm-analytics-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crm-chart-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.6rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.crm-chart-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.85rem;
+}
+
+.crm-chart-card__title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.crm-chart-card__title {
+  font-family: var(--font-condensed);
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--isapel-navy);
+  margin: 0;
+}
+
+.crm-chart-card__subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.crm-chart-card__badge {
+  font-size: 0.76rem;
+  font-weight: 700;
+  background: var(--isapel-sky-soft);
+  color: var(--isapel-sky-dark);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+/* Funil Visual de 6 Etapas */
+.crm-funnel-visual-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.crm-funnel-step {
+  background: var(--bg-column);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.crm-funnel-step:hover {
+  transform: translateX(3px);
+  border-color: rgba(2, 132, 199, 0.4);
+}
+
+.crm-funnel-step__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.crm-funnel-step__left {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.crm-funnel-step__color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.crm-funnel-step__title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.crm-funnel-step__stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crm-funnel-step__count-badge {
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--isapel-navy);
+}
+
+.crm-funnel-step__pct-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: rgba(2, 132, 199, 0.12);
+  color: var(--isapel-sky-dark);
+}
+
+.crm-funnel-step__track {
+  width: 100%;
+  height: 9px;
+  background: #E2E8F0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.crm-funnel-step__bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 4px;
+}
+
+.crm-funnel-step__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.crm-funnel-step__val {
+  font-weight: 700;
+  color: var(--isapel-navy);
+}
+
+/* Painel de Distribuição da Equipe / Vendedor */
+.crm-seller-distribution-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.crm-seller-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-column);
+  border: 1px solid var(--border-subtle);
+  gap: 0.85rem;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.crm-seller-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(2, 132, 199, 0.35);
+}
+
+.crm-seller-row__left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crm-seller-row__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: var(--isapel-navy);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.84rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
+}
+
+.crm-seller-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.crm-seller-row__name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.crm-seller-row__cargo {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.crm-seller-row__stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.crm-seller-row__val {
+  font-family: var(--font-condensed);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--isapel-navy);
+}
+
+.crm-seller-row__sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Card Scorecard Individual (Quando 1 vendedor filtrado) */
+.crm-seller-scorecard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crm-seller-scorecard__profile {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem;
+  background: var(--bg-column);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.crm-seller-scorecard__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.crm-seller-scorecard__stat-box {
+  background: var(--bg-column);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.crm-seller-scorecard__stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.crm-seller-scorecard__stat-val {
+  font-family: var(--font-condensed);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--isapel-navy);
+}
+
+/* Accordion Recolhível de Fechamento Operacional */
+.crm-accordion-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.crm-accordion-toggle {
+  width: 100%;
+  background: linear-gradient(135deg, #F8FAFC 0%, #EDF2F7 100%);
+  border: none;
+  padding: 1.15rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.crm-accordion-toggle:hover {
+  background: #E2E8F0;
+}
+
+.crm-accordion-toggle:focus-visible {
+  outline: 2px solid var(--isapel-sky);
+  outline-offset: -2px;
+}
+
+.crm-accordion-toggle__left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.crm-accordion-toggle__icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--isapel-sky-soft);
+  color: var(--isapel-sky-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.crm-accordion-toggle__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.crm-accordion-toggle__title {
+  font-family: var(--font-condensed);
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--isapel-navy);
+}
+
+.crm-accordion-toggle__sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.crm-accordion-toggle__chevron {
+  font-size: 1.35rem;
+  color: var(--isapel-navy);
+  transition: transform var(--transition-normal);
+  display: inline-block;
+}
+
+.crm-accordion-toggle[aria-expanded="true"] .crm-accordion-toggle__chevron {
+  transform: rotate(180deg);
+}
+
+.crm-accordion-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  animation: fadeIn 250ms ease;
+}

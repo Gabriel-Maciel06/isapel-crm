@@ -57,4 +57,40 @@ assert(htmlContent.includes('js/arena-3d.js'), 'Script da arena 3D incluído');
 assert(htmlContent.includes('js/crm-app.js'), 'Script principal do CRM incluído');
 console.log('  ✅ [PASS] Scripts e Three.js configurados corretamente no index.html');
 
+// 7. Validação da Aba de Exibição Total / Analytics e Seção Recolhível (Milestone M3)
+assert(htmlContent.includes('id="tab-nav-fechamento-label"'), 'Rótulo da aba deve ser Analytics & Fechamento');
+assert(htmlContent.includes('id="analytics-vendedor-select"'), 'Seletor de vendedor de Analytics deve existir');
+assert(htmlContent.includes('id="analytics-vendedor-locked-badge"'), 'Badge de vendedor travado deve existir');
+assert(htmlContent.includes('id="analytics-pills"'), 'Pills de período devem existir');
+assert(htmlContent.includes('data-periodo="hoje"'), 'Pill hoje deve existir');
+assert(htmlContent.includes('data-periodo="7dias"'), 'Pill 7dias deve existir');
+assert(htmlContent.includes('data-periodo="mes"'), 'Pill mes deve existir');
+assert(htmlContent.includes('data-periodo="custom"'), 'Pill custom deve existir');
+assert(htmlContent.includes('id="analytics-data-inicio"'), 'Input de data início deve existir');
+assert(htmlContent.includes('id="analytics-data-fim"'), 'Input de data fim deve existir');
+assert(htmlContent.includes('id="btn-aplicar-data-custom"'), 'Botão aplicar data custom deve existir');
+
+// Bento KPIs
+assert(htmlContent.includes('id="analytics-kpi-recebidos"'), 'KPI Leads Recebidos deve existir');
+assert(htmlContent.includes('id="analytics-kpi-qualificados"'), 'KPI Qualificados deve existir');
+assert(htmlContent.includes('id="analytics-kpi-negociacao"'), 'KPI Negociação deve existir');
+assert(htmlContent.includes('id="analytics-kpi-fechadas"'), 'KPI Fechadas deve existir');
+assert(htmlContent.includes('id="analytics-kpi-ticket-medio"'), 'KPI Ticket Médio deve existir');
+assert(htmlContent.includes('id="analytics-kpi-rotas"'), 'KPI Rotas CIF deve existir');
+
+// Funil e Painel Lateral
+assert(htmlContent.includes('id="analytics-funnel-bars-container"'), 'Container de barras do funil deve existir');
+assert(htmlContent.includes('id="analytics-funnel-total-leads"'), 'Badge de total de leads do funil deve existir');
+assert(htmlContent.includes('id="analytics-seller-card"'), 'Card lateral da equipe deve existir');
+assert(htmlContent.includes('id="analytics-seller-distribution-container"'), 'Container de distribuição de vendedores deve existir');
+
+// Seção Recolhível
+assert(htmlContent.includes('id="btn-toggle-fechamento-operacional"'), 'Botão toggle de fechamento operacional deve existir');
+assert(htmlContent.includes('id="content-fechamento-operacional"'), 'Container de fechamento operacional deve existir');
+
+// Lógica em crm-app.js
+assert(appJsContent.includes('inicializarAnalytics'), 'crm-app.js deve implementar inicializarAnalytics');
+assert(appJsContent.includes('renderizarAnalytics'), 'crm-app.js deve implementar renderizarAnalytics');
+console.log('  ✅ [PASS] Aba de Exibição Total / Analytics e Seção Recolhível validadas com sucesso');
+
 console.log('\n🎉 TODOS OS TESTES DO FRONTEND PASSARAM COM SUCESSO!\n');

@@ -322,8 +322,8 @@
         data-tab="tab-fechamento" 
         id="tab-nav-fechamento"
       >
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-        <span>Fechamento do Dia</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span id="tab-nav-fechamento-label">Analytics &amp; Fechamento</span>
       </button>
     </nav>
 
@@ -692,121 +692,322 @@
     </section>
 
     <!-- ===================================================================
-         ABA 3: FECHAMENTO DO DIA & PLANO TÁTICO
+         ABA 3: EXIBIÇÃO TOTAL, ANALYTICS & FECHAMENTO DO DIA
          =================================================================== -->
     <section class="tab-section" id="tab-fechamento" role="tabpanel" aria-labelledby="tab-nav-fechamento" tabindex="0">
       <div class="crm-closing-view">
 
-        <!-- Banner com o Botão Master de Fechamento -->
-        <div class="crm-closing-hero">
-          <div>
-            <span class="crm-priority-tag crm-priority-tag--estrategica" style="margin-bottom: 0.5rem; display: inline-block;">
-              Inteligência Comercial Isapel
-            </span>
-            <h2 class="crm-closing-hero__title">Fechamento do Dia & Plano Tático</h2>
-            <p class="crm-closing-hero__subtitle">
-              Consolide todos os dados comerciais do expediente, baixe o arquivo JSON auditável e acompanhe as ações táticas prioritárias de amanhã para a equipe comercial.
-            </p>
-          </div>
-          <div>
-            <button id="btn-executar-fechamento" class="crm-closing-btn-hero">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.45rem; vertical-align: text-bottom;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><span>Encerrar Expediente & Gerar Plano do Dia Seguinte</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Cards com as 4 Métricas Táticas do Dia -->
-        <div class="crm-tactic-metrics">
-          <div class="crm-tactic-metric-card">
-            <div class="crm-tactic-metric-card__val" id="metric-fechamento-pipeline">R$ 0,00</div>
-            <div class="crm-tactic-metric-card__lbl">Pipeline Ativo</div>
-          </div>
-          <div class="crm-tactic-metric-card">
-            <div class="crm-tactic-metric-card__val" id="metric-fechamento-ganho" style="color: var(--isapel-emerald);">R$ 0,00</div>
-            <div class="crm-tactic-metric-card__lbl">Vendas Fechadas Hoje</div>
-          </div>
-          <div class="crm-tactic-metric-card">
-            <div class="crm-tactic-metric-card__val" id="metric-fechamento-negociacao" style="color: var(--isapel-amber);">R$ 0,00</div>
-            <div class="crm-tactic-metric-card__lbl">Em Negociação Quente</div>
-          </div>
-          <div class="crm-tactic-metric-card">
-            <div class="crm-tactic-metric-card__val" id="metric-fechamento-rotas">0 Regiões</div>
-            <div class="crm-tactic-metric-card__lbl">Regiões Mapeadas</div>
-          </div>
-        </div>
-
-        <!-- As 3 Colunas de Prioridades Comerciais para o Próximo Dia -->
-        <div class="crm-tactical-grid">
-
-          <!-- Prioridade 1 -->
-          <div class="crm-tactical-col crm-tactical-col--p1">
-            <div class="crm-tactical-col__header">
-              <span class="crm-tactical-col__badge crm-tactical-col__badge--p1">Prioridade 1</span>
-              <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p1-count">0 leads</span>
-            </div>
-            <div>
-              <h4 class="crm-tactical-col__title">Fechamentos Urgentes & Amostras</h4>
-              <p class="crm-tactical-col__desc">
-                Leads em Negociação: contato nas primeiras horas do dia (08:00 - 10:30) para travar pedido e envio de amostras físicas com laudo técnico.
+        <!-- ==============================================================
+             BLOCO 1: ABA DE EXIBIÇÃO TOTAL / ANALYTICS (DESTAQUE SUPERIOR)
+             ============================================================== -->
+        <div class="crm-analytics-card crm-analytics-card--header">
+          <div class="crm-analytics-header__top">
+            <div class="crm-analytics-header__info">
+              <span class="crm-priority-tag crm-priority-tag--estrategica">
+                Inteligência Comercial &amp; Gestão B2B
+              </span>
+              <h2 class="crm-analytics-title">Exibição Total &amp; Analytics de Vendas</h2>
+              <p class="crm-analytics-subtitle">
+                Acompanhamento dinâmico de performance, funil comercial e qualificação de leads da fábrica Isapel.
               </p>
             </div>
-            <div class="crm-tactical-items-list" id="lista-prioridade-1"></div>
-          </div>
-
-          <!-- Prioridade 2 -->
-          <div class="crm-tactical-col crm-tactical-col--p2">
-            <div class="crm-tactical-col__header">
-              <span class="crm-tactical-col__badge crm-tactical-col__badge--p2">Prioridade 2</span>
-              <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p2-count">0 leads</span>
-            </div>
-            <div>
-              <h4 class="crm-tactical-col__title">Follow-up de Propostas Enviadas</h4>
-              <p class="crm-tactical-col__desc">
-                Confirmar recebimento da cotação de toalha e higiênico, checar condições de pagamento (Boleto 28d / PIX) e tirar dúvidas técnicas.
-              </p>
-            </div>
-            <div class="crm-tactical-items-list" id="lista-prioridade-2"></div>
-          </div>
-
-          <!-- Prioridade 3 -->
-          <div class="crm-tactical-col crm-tactical-col--p3">
-            <div class="crm-tactical-col__header">
-              <span class="crm-tactical-col__badge crm-tactical-col__badge--p3">Prioridade 3</span>
-              <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p3-count">0 regiões</span>
-            </div>
-            <div>
-              <h4 class="crm-tactical-col__title">Prospecção & Expansão Regional</h4>
-              <p class="crm-tactical-col__desc">
-                Novos leads e contas qualificadas agrupados por DDD e região geográfica para prospecção comercial e follow-up estratégico.
-              </p>
-            </div>
-            <div class="crm-tactical-items-list" id="lista-prioridade-3"></div>
-          </div>
-
-        </div>
-
-        <!-- Ações: Copiar para WhatsApp e Download JSON -->
-        <div class="crm-closing-actions-box">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-            <div>
-              <h4 style="font-family: var(--font-condensed); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--isapel-navy);">
-                Exportação & Compartilhamento Operacional
-              </h4>
-              <span style="font-size: 0.8rem; color: var(--text-muted);" id="fechamento-status-text">
-                Arquivo <code>fechamento-isapel-YYYY-MM-DD.json</code> pronto para download.
+            
+            <div class="crm-analytics-header__quick-status">
+              <span class="crm-analytics-live-tag">
+                <span class="crm-analytics-live-dot" aria-hidden="true"></span>
+                <span>Tempo Real</span>
               </span>
             </div>
-            <div style="display: flex; gap: 0.6rem;">
-              <button id="btn-copiar-plano-whatsapp" class="crm-btn crm-btn--primary" style="background: var(--isapel-emerald-dark); border: none;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Copiar Plano para WhatsApp da Equipe
-              </button>
-              <button id="btn-download-json-manual" class="crm-btn crm-btn--secondary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Baixar JSON
+          </div>
+
+          <!-- Barra de Filtros Dinâmicos -->
+          <div class="crm-analytics-toolbar" id="analytics-filter-toolbar">
+            <!-- Filtro de Vendedor (RBAC-aware) -->
+            <div class="crm-analytics-filter-group">
+              <label for="analytics-vendedor-select" class="crm-analytics-filter-label">Vendedor</label>
+              <div class="crm-analytics-select-wrapper">
+                <select id="analytics-vendedor-select" class="crm-analytics-select" aria-label="Filtrar por vendedor">
+                  <option value="todos">Toda a Equipe (Consolidado)</option>
+                  <option value="maciel">Gabriel Maciel</option>
+                  <option value="fernanda">Fernanda</option>
+                  <option value="caio">Caio</option>
+                </select>
+                <svg class="crm-analytics-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <span id="analytics-vendedor-locked-badge" class="crm-role-badge crm-role-badge--vendedor" style="display:none;">
+                Visualização Travada
+              </span>
+            </div>
+
+            <!-- Filtro de Período (Pills) -->
+            <div class="crm-analytics-filter-group">
+              <span class="crm-analytics-filter-label" id="label-periodo-pills">Período</span>
+              <div class="crm-analytics-pills" id="analytics-pills" role="radiogroup" aria-labelledby="label-periodo-pills">
+                <button type="button" class="crm-pill-btn is-active" data-periodo="hoje" role="radio" aria-checked="true">Hoje</button>
+                <button type="button" class="crm-pill-btn" data-periodo="7dias" role="radio" aria-checked="false">Últimos 7 dias</button>
+                <button type="button" class="crm-pill-btn" data-periodo="mes" role="radio" aria-checked="false">Este Mês</button>
+                <button type="button" class="crm-pill-btn" data-periodo="custom" role="radio" aria-checked="false">Personalizado</button>
+              </div>
+            </div>
+
+            <!-- Inputs de Intervalo Personalizado (Toggle dinâmico) -->
+            <div class="crm-analytics-custom-dates" id="analytics-custom-dates" style="display: none;">
+              <div class="crm-date-field">
+                <label for="analytics-data-inicio" class="crm-date-label">Início</label>
+                <input type="date" id="analytics-data-inicio" class="crm-date-input" aria-label="Data de início">
+              </div>
+              <span class="crm-date-separator" aria-hidden="true">até</span>
+              <div class="crm-date-field">
+                <label for="analytics-data-fim" class="crm-date-label">Fim</label>
+                <input type="date" id="analytics-data-fim" class="crm-date-input" aria-label="Data final">
+              </div>
+              <button type="button" id="btn-aplicar-data-custom" class="crm-btn crm-btn--sm crm-btn--primary">
+                Filtrar
               </button>
             </div>
           </div>
+        </div>
 
-          <pre class="crm-json-codeblock" id="json-preview-text">// O consolidado do fechamento diário será exibido aqui após o cálculo...</pre>
+        <!-- Grade Bento de 6 KPIs Principais -->
+        <div class="crm-analytics-kpi-grid">
+          <!-- 1. Leads Recebidos -->
+          <div class="crm-kpi-card">
+            <div class="crm-kpi-card__header">
+              <span class="crm-kpi-card__lbl">Leads Recebidos</span>
+              <span class="crm-kpi-icon crm-kpi-icon--sky" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              </span>
+            </div>
+            <div class="crm-kpi-card__val" id="analytics-kpi-recebidos">0</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-recebidos-hint">No período selecionado</div>
+          </div>
+
+          <!-- 2. Qualificação & Validação -->
+          <div class="crm-kpi-card">
+            <div class="crm-kpi-card__header">
+              <span class="crm-kpi-card__lbl">Qualificação &amp; Validação</span>
+              <span class="crm-kpi-icon crm-kpi-icon--gold" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+            </div>
+            <div class="crm-kpi-card__val" id="analytics-kpi-qualificados">0</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-taxa-qualificacao">0,0% passaram do estágio inicial</div>
+          </div>
+
+          <!-- 3. Em Negociação -->
+          <div class="crm-kpi-card">
+            <div class="crm-kpi-card__header">
+              <span class="crm-kpi-card__lbl">Em Negociação</span>
+              <span class="crm-kpi-icon crm-kpi-icon--indigo" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+              </span>
+            </div>
+            <div class="crm-kpi-card__val" id="analytics-kpi-negociacao" style="color: var(--isapel-amber);">R$ 0,00</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-negociacao-contas">0 contas em fechamento</div>
+          </div>
+
+          <!-- 4. Fechadas / Ganhas -->
+          <div class="crm-kpi-card">
+            <div class="crm-kpi-card__header">
+              <span class="crm-kpi-card__lbl">Fechadas / Ganhas</span>
+              <span class="crm-kpi-icon crm-kpi-icon--emerald" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </span>
+            </div>
+            <div class="crm-kpi-card__val" id="analytics-kpi-fechadas" style="color: var(--isapel-emerald);">R$ 0,00</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-taxa-conversao">0,0% de conversão final</div>
+          </div>
+
+          <!-- 5. Ticket Médio -->
+          <div class="crm-kpi-card">
+            <div class="crm-kpi-card__header">
+              <span class="crm-kpi-card__lbl">Ticket Médio</span>
+              <span class="crm-kpi-icon crm-kpi-icon--navy" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </span>
+            </div>
+            <div class="crm-kpi-card__val" id="analytics-kpi-ticket-medio">R$ 0,00</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-ticket-medio-hint">Média por proposta ativa</div>
+          </div>
+
+          <!-- 6. Rotas CIF Atendidas -->
+          <div class="crm-kpi-card">
+            <div class="crm-kpi-card__header">
+              <span class="crm-kpi-card__lbl">Rotas CIF Atendidas</span>
+              <span class="crm-kpi-icon crm-kpi-icon--slate" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </span>
+            </div>
+            <div class="crm-kpi-card__val" id="analytics-kpi-rotas">0 Regiões</div>
+            <div class="crm-kpi-card__hint" id="analytics-kpi-rotas-hint">Frota Própria Isapel</div>
+          </div>
+        </div>
+
+        <!-- Visual Funnel & Equipe Container -->
+        <div class="crm-analytics-charts-grid">
+          <!-- Gráfico do Funil de 6 Etapas -->
+          <div class="crm-chart-card">
+            <div class="crm-chart-card__header">
+              <div class="crm-chart-card__title-wrap">
+                <h3 class="crm-chart-card__title">Distribuição &amp; Conversão do Funil de Vendas</h3>
+                <span class="crm-chart-card__subtitle">Progressão pelas 6 etapas comerciais da fábrica</span>
+              </div>
+              <span class="crm-chart-card__badge" id="analytics-funnel-total-leads">0 Leads no total</span>
+            </div>
+            <div class="crm-funnel-visual-container" id="analytics-funnel-bars-container">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Card Lateral: Distribuição da Equipe Comercial ou Métricas do Vendedor -->
+          <div class="crm-chart-card" id="analytics-seller-card">
+            <div class="crm-chart-card__header">
+              <div class="crm-chart-card__title-wrap">
+                <h3 class="crm-chart-card__title" id="analytics-seller-card-title">Distribuição da Equipe Comercial</h3>
+                <span class="crm-chart-card__subtitle">Desempenho comparativo e pipeline por consultor</span>
+              </div>
+              <span class="crm-chart-card__badge">Isapel B2B</span>
+            </div>
+            <div class="crm-seller-distribution-list" id="analytics-seller-distribution-container">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ==============================================================
+             BLOCO 2: SEÇÃO RECOLHÍVEL — FECHAMENTO DO DIA & EXPORTAÇÃO
+             (Preserva 100% dos elementos e IDs para retrocompatibilidade)
+             ============================================================== -->
+        <div class="crm-accordion-wrapper">
+          <button type="button" class="crm-accordion-toggle" id="btn-toggle-fechamento-operacional"
+                  aria-expanded="false" aria-controls="content-fechamento-operacional">
+            <div class="crm-accordion-toggle__left">
+              <span class="crm-accordion-toggle__icon-wrap" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </span>
+              <div class="crm-accordion-toggle__text">
+                <span class="crm-accordion-toggle__title">Fechamento do Dia, Prioridades &amp; Exportação Operacional</span>
+                <span class="crm-accordion-toggle__sub">Geração do plano diário, download do arquivo JSON e envio das prioridades via WhatsApp</span>
+              </div>
+            </div>
+            <span class="crm-accordion-toggle__chevron" id="fechamento-accordion-arrow" aria-hidden="true">&#9662;</span>
+          </button>
+
+          <div class="crm-accordion-content" id="content-fechamento-operacional" style="display: none;">
+            
+            <!-- Banner com o Botão Master de Fechamento -->
+            <div class="crm-closing-hero">
+              <div>
+                <span class="crm-priority-tag crm-priority-tag--estrategica" style="margin-bottom: 0.5rem; display: inline-block;">
+                  Inteligência Comercial Isapel
+                </span>
+                <h2 class="crm-closing-hero__title">Fechamento do Dia &amp; Plano Tático</h2>
+                <p class="crm-closing-hero__subtitle">
+                  Consolide todos os dados comerciais do expediente, baixe o arquivo JSON auditável e acompanhe as ações táticas prioritárias de amanhã para a equipe comercial.
+                </p>
+              </div>
+              <div>
+                <button id="btn-executar-fechamento" class="crm-closing-btn-hero">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.45rem; vertical-align: text-bottom;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><span>Encerrar Expediente &amp; Gerar Plano do Dia Seguinte</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Cards com as 4 Métricas Táticas do Dia -->
+            <div class="crm-tactic-metrics">
+              <div class="crm-tactic-metric-card">
+                <div class="crm-tactic-metric-card__val" id="metric-fechamento-pipeline">R$ 0,00</div>
+                <div class="crm-tactic-metric-card__lbl">Pipeline Ativo</div>
+              </div>
+              <div class="crm-tactic-metric-card">
+                <div class="crm-tactic-metric-card__val" id="metric-fechamento-ganho" style="color: var(--isapel-emerald);">R$ 0,00</div>
+                <div class="crm-tactic-metric-card__lbl">Vendas Fechadas Hoje</div>
+              </div>
+              <div class="crm-tactic-metric-card">
+                <div class="crm-tactic-metric-card__val" id="metric-fechamento-negociacao" style="color: var(--isapel-amber);">R$ 0,00</div>
+                <div class="crm-tactic-metric-card__lbl">Em Negociação Quente</div>
+              </div>
+              <div class="crm-tactic-metric-card">
+                <div class="crm-tactic-metric-card__val" id="metric-fechamento-rotas">0 Regiões</div>
+                <div class="crm-tactic-metric-card__lbl">Regiões Mapeadas</div>
+              </div>
+            </div>
+
+            <!-- As 3 Colunas de Prioridades Comerciais para o Próximo Dia -->
+            <div class="crm-tactical-grid">
+
+              <!-- Prioridade 1 -->
+              <div class="crm-tactical-col crm-tactical-col--p1">
+                <div class="crm-tactical-col__header">
+                  <span class="crm-tactical-col__badge crm-tactical-col__badge--p1">Prioridade 1</span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p1-count">0 leads</span>
+                </div>
+                <div>
+                  <h4 class="crm-tactical-col__title">Fechamentos Urgentes &amp; Amostras</h4>
+                  <p class="crm-tactical-col__desc">
+                    Leads em Negociação: contato nas primeiras horas do dia (08:00 - 10:30) para travar pedido e envio de amostras físicas com laudo técnico.
+                  </p>
+                </div>
+                <div class="crm-tactical-items-list" id="lista-prioridade-1"></div>
+              </div>
+
+              <!-- Prioridade 2 -->
+              <div class="crm-tactical-col crm-tactical-col--p2">
+                <div class="crm-tactical-col__header">
+                  <span class="crm-tactical-col__badge crm-tactical-col__badge--p2">Prioridade 2</span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p2-count">0 leads</span>
+                </div>
+                <div>
+                  <h4 class="crm-tactical-col__title">Follow-up de Propostas Enviadas</h4>
+                  <p class="crm-tactical-col__desc">
+                    Confirmar recebimento da cotação de toalha e higiênico, checar condições de pagamento (Boleto 28d / PIX) e tirar dúvidas técnicas.
+                  </p>
+                </div>
+                <div class="crm-tactical-items-list" id="lista-prioridade-2"></div>
+              </div>
+
+              <!-- Prioridade 3 -->
+              <div class="crm-tactical-col crm-tactical-col--p3">
+                <div class="crm-tactical-col__header">
+                  <span class="crm-tactical-col__badge crm-tactical-col__badge--p3">Prioridade 3</span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="p3-count">0 regiões</span>
+                </div>
+                <div>
+                  <h4 class="crm-tactical-col__title">Prospecção &amp; Expansão Regional</h4>
+                  <p class="crm-tactical-col__desc">
+                    Novos leads e contas qualificadas agrupados por DDD e região geográfica para prospecção comercial e follow-up estratégico.
+                  </p>
+                </div>
+                <div class="crm-tactical-items-list" id="lista-prioridade-3"></div>
+              </div>
+
+            </div>
+
+            <!-- Ações: Copiar para WhatsApp e Download JSON -->
+            <div class="crm-closing-actions-box">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h4 style="font-family: var(--font-condensed); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--isapel-navy);">
+                    Exportação &amp; Compartilhamento Operacional
+                  </h4>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);" id="fechamento-status-text">
+                    Arquivo <code>fechamento-isapel-YYYY-MM-DD.json</code> pronto para download.
+                  </span>
+                </div>
+                <div style="display: flex; gap: 0.6rem;">
+                  <button id="btn-copiar-plano-whatsapp" class="crm-btn crm-btn--primary" style="background: var(--isapel-emerald-dark); border: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Copiar Plano para WhatsApp da Equipe
+                  </button>
+                  <button id="btn-download-json-manual" class="crm-btn crm-btn--secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 0.4rem; vertical-align: text-bottom;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Baixar JSON
+                  </button>
+                </div>
+              </div>
+
+              <pre class="crm-json-codeblock" id="json-preview-text">// O consolidado do fechamento diário será exibido aqui após o cálculo...</pre>
+            </div>
+
+          </div>
         </div>
 
       </div>
@@ -959,6 +1160,9 @@
 
   <!-- Sincronizador Híbrido Supabase & Backup de Rede -->
   <script src="js/crm-sync.js"></script>
+
+  <!-- Motor Analítico e Métricas de Vendas -->
+  <script src="js/crm-analytics.js"></script>
 
   <!-- Módulo 3D da Arena de Vendedores -->
   <script src="js/arena-3d.js"></script>

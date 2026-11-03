@@ -486,6 +486,7 @@ def test_tier3_rbac_isolation(browser):
 
         # Contagem dinâmica de cards no Kanban
         expected_maciel = get_supabase_leads_count("maciel") or 3
+        expect(page.locator(".crm-card")).to_have_count(expected_maciel, timeout=8000)
         cards = page.locator(".crm-card")
         total_cards = cards.count()
         assert total_cards == expected_maciel, f"Maciel deve ver exatamente {expected_maciel} leads, viu {total_cards}"
@@ -520,9 +521,9 @@ def test_tier3_rbac_isolation(browser):
         page.fill("#login-senha", "isapel2026")
         page.click("#btn-submit-login")
         page.wait_for_url("**/index.html*", timeout=6000)
-        page.wait_for_timeout(600)
 
         expected_fernanda = get_supabase_leads_count("fernanda") or 4
+        expect(page.locator(".crm-card")).to_have_count(expected_fernanda, timeout=8000)
         cards = page.locator(".crm-card")
         total_cards = cards.count()
         assert total_cards == expected_fernanda, f"Fernanda deve ver seus {expected_fernanda} leads, viu {total_cards}"
@@ -553,9 +554,9 @@ def test_tier3_rbac_isolation(browser):
         page.fill("#login-senha", "isapel2026")
         page.click("#btn-submit-login")
         page.wait_for_url("**/index.html*", timeout=6000)
-        page.wait_for_timeout(600)
 
         expected_caio = get_supabase_leads_count("caio") or 3
+        expect(page.locator(".crm-card")).to_have_count(expected_caio, timeout=8000)
         cards = page.locator(".crm-card")
         total_cards = cards.count()
         assert total_cards == expected_caio, f"Caio deve ver exatamente {expected_caio} leads, viu {total_cards}"
@@ -585,7 +586,6 @@ def test_tier3_rbac_isolation(browser):
         page.fill("#login-senha", "isapel2026")
         page.click("#btn-submit-login")
         page.wait_for_url("**/index.html*", timeout=6000)
-        page.wait_for_timeout(600)
 
         expected_maciel = get_supabase_leads_count("maciel") or 3
         expected_fernanda = get_supabase_leads_count("fernanda") or 4
@@ -593,6 +593,7 @@ def test_tier3_rbac_isolation(browser):
         expected_total = get_supabase_leads_count() or (expected_maciel + expected_fernanda + expected_caio)
 
         # Diretoria deve ver todos os leads legítimos
+        expect(page.locator(".crm-card")).to_have_count(expected_total, timeout=8000)
         cards = page.locator(".crm-card")
         total_all = cards.count()
         assert total_all >= expected_total, f"Diretoria deve ver no mínimo {expected_total} leads, viu {total_all}"
@@ -609,7 +610,7 @@ def test_tier3_rbac_isolation(browser):
 
         # Filtrar por Maciel na visão da diretoria
         select.select_option("maciel")
-        page.wait_for_timeout(500)
+        expect(page.locator(".crm-card")).to_have_count(expected_maciel, timeout=8000)
         maciel_cards = page.locator(".crm-card")
         assert maciel_cards.count() == expected_maciel, f"Diretoria filtrando Maciel deve exibir {expected_maciel} leads, viu {maciel_cards.count()}"
         for i in range(maciel_cards.count()):
@@ -620,7 +621,7 @@ def test_tier3_rbac_isolation(browser):
 
         # Filtrar por Fernanda
         select.select_option("fernanda")
-        page.wait_for_timeout(500)
+        expect(page.locator(".crm-card")).to_have_count(expected_fernanda, timeout=8000)
         fernanda_cards = page.locator(".crm-card")
         assert fernanda_cards.count() == expected_fernanda, f"Diretoria filtrando Fernanda deve exibir {expected_fernanda} leads, viu {fernanda_cards.count()}"
         for i in range(fernanda_cards.count()):
@@ -631,7 +632,7 @@ def test_tier3_rbac_isolation(browser):
 
         # Filtrar por Caio
         select.select_option("caio")
-        page.wait_for_timeout(500)
+        expect(page.locator(".crm-card")).to_have_count(expected_caio, timeout=8000)
         caio_cards = page.locator(".crm-card")
         assert caio_cards.count() == expected_caio, f"Diretoria filtrando Caio deve exibir {expected_caio} leads, viu {caio_cards.count()}"
         for i in range(caio_cards.count()):
@@ -642,7 +643,7 @@ def test_tier3_rbac_isolation(browser):
 
         # Voltar para 'todos'
         select.select_option("todos")
-        page.wait_for_timeout(500)
+        expect(page.locator(".crm-card")).to_have_count(total_all, timeout=8000)
         assert page.locator(".crm-card").count() == total_all, "Diretoria com 'todos' deve restaurar todos os leads"
 
         page.screenshot(path=str(SCREENSHOTS_DIR / "t3_4_diretoria_global.png"))

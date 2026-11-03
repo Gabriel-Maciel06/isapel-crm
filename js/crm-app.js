@@ -29,7 +29,13 @@
     leadEmEdicaoId: null,
     leadEmNotasId: null,
     ultimoFechamentoGerado: null,
-    audioContext: null
+    audioContext: null,
+    analytics: {
+      periodo: 'hoje',
+      dataInicio: null,
+      dataFim: null,
+      vendedorFiltro: 'todos'
+    }
   };
 
   // ==========================================================================
@@ -745,6 +751,7 @@
         sincronizarArena3D();
       }, 100);
     } else if (tabId === 'tab-fechamento') {
+      renderizarAnalytics();
       atualizarPainelFechamento();
     }
   }
@@ -767,10 +774,12 @@
       if (sessao && sessao.perfil === 'vendedor') {
         select.value = sessao.vendedorId;
         AppState.vendedorAtivo = sessao.vendedorId;
+        AppState.analytics.vendedorFiltro = sessao.vendedorId;
         return;
       }
 
       AppState.vendedorAtivo = e.target.value;
+      AppState.analytics.vendedorFiltro = e.target.value;
 
       if (avatar) {
         if (AppState.vendedorAtivo === 'maciel') avatar.textContent = 'GM';
@@ -778,6 +787,13 @@
         else if (AppState.vendedorAtivo === 'caio') avatar.textContent = 'CA';
         else avatar.textContent = 'ALL';
       }
+
+      // Sincroniza seletor da aba de analytics se estiver no DOM
+      const analyticsSelect = document.getElementById('analytics-vendedor-select');
+      if (analyticsSelect && analyticsSelect.value !== e.target.value) {
+        analyticsSelect.value = e.target.value;
+      }
+      renderizarAnalytics();
 
       renderizarKanban();
       showToast(`Visualização filtrada para: ${select.options[select.selectedIndex].text}`, 'info', 2000);
@@ -789,6 +805,7 @@
           window.IsapelCRM.definirLeads(leads);
           renderizarKanban();
           sincronizarArena3D();
+          renderizarAnalytics();
         }
       }
     });
@@ -906,6 +923,339 @@
         }
         showToast('Câmera da Arena redefinida.', 'info', 1800);
       });
+    }
+  }
+
+  // ==========================================================================
+  // 11.5. ABA DE EXIBIÇÃO TOTAL & ANALYTICS DE VENDAS
+  // ==========================================================================
+  function inicializarAnalytics() {
+    const selectVendedor = document.getElementById('analytics-vendedor-select');
+    const pillsContainer = document.getElementById('analytics-pills');
+    const customDatesContainer = document.getElementById('analytics-custom-dates');
+    const btnAplicarData = document.getElementById('btn-aplicar-data-custom');
+    const btnToggleAccordion = document.getElementById('btn-toggle-fechamento-operacional');
+    const contentAccordion = document.getElementById('content-fechamento-operacional');
+
+    // Inicializa valores padrões dos inputs de data custom se vazios
+    const inputInicio = document.getElementById('analytics-data-inicio');
+    const inputFim = document.getElementById('analytics-data-fim');
+    if (inputInicio && inputFim && !inputInicio.value) {
+      const hoje = new Date();
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dia = String(hoje.getDate()).padStart(2, '0');
+      inputInicio.value = `${ano}-${mes}-01`;
+      inputFim.value = `${ano}-${mes}-${dia}`;
+    }
+
+    // 1. Filtro de Vendedor (RBAC-aware)
+    if (selectVendedor) {
+      selectVendedor.addEventListener('change', (e) => {
+        const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+          ? window.IsapelAuth.obterSessao()
+          : null;
+
+        // Se for vendedor, reverte imediatamente para seu ID
+        if (sessao && sessao.perfil === 'vendedor') {
+          selectVendedor.value = sessao.vendedorId;
+          AppState.analytics.vendedorFiltro = sessao.vendedorId;
+          return;
+        }
+
+        AppState.analytics.vendedorFiltro = e.target.value;
+
+        // Sincroniza seletor de vendedor do header
+        const headerSelect = document.getElementById('vendedor-select');
+        if (headerSelect && headerSelect.value !== e.target.value) {
+          headerSelect.value = e.target.value;
+          AppState.vendedorAtivo = e.target.value;
+          renderizarKanban();
+        }
+
+        renderizarAnalytics();
+      });
+    }
+
+    // 2. Pills de Período
+    if (pillsContainer) {
+      const pillButtons = pillsContainer.querySelectorAll('.crm-pill-btn');
+      pillButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const periodo = btn.getAttribute('data-periodo');
+          pillButtons.forEach(b => {
+            b.classList.remove('is-active');
+            b.setAttribute('aria-checked', 'false');
+          });
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-checked', 'true');
+
+          if (periodo === 'custom') {
+            if (customDatesContainer) customDatesContainer.style.display = 'flex';
+            if (inputInicio && inputFim && inputInicio.value && inputFim.value) {
+              AppState.analytics.periodo = 'custom';
+              AppState.analytics.dataInicio = inputInicio.value;
+              AppState.analytics.dataFim = inputFim.value;
+              renderizarAnalytics();
+            }
+          } else {
+            if (customDatesContainer) customDatesContainer.style.display = 'none';
+            AppState.analytics.periodo = periodo;
+            AppState.analytics.dataInicio = null;
+            AppState.analytics.dataFim = null;
+            renderizarAnalytics();
+          }
+        });
+      });
+    }
+
+    // 3. Botão Aplicar Intervalo Personalizado
+    if (btnAplicarData) {
+      btnAplicarData.addEventListener('click', () => {
+        if (!inputInicio || !inputFim || !inputInicio.value || !inputFim.value) {
+          showToast('Selecione as datas de início e fim para filtrar.', 'warning', 2500);
+          return;
+        }
+        if (inputInicio.value > inputFim.value) {
+          showToast('A data inicial não pode ser posterior à data final.', 'warning', 2500);
+          return;
+        }
+        AppState.analytics.periodo = 'custom';
+        AppState.analytics.dataInicio = inputInicio.value;
+        AppState.analytics.dataFim = inputFim.value;
+        renderizarAnalytics();
+        showToast('Filtro de período personalizado aplicado.', 'info', 2000);
+      });
+    }
+
+    // 4. Accordion Recolhível de Fechamento Operacional
+    if (btnToggleAccordion && contentAccordion) {
+      btnToggleAccordion.addEventListener('click', () => {
+        const isExpanded = btnToggleAccordion.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+          btnToggleAccordion.setAttribute('aria-expanded', 'false');
+          contentAccordion.style.display = 'none';
+        } else {
+          btnToggleAccordion.setAttribute('aria-expanded', 'true');
+          contentAccordion.style.display = 'flex';
+          atualizarPainelFechamento();
+        }
+      });
+    }
+
+    // 5. Listener Reativo de Atualizações Analíticas
+    if (window.IsapelAnalytics && typeof window.IsapelAnalytics.registrarListener === 'function') {
+      window.IsapelAnalytics.registrarListener(() => {
+        renderizarAnalytics();
+      });
+    }
+  }
+
+  function renderizarAnalytics() {
+    if (!window.IsapelAnalytics || typeof window.IsapelAnalytics.obterMetricasCompletas !== 'function') {
+      return;
+    }
+
+    const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+      ? window.IsapelAuth.obterSessao()
+      : null;
+
+    // RBAC: Configuração visual do seletor de vendedor
+    const selectVendedor = document.getElementById('analytics-vendedor-select');
+    const badgeLocked = document.getElementById('analytics-vendedor-locked-badge');
+
+    if (selectVendedor) {
+      if (sessao && sessao.perfil === 'vendedor') {
+        selectVendedor.value = sessao.vendedorId;
+        selectVendedor.disabled = true;
+        if (badgeLocked) {
+          badgeLocked.style.display = 'inline-flex';
+          badgeLocked.textContent = `Visualização Travada (${sessao.nome || 'Vendedor'})`;
+        }
+        AppState.analytics.vendedorFiltro = sessao.vendedorId;
+      } else {
+        selectVendedor.disabled = false;
+        if (badgeLocked) {
+          badgeLocked.style.display = 'none';
+        }
+        selectVendedor.value = AppState.analytics.vendedorFiltro || 'todos';
+      }
+    }
+
+    // Executa cálculo através do motor analítico
+    const resultado = window.IsapelAnalytics.obterMetricasCompletas({
+      periodo: AppState.analytics.periodo,
+      dataInicio: AppState.analytics.dataInicio,
+      dataFim: AppState.analytics.dataFim,
+      vendedorId: AppState.analytics.vendedorFiltro,
+      sessao: sessao
+    });
+
+    if (!resultado || !resultado.kpis) return;
+
+    // 1. Atualização dos 6 Bento KPIs
+    const elKpiRecebidos = document.getElementById('analytics-kpi-recebidos');
+    const elKpiRecebidosHint = document.getElementById('analytics-kpi-recebidos-hint');
+    const elKpiQualificados = document.getElementById('analytics-kpi-qualificados');
+    const elKpiTaxaQualificacao = document.getElementById('analytics-kpi-taxa-qualificacao');
+    const elKpiNegociacao = document.getElementById('analytics-kpi-negociacao');
+    const elKpiNegociacaoContas = document.getElementById('analytics-kpi-negociacao-contas');
+    const elKpiFechadas = document.getElementById('analytics-kpi-fechadas');
+    const elKpiTaxaConversao = document.getElementById('analytics-kpi-taxa-conversao');
+    const elKpiTicketMedio = document.getElementById('analytics-kpi-ticket-medio');
+    const elKpiTicketMedioHint = document.getElementById('analytics-kpi-ticket-medio-hint');
+    const elKpiRotas = document.getElementById('analytics-kpi-rotas');
+    const elKpiRotasHint = document.getElementById('analytics-kpi-rotas-hint');
+
+    if (elKpiRecebidos) elKpiRecebidos.textContent = resultado.kpis.totalRecebidos;
+    if (elKpiRecebidosHint) elKpiRecebidosHint.textContent = resultado.periodo.labelFormatado;
+
+    if (elKpiQualificados) elKpiQualificados.textContent = resultado.kpis.totalQualificados;
+    if (elKpiTaxaQualificacao) {
+      elKpiTaxaQualificacao.textContent = `${resultado.kpis.taxaQualificacaoPct.toFixed(1)}% passaram do estágio inicial (${resultado.kpis.totalQualificados}/${resultado.kpis.totalRecebidos})`;
+    }
+
+    const leadsNegociacaoCount = (resultado.funil && resultado.funil.find(f => f.estagio === 'negociacao')?.count) || 0;
+    if (elKpiNegociacao) elKpiNegociacao.textContent = formatarMoeda(resultado.kpis.valorEmNegociacao);
+    if (elKpiNegociacaoContas) elKpiNegociacaoContas.textContent = `${leadsNegociacaoCount} contas em fechamento`;
+
+    if (elKpiFechadas) elKpiFechadas.textContent = formatarMoeda(resultado.kpis.valorFechadoTotal);
+    if (elKpiTaxaConversao) {
+      elKpiTaxaConversao.textContent = `${resultado.kpis.taxaConversaoPct.toFixed(1)}% de conversão final (${resultado.kpis.totalFechados} vendas)`;
+    }
+
+    if (elKpiTicketMedio) elKpiTicketMedio.textContent = formatarMoeda(resultado.kpis.ticketMedio);
+    if (elKpiTicketMedioHint) elKpiTicketMedioHint.textContent = 'Média por proposta ativa';
+
+    if (elKpiRotas) elKpiRotas.textContent = `${resultado.kpis.regioesAtendidasCount} Regiões`;
+    if (elKpiRotasHint) elKpiRotasHint.textContent = 'Frota Própria Isapel';
+
+    // 2. Gráfico do Funil de 6 Etapas
+    const totalLeadsBadge = document.getElementById('analytics-funnel-total-leads');
+    if (totalLeadsBadge) {
+      totalLeadsBadge.textContent = `${resultado.kpis.totalRecebidos} Leads no período`;
+    }
+
+    const funnelBarsContainer = document.getElementById('analytics-funnel-bars-container');
+    if (funnelBarsContainer) {
+      funnelBarsContainer.innerHTML = '';
+      if (!resultado.funil || resultado.funil.length === 0) {
+        funnelBarsContainer.innerHTML = '<div style="font-size:0.85rem; color:var(--text-muted); padding:1rem; text-align:center;">Nenhum dado de funil disponível para o período selecionado.</div>';
+      } else {
+        resultado.funil.forEach(etapa => {
+          const pctVal = etapa.pctTotal.toFixed(1);
+          const barWidth = Math.max(etapa.pctTotal, 3);
+          const valorFormatado = formatarMoeda(etapa.valorTotal);
+
+          const stepEl = document.createElement('div');
+          stepEl.className = 'crm-funnel-step';
+          stepEl.innerHTML = `
+            <div class="crm-funnel-step__row">
+              <div class="crm-funnel-step__left">
+                <span class="crm-funnel-step__color-dot" style="background-color: ${etapa.cor};" aria-hidden="true"></span>
+                <span class="crm-funnel-step__title">${etapa.titulo}</span>
+              </div>
+              <div class="crm-funnel-step__stats">
+                <span class="crm-funnel-step__count-badge">${etapa.count} ${etapa.count === 1 ? 'lead' : 'leads'}</span>
+                <span class="crm-funnel-step__pct-badge">${pctVal}%</span>
+              </div>
+            </div>
+            <div class="crm-funnel-step__track" role="progressbar" aria-valuenow="${pctVal}" aria-valuemin="0" aria-valuemax="100" aria-label="${etapa.titulo}: ${etapa.count} leads (${pctVal}%)">
+              <div class="crm-funnel-step__bar" style="width: ${barWidth}%; background-color: ${etapa.cor};"></div>
+            </div>
+            <div class="crm-funnel-step__meta">
+              <span>Volume: <strong class="crm-funnel-step__val">${valorFormatado}</strong></span>
+              <span>Participação no período</span>
+            </div>
+          `;
+          funnelBarsContainer.appendChild(stepEl);
+        });
+      }
+    }
+
+    // 3. Card Lateral: Distribuição da Equipe Comercial ou Métricas do Vendedor
+    const sellerCardTitle = document.getElementById('analytics-seller-card-title');
+    const sellerContainer = document.getElementById('analytics-seller-distribution-container');
+
+    if (sellerContainer) {
+      sellerContainer.innerHTML = '';
+
+      if (resultado.ehVisaoGeral) {
+        if (sellerCardTitle) sellerCardTitle.textContent = 'Distribuição da Equipe Comercial';
+
+        if (resultado.distribuicaoVendedores && resultado.distribuicaoVendedores.length > 0) {
+          resultado.distribuicaoVendedores.forEach(v => {
+            const row = document.createElement('div');
+            row.className = 'crm-seller-row';
+            row.innerHTML = `
+              <div class="crm-seller-row__left">
+                <div class="crm-seller-row__avatar">${v.avatar}</div>
+                <div class="crm-seller-row__info">
+                  <span class="crm-seller-row__name">${v.nome}</span>
+                  <span class="crm-seller-row__cargo">${v.totalLeads} leads (${v.fechados} ganhos) &bull; ${v.taxaConversaoPct.toFixed(1)}% conv.</span>
+                </div>
+              </div>
+              <div class="crm-seller-row__stats">
+                <span class="crm-seller-row__val">${formatarMoeda(v.valorFechado)}</span>
+                <span class="crm-seller-row__sub">Pipeline: ${formatarMoeda(v.valorPipeline)}</span>
+              </div>
+            `;
+            sellerContainer.appendChild(row);
+          });
+        }
+      } else {
+        // Visão de vendedor individual
+        const configVendedores = (window.IsapelAnalytics && typeof window.IsapelAnalytics.obterConfigVendedores === 'function')
+          ? window.IsapelAnalytics.obterConfigVendedores()
+          : {};
+        const vendedorCfg = configVendedores[resultado.vendedorFiltro] || {};
+        const vendedorNome = vendedorCfg.nome || (sessao ? sessao.nome : 'Consultor');
+        const vendedorAvatar = vendedorCfg.avatar || (sessao ? sessao.avatar : 'IS');
+        const vendedorCargo = vendedorCfg.cargo || 'Consultor Comercial B2B';
+
+        if (sellerCardTitle) sellerCardTitle.textContent = `Desempenho Comercial - ${vendedorNome}`;
+
+        const vInfo = (resultado.distribuicaoVendedores && resultado.distribuicaoVendedores.find(item => item.vendedorId === resultado.vendedorFiltro)) || {
+          nome: vendedorNome,
+          avatar: vendedorAvatar,
+          totalLeads: resultado.kpis.totalRecebidos,
+          fechados: resultado.kpis.totalFechados,
+          valorPipeline: resultado.kpis.valorPipelineTotal,
+          valorFechado: resultado.kpis.valorFechadoTotal,
+          taxaConversaoPct: resultado.kpis.taxaConversaoPct
+        };
+
+        const scorecard = document.createElement('div');
+        scorecard.className = 'crm-seller-scorecard';
+        scorecard.innerHTML = `
+          <div class="crm-seller-scorecard__profile">
+            <div class="crm-seller-row__avatar" style="width: 44px; height: 44px; font-size: 1rem;">${vendedorAvatar}</div>
+            <div class="crm-seller-row__info">
+              <span class="crm-seller-row__name" style="font-size: 1rem;">${vendedorNome}</span>
+              <span class="crm-seller-row__cargo">${vendedorCargo} &bull; Frota Própria CIF</span>
+            </div>
+          </div>
+          <div class="crm-seller-scorecard__grid">
+            <div class="crm-seller-scorecard__stat-box">
+              <span class="crm-seller-scorecard__stat-label">Leads no Período</span>
+              <span class="crm-seller-scorecard__stat-val">${vInfo.totalLeads}</span>
+            </div>
+            <div class="crm-seller-scorecard__stat-box">
+              <span class="crm-seller-scorecard__stat-label">Vendas Fechadas</span>
+              <span class="crm-seller-scorecard__stat-val" style="color: var(--isapel-emerald);">${vInfo.fechados}</span>
+            </div>
+            <div class="crm-seller-scorecard__stat-box">
+              <span class="crm-seller-scorecard__stat-label">Pipeline Ativo</span>
+              <span class="crm-seller-scorecard__stat-val">${formatarMoeda(vInfo.valorPipeline)}</span>
+            </div>
+            <div class="crm-seller-scorecard__stat-box">
+              <span class="crm-seller-scorecard__stat-label">Taxa de Conversão</span>
+              <span class="crm-seller-scorecard__stat-val" style="color: var(--isapel-sky-dark);">${vInfo.taxaConversaoPct.toFixed(1)}%</span>
+            </div>
+          </div>
+        `;
+        sellerContainer.appendChild(scorecard);
+      }
     }
   }
 
@@ -1612,6 +1962,7 @@
     inicializarKanbanDropTargets();
     inicializarBotoesArena();
     inicializarFechamentoDoDia();
+    inicializarAnalytics();
     inicializarModalNotas();
     inicializarModalEditar();
     inicializarBusca();
@@ -1633,6 +1984,7 @@
     // Renderização inicial
     renderizarKanban();
     sincronizarArena3D();
+    renderizarAnalytics();
 
     // Inicialização da Sincronização Híbrida (Supabase Nuvem + Backup Local)
     if (window.IsapelSync) {
@@ -1658,6 +2010,7 @@
             window.IsapelCRM.definirLeads(leadsNuvem);
             renderizarKanban();
             sincronizarArena3D();
+            renderizarAnalytics();
             console.log(`[Isapel Sync] Nuvem conectada: ${leadsNuvem.length} leads sincronizados.`);
           }
         }
@@ -1670,6 +2023,7 @@
           window.IsapelCRM.definirLeads(novos);
           renderizarKanban();
           sincronizarArena3D();
+          renderizarAnalytics();
         }
       }, 15000);
     }
