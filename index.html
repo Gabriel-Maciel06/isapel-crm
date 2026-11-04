@@ -466,10 +466,24 @@
             type="text"
             id="kanban-search"
             class="crm-quick-bar__input"
-            style="width: 300px; height: 32px; font-size: 0.8rem;"
+            style="width: 260px; height: 32px; font-size: 0.8rem;"
             placeholder="Filtrar lead por nome, cidade ou DDD..."
             aria-label="Filtrar lead por nome, cidade ou DDD"
           >
+          <label for="kanban-tipo-filter" class="sr-only">Filtrar por tipo de cliente</label>
+          <select
+            id="kanban-tipo-filter"
+            class="crm-quick-bar__input"
+            style="height: 32px; font-size: 0.8rem; padding: 0 0.5rem; width: auto; background-color: #FFFFFF; font-weight: 600; color: #334155; cursor: pointer;"
+            aria-label="Filtrar por tipo ou perfil de cliente"
+            title="Filtrar por tipo de cliente"
+          >
+            <option value="todos">Todos os Tipos de Cliente</option>
+            <option value="distribuidor">🏢 Distribuidor</option>
+            <option value="licitacao">🏛️ Licitação</option>
+            <option value="consumidor_final">🛒 Consumidor Final</option>
+            <option value="outro">📦 Outro</option>
+          </select>
           <span style="font-size: 0.78rem; color: var(--text-muted);" id="kanban-filter-status">Exibindo todos os leads</span>
         </div>
         <div style="display: flex; align-items: center; gap: 1rem;">
@@ -740,199 +754,474 @@
       <div class="crm-closing-view">
 
         <!-- ==============================================================
-             BLOCO 1: ABA DE EXIBIÇÃO TOTAL / ANALYTICS (DESTAQUE SUPERIOR)
+             BLOCO 1: RELATÓRIO GERENCIAL DE LEADS (CONFORME PRINT EXECUTIVO)
              ============================================================== -->
-        <div class="crm-analytics-card crm-analytics-card--header">
-          <div class="crm-analytics-header__top">
-            <div class="crm-analytics-header__info">
-              <span class="crm-priority-tag crm-priority-tag--estrategica">
-                Inteligência Comercial &amp; Gestão B2B
-              </span>
-              <h2 class="crm-analytics-title">Exibição Total &amp; Analytics de Vendas</h2>
-              <p class="crm-analytics-subtitle">
-                Acompanhamento dinâmico de performance, funil comercial e qualificação de leads da fábrica Isapel.
-              </p>
+        <div class="crm-gerencial-report" id="crm-gerencial-report-root">
+          <!-- Barra Superior Escura -->
+          <div class="crm-gerencial-topbar">
+            <div class="crm-gerencial-topbar__left">
+              <div class="crm-gerencial-topbar__badge">
+                <span class="crm-gerencial-logo-text">isapel</span>
+                <span class="crm-gerencial-logo-leaf" aria-hidden="true">🌱</span>
+              </div>
+              <span class="crm-gerencial-topbar__brand">ISAPEL | CRM</span>
             </div>
-            
-            <div class="crm-analytics-header__quick-status">
-              <span class="crm-analytics-live-tag">
-                <span class="crm-analytics-live-dot" aria-hidden="true"></span>
-                <span>Tempo Real</span>
-              </span>
+            <div class="crm-gerencial-topbar__right">
+              <span>Relatórios / Qualidade dos Leads</span>
             </div>
           </div>
 
-          <!-- Barra de Filtros Dinâmicos -->
-          <div class="crm-analytics-toolbar" id="analytics-filter-toolbar">
-            <!-- Filtro de Vendedor (RBAC-aware) -->
-            <div class="crm-analytics-filter-group">
-              <label for="analytics-vendedor-select" class="crm-analytics-filter-label">Vendedor</label>
-              <div class="crm-analytics-select-wrapper">
-                <select id="analytics-vendedor-select" class="crm-analytics-select" aria-label="Filtrar por vendedor">
-                  <option value="todos">Toda a Equipe (Consolidado)</option>
-                  <option value="maciel">Gabriel Maciel</option>
-                  <option value="fernanda">Fernanda</option>
-                  <option value="caio">Caio</option>
-                  <option value="albert">Albert</option>
-                  <option value="daniel">Daniel</option>
-                </select>
-                <svg class="crm-analytics-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          <!-- Corpo do Relatório Gerencial -->
+          <div class="crm-gerencial-body">
+            <!-- Cabeçalho Principal com Título e Filtros -->
+            <div class="crm-gerencial-header-row">
+              <div class="crm-gerencial-title-group">
+                <div class="crm-gerencial-title-bar" aria-hidden="true"></div>
+                <div class="crm-gerencial-title-texts">
+                  <h2 class="crm-gerencial-title">RELATÓRIO GERENCIAL DE LEADS</h2>
+                  <p class="crm-gerencial-subtitle">Qualidade, aproveitamento e retorno dos leads enviados pelo marketing</p>
+                </div>
               </div>
-              <span id="analytics-vendedor-locked-badge" class="crm-role-badge crm-role-badge--vendedor" style="display:none;">
+
+              <!-- Filtros no Canto Superior Direito -->
+              <div class="crm-gerencial-filters">
+                <!-- Filtro Período -->
+                <div class="crm-gerencial-filter-item">
+                  <label for="gerencial-periodo-select" class="crm-gerencial-filter-label">Período:</label>
+                  <div class="crm-gerencial-select-box">
+                    <span class="crm-gerencial-filter-icon" aria-hidden="true">📅</span>
+                    <select id="gerencial-periodo-select" class="crm-gerencial-select" aria-label="Filtrar por período">
+                      <option value="03/11/2026" selected>03/11/2026</option>
+                      <option value="hoje">Hoje</option>
+                      <option value="7dias">Últimos 7 dias</option>
+                      <option value="mes">Este Mês</option>
+                      <option value="todos">Todo o Histórico</option>
+                    </select>
+                    <span class="crm-gerencial-chevron" aria-hidden="true">⌄</span>
+                  </div>
+                </div>
+
+                <!-- Filtro Origem -->
+                <div class="crm-gerencial-filter-item">
+                  <label for="gerencial-origem-select" class="crm-gerencial-filter-label">Origem:</label>
+                  <div class="crm-gerencial-select-box">
+                    <select id="gerencial-origem-select" class="crm-gerencial-select" aria-label="Filtrar por origem">
+                      <option value="todas" selected>Todas</option>
+                      <option value="google">Google / Site</option>
+                      <option value="redes">Redes sociais</option>
+                      <option value="indicacao">Indicação</option>
+                      <option value="outros">Outros</option>
+                    </select>
+                    <span class="crm-gerencial-chevron" aria-hidden="true">⌄</span>
+                  </div>
+                </div>
+
+                <!-- Filtro Vendedor -->
+                <div class="crm-gerencial-filter-item">
+                  <label for="gerencial-vendedor-select" class="crm-gerencial-filter-label">Vendedor:</label>
+                  <div class="crm-gerencial-select-box">
+                    <select id="gerencial-vendedor-select" class="crm-gerencial-select" aria-label="Filtrar por vendedor">
+                      <option value="todos" selected>Todos</option>
+                      <option value="maciel">Gabriel Maciel</option>
+                      <option value="fernanda">Fernanda</option>
+                      <option value="caio">Caio</option>
+                      <option value="albert">Albert</option>
+                      <option value="daniel">Daniel</option>
+                    </select>
+                    <span class="crm-gerencial-chevron" aria-hidden="true">⌄</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Linha da Coorte -->
+            <div class="crm-gerencial-coorte-row">
+              Coorte: leads recebidos em <strong id="gerencial-coorte-data">03/11/2026</strong>
+              <span id="gerencial-vendedor-locked-badge" class="crm-role-badge crm-role-badge--vendedor" style="display:none; margin-left: 8px;">
                 Visualização Travada
               </span>
             </div>
 
-            <!-- Filtro de Região dos Leads -->
-            <div class="crm-analytics-filter-group">
-              <label for="analytics-regiao-select" class="crm-analytics-filter-label">Região / DDD</label>
-              <div class="crm-analytics-select-wrapper">
-                <select id="analytics-regiao-select" class="crm-analytics-select" aria-label="Filtrar por região dos leads">
-                  <option value="todas">Todas as Regiões</option>
-                </select>
-                <svg class="crm-analytics-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <!-- 5 Cards de KPIs Superiores -->
+            <div class="crm-gerencial-kpi-row">
+              <!-- 1. Leads recebidos -->
+              <div class="crm-gerencial-kpi-card">
+                <div class="crm-gerencial-kpi-icon crm-gerencial-kpi-icon--green" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <div class="crm-gerencial-kpi-info">
+                  <div class="crm-gerencial-kpi-label">Leads recebidos</div>
+                  <div class="crm-gerencial-kpi-val" id="gkpi-recebidos">35</div>
+                </div>
+              </div>
+
+              <!-- 2. Avançaram da entrada -->
+              <div class="crm-gerencial-kpi-card">
+                <div class="crm-gerencial-kpi-icon crm-gerencial-kpi-icon--green" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </div>
+                <div class="crm-gerencial-kpi-info">
+                  <div class="crm-gerencial-kpi-label">Avançaram da entrada</div>
+                  <div class="crm-gerencial-kpi-val-row">
+                    <span class="crm-gerencial-kpi-val" id="gkpi-avancaram">12</span>
+                    <span class="crm-gerencial-kpi-divider" aria-hidden="true">|</span>
+                    <span class="crm-gerencial-kpi-badge crm-gerencial-kpi-badge--green" id="gkpi-avancaram-badge">34,3%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Em negociação -->
+              <div class="crm-gerencial-kpi-card">
+                <div class="crm-gerencial-kpi-icon crm-gerencial-kpi-icon--amber" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                  </svg>
+                </div>
+                <div class="crm-gerencial-kpi-info">
+                  <div class="crm-gerencial-kpi-label">Em negociação</div>
+                  <div class="crm-gerencial-kpi-val-row">
+                    <span class="crm-gerencial-kpi-val" id="gkpi-negociacao">3</span>
+                    <span class="crm-gerencial-kpi-divider" aria-hidden="true">|</span>
+                    <span class="crm-gerencial-kpi-badge crm-gerencial-kpi-badge--amber" id="gkpi-negociacao-badge">8,6%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Ganhos -->
+              <div class="crm-gerencial-kpi-card">
+                <div class="crm-gerencial-kpi-icon crm-gerencial-kpi-icon--green" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+                <div class="crm-gerencial-kpi-info">
+                  <div class="crm-gerencial-kpi-label">Ganhos</div>
+                  <div class="crm-gerencial-kpi-val" id="gkpi-ganhos">0</div>
+                </div>
+              </div>
+
+              <!-- 5. 1º contato dentro do prazo -->
+              <div class="crm-gerencial-kpi-card">
+                <div class="crm-gerencial-kpi-icon crm-gerencial-kpi-icon--slate" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/>
+                  </svg>
+                </div>
+                <div class="crm-gerencial-kpi-info">
+                  <div class="crm-gerencial-kpi-label">1º contato dentro do prazo</div>
+                  <div class="crm-gerencial-kpi-val-row">
+                    <span class="crm-gerencial-kpi-val" id="gkpi-prazo">—</span>
+                    <span class="crm-gerencial-kpi-sub" id="gkpi-prazo-sub">não disponível</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Filtro de Período (Pills) -->
-            <div class="crm-analytics-filter-group">
-              <span class="crm-analytics-filter-label" id="label-periodo-pills">Período</span>
-              <div class="crm-analytics-pills" id="analytics-pills" role="radiogroup" aria-labelledby="label-periodo-pills">
-                <button type="button" class="crm-pill-btn is-active" data-periodo="hoje" role="radio" aria-checked="true">Hoje</button>
-                <button type="button" class="crm-pill-btn" data-periodo="7dias" role="radio" aria-checked="false">Últimos 7 dias</button>
-                <button type="button" class="crm-pill-btn" data-periodo="mes" role="radio" aria-checked="false">Este Mês</button>
-                <button type="button" class="crm-pill-btn" data-periodo="custom" role="radio" aria-checked="false">Personalizado</button>
+            <!-- Grade 2 Colunas: Linha 1 (Qualidade por Origem & Aproveitamento dos Leads) -->
+            <div class="crm-gerencial-grid-2col">
+              <!-- Card 1: QUALIDADE POR ORIGEM -->
+              <div class="crm-gerencial-card">
+                <div class="crm-gerencial-card__header">
+                  <div class="crm-gerencial-card__title-wrap">
+                    <span class="crm-gerencial-card__icon--green" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </span>
+                    <h3 class="crm-gerencial-card__title">QUALIDADE POR ORIGEM</h3>
+                  </div>
+                  <span class="crm-gerencial-badge-pill">Dados a coletar</span>
+                </div>
+                <div class="crm-gerencial-table-wrap">
+                  <table class="crm-gerencial-table" id="tabela-qualidade-origem">
+                    <thead>
+                      <tr>
+                        <th style="text-align: left;">Origem (canal)</th>
+                        <th>Leads</th>
+                        <th>Com perfil</th>
+                        <th>Sem perfil</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-qualidade-origem">
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Google / Site</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Redes sociais</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Indicação</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Outros</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Card 2: APROVEITAMENTO DOS LEADS -->
+              <div class="crm-gerencial-card">
+                <div class="crm-gerencial-card__header">
+                  <div class="crm-gerencial-card__title-wrap">
+                    <span class="crm-gerencial-card__icon--green" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </span>
+                    <h3 class="crm-gerencial-card__title">APROVEITAMENTO DOS LEADS</h3>
+                  </div>
+                  <span class="crm-gerencial-card__subtext">Progress: da coorte (não é taxa de fechamento instantânea)</span>
+                </div>
+                <div class="crm-gerencial-aproveitamento-list" id="aproveitamento-progress-container">
+                  <!-- Recebidos -->
+                  <div class="crm-aprov-row">
+                    <span class="crm-aprov-lbl">Recebidos</span>
+                    <div class="crm-aprov-bar-track">
+                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-recebidos" style="width: 100%;"></div>
+                    </div>
+                    <span class="crm-aprov-val" id="aprov-val-recebidos">35</span>
+                  </div>
+                  <!-- Avançaram -->
+                  <div class="crm-aprov-row">
+                    <span class="crm-aprov-lbl">Avançaram</span>
+                    <div class="crm-aprov-bar-track">
+                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-avancaram" style="width: 34.3%;"></div>
+                    </div>
+                    <span class="crm-aprov-val" id="aprov-val-avancaram">12 - 34,3%</span>
+                  </div>
+                  <!-- Em negociação -->
+                  <div class="crm-aprov-row">
+                    <span class="crm-aprov-lbl">Em negociação</span>
+                    <div class="crm-aprov-bar-track">
+                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--amber" id="aprov-bar-negociacao" style="width: 8.6%;"></div>
+                    </div>
+                    <span class="crm-aprov-val" id="aprov-val-negociacao">3 - 8,6%</span>
+                  </div>
+                  <!-- Ganhos -->
+                  <div class="crm-aprov-row">
+                    <span class="crm-aprov-lbl">Ganhos</span>
+                    <div class="crm-aprov-bar-track">
+                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-ganhos" style="width: 0%;"></div>
+                    </div>
+                    <span class="crm-aprov-val" id="aprov-val-ganhos">0</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Inputs de Intervalo Personalizado (Toggle dinâmico) -->
-            <div class="crm-analytics-custom-dates" id="analytics-custom-dates" style="display: none;">
-              <div class="crm-date-field">
-                <label for="analytics-data-inicio" class="crm-date-label">Início</label>
-                <input type="date" id="analytics-data-inicio" class="crm-date-input" aria-label="Data de início">
+            <!-- Grade 2 Colunas: Linha 2 (Leads por Região & Qualidade dos Leads) -->
+            <div class="crm-gerencial-grid-2col">
+              <!-- Card 3: LEADS POR REGIÃO -->
+              <div class="crm-gerencial-card">
+                <div class="crm-gerencial-card__header">
+                  <div class="crm-gerencial-card__title-wrap">
+                    <span class="crm-gerencial-card__icon--green" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </span>
+                    <h3 class="crm-gerencial-card__title">LEADS POR REGIÃO</h3>
+                  </div>
+                </div>
+                <div class="crm-gerencial-table-wrap">
+                  <table class="crm-gerencial-table" id="tabela-leads-regiao">
+                    <thead>
+                      <tr>
+                        <th style="text-align: left;">Região</th>
+                        <th>Leads</th>
+                        <th>Com perfil</th>
+                        <th>Sem perfil</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-leads-regiao">
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> SP</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--green" title="SP"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--amber" aria-hidden="true"></span> Litoral Sul</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--amber" title="Litoral Sul"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--blue" aria-hidden="true"></span> Rio de Janeiro</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--blue" title="Rio de Janeiro"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--gray" aria-hidden="true"></span> Paraná</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--gray" title="Paraná"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <span class="crm-date-separator" aria-hidden="true">até</span>
-              <div class="crm-date-field">
-                <label for="analytics-data-fim" class="crm-date-label">Fim</label>
-                <input type="date" id="analytics-data-fim" class="crm-date-input" aria-label="Data final">
+
+              <!-- Card 4: QUALIDADE DOS LEADS -->
+              <div class="crm-gerencial-card">
+                <div class="crm-gerencial-card__header">
+                  <div class="crm-gerencial-card__title-wrap">
+                    <span class="crm-gerencial-card__icon--green" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    </span>
+                    <h3 class="crm-gerencial-card__title">QUALIDADE DOS LEADS</h3>
+                  </div>
+                </div>
+                <div class="crm-gerencial-table-wrap">
+                  <table class="crm-gerencial-table" id="tabela-qualidade-leads">
+                    <thead>
+                      <tr>
+                        <th style="text-align: left;">Status</th>
+                        <th>Leads</th>
+                        <th>Com perfil</th>
+                        <th>Em atendimento</th>
+                        <th>Sem retorno</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-qualidade-leads">
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--red" aria-hidden="true"></span> Perdido</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--red" title="Perdido"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Avançado</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--green" title="Avançado"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                      <tr>
+                        <td><span class="crm-gdot crm-gdot--gray" aria-hidden="true"></span> Sem retorno</td>
+                        <td><span class="crm-mini-bar crm-mini-bar--gray" title="Sem retorno"></span></td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <button type="button" id="btn-aplicar-data-custom" class="crm-btn crm-btn--sm crm-btn--primary">
-                Filtrar
-              </button>
+            </div>
+
+            <!-- Linha 3: Card Completo (DESEMPENHO POR CONSULTOR) -->
+            <div class="crm-gerencial-card crm-gerencial-card--full">
+              <div class="crm-gerencial-card__header">
+                <div class="crm-gerencial-card__title-wrap">
+                  <span class="crm-gerencial-card__icon--green" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </span>
+                  <h3 class="crm-gerencial-card__title">DESEMPENHO POR CONSULTOR</h3>
+                </div>
+              </div>
+              <div class="crm-gerencial-table-wrap">
+                <table class="crm-gerencial-table" id="tabela-desempenho-consultor">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left;">Consultor</th>
+                      <th>Recebidos</th>
+                      <th>Com perfil</th>
+                      <th>Avançaram</th>
+                      <th>Sem perfil</th>
+                      <th>Tempo 1º contato</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-desempenho-consultor">
+                    <tr data-vendedor="maciel">
+                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Gabriel Maciel</td>
+                      <td id="cons-maciel-recebidos">12</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                    </tr>
+                    <tr data-vendedor="fernanda">
+                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Fernanda</td>
+                      <td id="cons-fernanda-recebidos">15</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                    </tr>
+                    <tr data-vendedor="caio">
+                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Caio</td>
+                      <td id="cons-caio-recebidos">8</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                    </tr>
+                    <tr data-vendedor="albert">
+                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Albert</td>
+                      <td id="cons-albert-recebidos">0</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                    </tr>
+                    <tr data-vendedor="daniel">
+                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Daniel</td>
+                      <td id="cons-daniel-recebidos">0</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Rodapé Informativo -->
+            <div class="crm-gerencial-footer">
+              <span class="crm-gerencial-footer-icon" aria-hidden="true">ⓘ</span>
+              <span>Origem e motivo de descarte devem ser preenchidos no CRM para análise de qualidade.</span>
             </div>
           </div>
         </div>
 
-        <!-- Grade Bento de 6 KPIs Principais -->
-        <div class="crm-analytics-kpi-grid">
-          <!-- 1. Leads Recebidos -->
-          <div class="crm-kpi-card">
-            <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Leads Recebidos</span>
-              <span class="crm-kpi-icon crm-kpi-icon--sky" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-              </span>
-            </div>
-            <div class="crm-kpi-card__val" id="analytics-kpi-recebidos">0</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-recebidos-hint">No período selecionado</div>
-          </div>
-
-          <!-- 2. Qualificação & Validação -->
-          <div class="crm-kpi-card">
-            <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Qualificação &amp; Validação</span>
-              <span class="crm-kpi-icon crm-kpi-icon--gold" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </span>
-            </div>
-            <div class="crm-kpi-card__val" id="analytics-kpi-qualificados">0</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-taxa-qualificacao">0,0% passaram do estágio inicial</div>
-          </div>
-
-          <!-- 3. Em Negociação -->
-          <div class="crm-kpi-card">
-            <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Em Negociação</span>
-              <span class="crm-kpi-icon crm-kpi-icon--indigo" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-              </span>
-            </div>
-            <div class="crm-kpi-card__val" id="analytics-kpi-negociacao" style="color: var(--isapel-amber);">R$ 0,00</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-negociacao-contas">0 contas em fechamento</div>
-          </div>
-
-          <!-- 4. Fechadas / Ganhas -->
-          <div class="crm-kpi-card">
-            <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Fechadas / Ganhas</span>
-              <span class="crm-kpi-icon crm-kpi-icon--emerald" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              </span>
-            </div>
-            <div class="crm-kpi-card__val" id="analytics-kpi-fechadas" style="color: var(--isapel-emerald);">R$ 0,00</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-taxa-conversao">0,0% de conversão final</div>
-          </div>
-
-          <!-- 5. Ticket Médio -->
-          <div class="crm-kpi-card">
-            <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Ticket Médio</span>
-              <span class="crm-kpi-icon crm-kpi-icon--navy" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              </span>
-            </div>
-            <div class="crm-kpi-card__val" id="analytics-kpi-ticket-medio">R$ 0,00</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-ticket-medio-hint">Média por proposta ativa</div>
-          </div>
-
-          <!-- 6. Regiões de Leads Recebidos -->
-          <div class="crm-kpi-card" id="analytics-kpi-card-regioes" style="cursor: pointer;" title="Visualizar e filtrar por região">
-            <div class="crm-kpi-card__header">
-              <span class="crm-kpi-card__lbl">Regiões de Leads Recebidos</span>
-              <span class="crm-kpi-icon crm-kpi-icon--slate" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </span>
-            </div>
-            <div class="crm-kpi-card__val" id="analytics-kpi-rotas">0 Regiões</div>
-            <div class="crm-kpi-card__hint" id="analytics-kpi-rotas-hint">DDDs &amp; Praças Atendidas</div>
-          </div>
-        </div>
-
-        <!-- Visual Funnel & Equipe Container -->
-        <div class="crm-analytics-charts-grid">
-          <!-- Gráfico do Funil de 6 Etapas -->
-          <div class="crm-chart-card">
-            <div class="crm-chart-card__header">
-              <div class="crm-chart-card__title-wrap">
-                <h3 class="crm-chart-card__title">Distribuição &amp; Conversão do Funil de Vendas</h3>
-                <span class="crm-chart-card__subtitle">Progressão pelas 6 etapas comerciais da fábrica</span>
-              </div>
-              <span class="crm-chart-card__badge" id="analytics-funnel-total-leads">0 Leads no total</span>
-            </div>
-            <div class="crm-funnel-visual-container" id="analytics-funnel-bars-container">
-              <!-- Renderizado dinamicamente via JS -->
-            </div>
-          </div>
-
-          <!-- Card Lateral: Distribuição da Equipe Comercial & Regiões dos Leads -->
-          <div class="crm-chart-card" id="analytics-seller-card">
-            <div class="crm-chart-card__header">
-              <div class="crm-chart-card__title-wrap">
-                <h3 class="crm-chart-card__title" id="analytics-seller-card-title">Distribuição da Equipe Comercial</h3>
-                <span class="crm-chart-card__subtitle" id="analytics-seller-card-subtitle">Desempenho comparativo e pipeline por consultor</span>
-              </div>
-              <div class="crm-analytics-side-tabs" style="display: flex; gap: 0.35rem;">
-                <button type="button" class="crm-pill-btn is-active" id="btn-sidecard-equipe" style="font-size: 0.72rem; padding: 0.25rem 0.55rem;">👥 Equipe</button>
-                <button type="button" class="crm-pill-btn" id="btn-sidecard-regioes" style="font-size: 0.72rem; padding: 0.25rem 0.55rem;">📍 Regiões</button>
-              </div>
-            </div>
-            <div class="crm-seller-distribution-list" id="analytics-seller-distribution-container">
-              <!-- Renderizado dinamicamente via JS -->
-            </div>
-            <div class="crm-regions-distribution-list" id="analytics-regions-distribution-container" style="display: none;">
-              <!-- Renderizado dinamicamente via JS com as regiões dos leads -->
-            </div>
-          </div>
+        <!-- Elementos Legados Invisíveis para Retrocompatibilidade de IDs -->
+        <div id="analytics-legacy-shims" style="display:none;" aria-hidden="true">
+          <span id="analytics-kpi-recebidos"></span>
+          <span id="analytics-kpi-recebidos-hint"></span>
+          <span id="analytics-kpi-qualificados"></span>
+          <span id="analytics-kpi-taxa-qualificacao"></span>
+          <span id="analytics-kpi-negociacao"></span>
+          <span id="analytics-kpi-negociacao-contas"></span>
+          <span id="analytics-kpi-fechadas"></span>
+          <span id="analytics-kpi-taxa-conversao"></span>
+          <span id="analytics-kpi-ticket-medio"></span>
+          <span id="analytics-kpi-ticket-medio-hint"></span>
+          <span id="analytics-kpi-rotas"></span>
+          <span id="analytics-kpi-rotas-hint"></span>
+          <span id="analytics-funnel-total-leads"></span>
+          <div id="analytics-funnel-bars-container"></div>
+          <div id="analytics-seller-card-title"></div>
+          <div id="analytics-seller-card-subtitle"></div>
+          <div id="analytics-seller-distribution-container"></div>
+          <div id="analytics-regions-distribution-container"></div>
+          <select id="analytics-vendedor-select"><option value="todos">Todos</option></select>
+          <span id="analytics-vendedor-locked-badge"></span>
+          <select id="analytics-regiao-select"><option value="todas">Todas</option></select>
         </div>
 
         <!-- ==============================================================
@@ -1339,6 +1628,17 @@
           <div>
             <label for="edit-lead-valor" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Valor Negociado (R$)</label>
             <input type="number" id="edit-lead-valor" class="crm-quick-bar__input" step="50" min="0">
+          </div>
+
+          <div>
+            <label for="edit-lead-tipo" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Tipo de Cliente / Perfil</label>
+            <select id="edit-lead-tipo" class="crm-quick-bar__input">
+              <option value="">-- Não Definido --</option>
+              <option value="distribuidor">🏢 Distribuidor</option>
+              <option value="licitacao">🏛️ Licitação</option>
+              <option value="consumidor_final">🛒 Consumidor Final</option>
+              <option value="outro">📦 Outro</option>
+            </select>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">

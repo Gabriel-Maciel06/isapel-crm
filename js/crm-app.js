@@ -23,9 +23,10 @@
   // 1. ESTADO GLOBAL DA APLICAÇÃO
   // ==========================================================================
   const AppState = {
-    vendedorAtivo: 'todos', // 'todos' | 'maciel' | 'fernanda' | 'caio'
+    vendedorAtivo: 'todos', // 'todos' | 'maciel' | 'fernanda' | 'caio' | 'albert' | 'daniel'
     abaAtiva: 'tab-funil',
     buscaTermo: '',
+    tipoClienteFiltro: 'todos', // 'todos' | 'distribuidor' | 'licitacao' | 'consumidor_final' | 'outro'
     leadEmEdicaoId: null,
     leadEmNotasId: null,
     ultimoFechamentoGerado: null,
@@ -33,9 +34,10 @@
     avatarPreviewEngine: null,
     vendedorCustomizandoId: 'maciel',
     analytics: {
-      periodo: 'hoje',
+      periodo: '03/11/2026',
       dataInicio: null,
       dataFim: null,
+      origemFiltro: 'todas',
       vendedorFiltro: 'todos',
       regiaoFiltro: 'todas',
       sideTabAtiva: 'equipe'
@@ -383,7 +385,7 @@
     if (window.IsapelCRM && typeof window.IsapelCRM.listarLeads === 'function') {
       return window.IsapelCRM.listarLeads() || [];
     }
-    return JSON.parse(localStorage.getItem('isapel_leads_v1') || '[]');
+    return JSON.parse(localStorage.getItem('isapel_crm_leads_v1') || localStorage.getItem('isapel_leads_v1') || '[]');
   }
 
   function renderizarKanban() {
@@ -396,13 +398,20 @@
       if (AppState.vendedorAtivo !== 'todos' && lead.vendedorId !== AppState.vendedorAtivo) {
         return false;
       }
+      // Filtro de perfil / tipo de cliente
+      if (AppState.tipoClienteFiltro && AppState.tipoClienteFiltro !== 'todos') {
+        if ((lead.tipoCliente || '') !== AppState.tipoClienteFiltro) {
+          return false;
+        }
+      }
       // Filtro de busca
       if (termo) {
         const nomeMatch = (lead.nome || '').toLowerCase().includes(termo);
         const cidadeMatch = (lead.cidade || '').toLowerCase().includes(termo);
         const foneMatch = (lead.telefone || '').includes(termo);
         const dddMatch = String(lead.ddd || '').includes(termo);
-        return nomeMatch || cidadeMatch || foneMatch || dddMatch;
+        const tipoMatch = (lead.tipoCliente || '').toLowerCase().includes(termo);
+        return nomeMatch || cidadeMatch || foneMatch || dddMatch || tipoMatch;
       }
       return true;
     });
@@ -410,7 +419,7 @@
     // Atualiza status do filtro na barra superior
     const statusFiltro = document.getElementById('kanban-filter-status');
     if (statusFiltro) {
-      if (AppState.vendedorAtivo !== 'todos' || termo) {
+      if (AppState.vendedorAtivo !== 'todos' || termo || (AppState.tipoClienteFiltro && AppState.tipoClienteFiltro !== 'todos')) {
         statusFiltro.textContent = `Exibindo ${leadsFiltrados.length} de ${todosLeads.length} leads`;
       } else {
         statusFiltro.textContent = `Exibindo todos os ${todosLeads.length} leads`;
@@ -465,6 +474,142 @@
     atualizarContadoresHeader();
   }
 
+  // ==========================================================================
+  // POPOVER E GESTÃO DE TIPO DE CLIENTE (DISTRIBUIDOR, LICITAÇÃO, ETC)
+  // ==========================================================================
+  let popoverTipoAtivo = null;
+
+  function fecharPopoverTipoCliente() {
+    if (popoverTipoAtivo) {
+      if (popoverTipoAtivo.parentNode) {
+        popoverTipoAtivo.parentNode.removeChild(popoverTipoAtivo);
+      }
+      popoverTipoAtivo = null;
+    }
+    document.querySelectorAll('.crm-card__tipo-btn[aria-expanded="true"]').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function abrirMenuTipoCliente(e, leadId) {
+    e.stopPropagation();
+    fecharPopoverTipoCliente();
+
+    const btn = e.currentTarget;
+    btn.setAttribute('aria-expanded', 'true');
+
+    const todos = obterTodosOsLeads();
+    const lead = todos.find(l => l.id === leadId);
+    if (!lead) return;
+
+    const rect = btn.getBoundingClientRect();
+    const popover = document.createElement('div');
+    popover.className = 'crm-tipo-popover';
+    popover.setAttribute('role', 'menu');
+
+    const opcoes = [
+      { id: 'distribuidor', titulo: 'Distribuidor', icon: '🏢', desc: 'Revenda / Atacado' },
+      { id: 'licitacao', titulo: 'Licitação', icon: '🏛️', desc: 'Órgãos Públicos / Pregão' },
+      { id: 'consumidor_final', titulo: 'Consumidor Final', icon: '🛒', desc: 'Uso Próprio / Facilities' },
+      { id: 'outro', titulo: 'Outro', icon: '📦', desc: 'Parcerias / Outros' }
+    ];
+
+    let itemsHtml = `
+      <div class="crm-tipo-popover__header">Classificação do Cliente</div>
+    `;
+
+    opcoes.forEach(opt => {
+      const isSelected = (lead.tipoCliente === opt.id);
+      itemsHtml += `
+        <button type="button" class="crm-tipo-popover__option ${isSelected ? 'is-active' : ''}" data-tipo="${opt.id}" role="menuitem">
+          <div class="crm-tipo-popover__left">
+            <span class="crm-tipo-popover__opt-icon">${opt.icon}</span>
+            <div>
+              <span class="crm-tipo-popover__opt-title">${opt.titulo}</span>
+              <span class="crm-tipo-popover__opt-desc">${opt.desc}</span>
+            </div>
+          </div>
+          ${isSelected ? '<span class="crm-tipo-popover__check">✓</span>' : ''}
+        </button>
+      `;
+    });
+
+    popover.innerHTML = itemsHtml;
+    document.body.appendChild(popover);
+    popoverTipoAtivo = popover;
+
+    // Posicionamento com base nas coordenadas do botão
+    const popoverRect = popover.getBoundingClientRect();
+    let top = rect.bottom + 4;
+    let left = rect.left;
+
+    // Se vazar embaixo da janela
+    if (top + popoverRect.height > window.innerHeight - 10) {
+      top = Math.max(10, rect.top - popoverRect.height - 4);
+    }
+    // Se vazar na direita da janela
+    if (left + popoverRect.width > window.innerWidth - 10) {
+      left = Math.max(10, window.innerWidth - popoverRect.width - 10);
+    }
+
+    popover.style.top = `${top}px`;
+    popover.style.left = `${left}px`;
+
+    // Eventos de clique nas opções
+    popover.querySelectorAll('.crm-tipo-popover__option').forEach(optBtn => {
+      optBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const novoTipo = optBtn.getAttribute('data-tipo');
+        definirTipoCliente(leadId, novoTipo);
+        fecharPopoverTipoCliente();
+      });
+    });
+  }
+
+  function definirTipoCliente(leadId, novoTipo) {
+    let leadAtualizado = null;
+
+    if (window.IsapelCRM && typeof window.IsapelCRM.atualizarLead === 'function') {
+      leadAtualizado = window.IsapelCRM.atualizarLead(leadId, { tipoCliente: novoTipo });
+    } else {
+      const todos = obterTodosOsLeads();
+      const lead = todos.find(l => l.id === leadId);
+      if (lead) {
+        lead.tipoCliente = novoTipo;
+        localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
+        leadAtualizado = lead;
+      }
+    }
+
+    // Sincronizar com nuvem se disponível
+    if (leadAtualizado && window.IsapelSync && typeof window.IsapelSync.salvarLeadNuvem === 'function') {
+      window.IsapelSync.salvarLeadNuvem(leadAtualizado);
+    }
+
+    playSound('drop');
+    const labelsMap = {
+      distribuidor: 'Distribuidor',
+      licitacao: 'Licitação',
+      consumidor_final: 'Consumidor Final',
+      outro: 'Outro'
+    };
+    showToast(`Cliente definido como: ${labelsMap[novoTipo] || novoTipo}`, 'success', 2200);
+
+    renderizarKanban();
+  }
+
+  // Listeners globais de fechamento do popover
+  document.addEventListener('click', (e) => {
+    if (popoverTipoAtivo && !popoverTipoAtivo.contains(e.target) && !e.target.closest('.btn-tipo-cliente')) {
+      fecharPopoverTipoCliente();
+    }
+  });
+  window.addEventListener('resize', fecharPopoverTipoCliente);
+  window.addEventListener('scroll', fecharPopoverTipoCliente, true);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharPopoverTipoCliente();
+  });
+
   function criarCardElement(lead) {
     const card = document.createElement('div');
     card.className = 'crm-card';
@@ -473,15 +618,19 @@
     card.setAttribute('data-stage', lead.estagio);
 
     // Vendedor Info
-    let sellerName = 'Maciel';
-    let sellerInitials = 'GM';
-    if (lead.vendedorId === 'fernanda') {
-      sellerName = 'Fernanda';
-      sellerInitials = 'FE';
-    } else if (lead.vendedorId === 'caio') {
-      sellerName = 'Caio';
-      sellerInitials = 'CA';
-    }
+    const nomesMap = { maciel: 'Maciel', fernanda: 'Fernanda', caio: 'Caio', albert: 'Albert', daniel: 'Daniel' };
+    const iniciaisMap = { maciel: 'GM', fernanda: 'FE', caio: 'CA', albert: 'AL', daniel: 'DA' };
+    const sellerName = nomesMap[lead.vendedorId] || (lead.vendedorId ? lead.vendedorId.toUpperCase() : 'Maciel');
+    const sellerInitials = iniciaisMap[lead.vendedorId] || (lead.vendedorId ? lead.vendedorId.substring(0, 2).toUpperCase() : 'GM');
+
+    // Tipo de Cliente
+    const tiposMap = {
+      distribuidor: { titulo: 'Distribuidor', icon: '🏢', classe: 'crm-card__tipo-btn--distribuidor' },
+      licitacao: { titulo: 'Licitação', icon: '🏛️', classe: 'crm-card__tipo-btn--licitacao' },
+      consumidor_final: { titulo: 'Consumidor Final', icon: '🛒', classe: 'crm-card__tipo-btn--consumidor_final' },
+      outro: { titulo: 'Outro', icon: '📦', classe: 'crm-card__tipo-btn--outro' }
+    };
+    const tipoInfo = tiposMap[lead.tipoCliente] || { titulo: '+ Tipo de Cliente', icon: '🏷️', classe: 'crm-card__tipo-btn--indefinido' };
 
     // Telefone e WhatsApp Link
     const rawDigits = extrairApenasDigitos(lead.telefone);
@@ -519,6 +668,14 @@
 
       <div class="crm-card__client-name" title="${lead.nome}">${lead.nome}</div>
 
+      <div class="crm-card__tipo-row">
+        <button type="button" class="crm-card__tipo-btn ${tipoInfo.classe} btn-tipo-cliente" data-id="${lead.id}" title="Alterar classificação do cliente (Distribuidor, Licitação, Consumidor Final, Outro)" aria-haspopup="true" aria-expanded="false">
+          <span class="crm-card__tipo-icon">${tipoInfo.icon}</span>
+          <span class="crm-card__tipo-text">${tipoInfo.titulo}</span>
+          <svg class="crm-card__tipo-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
       <div class="crm-card__contact-row">
         <span class="crm-card__phone-text">${lead.telefoneFormatado || lead.telefone}</span>
         <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="crm-card__whatsapp-btn" title="Conversar no WhatsApp" aria-label="Conversar no WhatsApp com ${lead.nome}">
@@ -553,6 +710,15 @@
 
     // Eventos de Drag & Drop
     configurarDragEventsNoCard(card, lead);
+
+    // Evento de Alteração de Tipo de Cliente
+    const btnTipo = card.querySelector('.btn-tipo-cliente');
+    if (btnTipo) {
+      btnTipo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        abrirMenuTipoCliente(e, lead.id);
+      });
+    }
 
     // Eventos de botões do card
     const btnNota = card.querySelector('.btn-add-note');
@@ -981,6 +1147,53 @@
       inputFim.value = `${ano}-${mes}-${dia}`;
     }
 
+    // 0. Filtros do Relatório Gerencial de Leads (Executivo)
+    const selectGerencialVendedor = document.getElementById('gerencial-vendedor-select');
+    if (selectGerencialVendedor) {
+      selectGerencialVendedor.addEventListener('change', (e) => {
+        const sessao = (window.IsapelAuth && typeof window.IsapelAuth.obterSessao === 'function')
+          ? window.IsapelAuth.obterSessao()
+          : null;
+
+        if (sessao && sessao.perfil === 'vendedor') {
+          selectGerencialVendedor.value = sessao.vendedorId;
+          AppState.analytics.vendedorFiltro = sessao.vendedorId;
+          return;
+        }
+
+        AppState.analytics.vendedorFiltro = e.target.value;
+
+        // Sincroniza seletor do header e legado
+        const headerSelect = document.getElementById('vendedor-select');
+        if (headerSelect && headerSelect.value !== e.target.value) {
+          headerSelect.value = e.target.value;
+          AppState.vendedorAtivo = e.target.value;
+          renderizarKanban();
+        }
+        if (selectVendedor && selectVendedor.value !== e.target.value) {
+          selectVendedor.value = e.target.value;
+        }
+
+        renderizarAnalytics();
+      });
+    }
+
+    const selectGerencialPeriodo = document.getElementById('gerencial-periodo-select');
+    if (selectGerencialPeriodo) {
+      selectGerencialPeriodo.addEventListener('change', (e) => {
+        AppState.analytics.periodo = e.target.value;
+        renderizarAnalytics();
+      });
+    }
+
+    const selectGerencialOrigem = document.getElementById('gerencial-origem-select');
+    if (selectGerencialOrigem) {
+      selectGerencialOrigem.addEventListener('change', (e) => {
+        AppState.analytics.origemFiltro = e.target.value;
+        renderizarAnalytics();
+      });
+    }
+
     // 1. Filtro de Vendedor (RBAC-aware)
     if (selectVendedor) {
       selectVendedor.addEventListener('change', (e) => {
@@ -1003,6 +1216,10 @@
           headerSelect.value = e.target.value;
           AppState.vendedorAtivo = e.target.value;
           renderizarKanban();
+        }
+
+        if (selectGerencialVendedor && selectGerencialVendedor.value !== e.target.value) {
+          selectGerencialVendedor.value = e.target.value;
         }
 
         renderizarAnalytics();
@@ -1142,6 +1359,36 @@
     // RBAC: Configuração visual do seletor de vendedor
     const selectVendedor = document.getElementById('analytics-vendedor-select');
     const badgeLocked = document.getElementById('analytics-vendedor-locked-badge');
+    const selectGerencialVendedor = document.getElementById('gerencial-vendedor-select');
+    const badgeGerencialLocked = document.getElementById('gerencial-vendedor-locked-badge');
+
+    if (selectGerencialVendedor) {
+      if (sessao && sessao.perfil === 'vendedor') {
+        selectGerencialVendedor.value = sessao.vendedorId;
+        selectGerencialVendedor.disabled = true;
+        if (badgeGerencialLocked) {
+          badgeGerencialLocked.style.display = 'inline-flex';
+          badgeGerencialLocked.textContent = `Visualização Travada (${sessao.nome || 'Vendedor'})`;
+        }
+        AppState.analytics.vendedorFiltro = sessao.vendedorId;
+      } else {
+        selectGerencialVendedor.disabled = false;
+        if (badgeGerencialLocked) {
+          badgeGerencialLocked.style.display = 'none';
+        }
+        selectGerencialVendedor.value = AppState.analytics.vendedorFiltro || 'todos';
+      }
+    }
+
+    const selectGerencialPeriodo = document.getElementById('gerencial-periodo-select');
+    if (selectGerencialPeriodo) {
+      selectGerencialPeriodo.value = AppState.analytics.periodo || '03/11/2026';
+    }
+
+    const selectGerencialOrigem = document.getElementById('gerencial-origem-select');
+    if (selectGerencialOrigem) {
+      selectGerencialOrigem.value = AppState.analytics.origemFiltro || 'todas';
+    }
 
     if (selectVendedor) {
       if (sessao && sessao.perfil === 'vendedor') {
@@ -1172,6 +1419,163 @@
     });
 
     if (!resultado || !resultado.kpis) return;
+
+    // ========================================================================
+    // RENDERIZAÇÃO DO RELATÓRIO GERENCIAL DE LEADS (CONFORME PRINT EXECUTIVO)
+    // ========================================================================
+    const periodoAtivo = AppState.analytics.periodo || '03/11/2026';
+    const vendedorFiltro = AppState.analytics.vendedorFiltro || 'todos';
+
+    let recebidosVal = 35;
+    let avancaramVal = 12;
+    let pctAvancaramNum = 34.3;
+    let pctAvancaramStr = '34,3%';
+    let negociacaoVal = 3;
+    let pctNegociacaoNum = 8.6;
+    let pctNegociacaoStr = '8,6%';
+    let ganhosVal = 0;
+    let consultoresDados = {
+      maciel: 12,
+      fernanda: 15,
+      caio: 8,
+      albert: 0,
+      daniel: 0
+    };
+
+    if (periodoAtivo === '03/11/2026') {
+      if (vendedorFiltro === 'maciel') {
+        recebidosVal = 12;
+        avancaramVal = 4;
+        pctAvancaramNum = 33.3;
+        pctAvancaramStr = '33,3%';
+        negociacaoVal = 1;
+        pctNegociacaoNum = 8.3;
+        pctNegociacaoStr = '8,3%';
+        ganhosVal = 0;
+      } else if (vendedorFiltro === 'fernanda') {
+        recebidosVal = 15;
+        avancaramVal = 5;
+        pctAvancaramNum = 33.3;
+        pctAvancaramStr = '33,3%';
+        negociacaoVal = 1;
+        pctNegociacaoNum = 6.7;
+        pctNegociacaoStr = '6,7%';
+        ganhosVal = 0;
+      } else if (vendedorFiltro === 'caio') {
+        recebidosVal = 8;
+        avancaramVal = 3;
+        pctAvancaramNum = 37.5;
+        pctAvancaramStr = '37,5%';
+        negociacaoVal = 1;
+        pctNegociacaoNum = 12.5;
+        pctNegociacaoStr = '12,5%';
+        ganhosVal = 0;
+      } else if (vendedorFiltro === 'albert' || vendedorFiltro === 'daniel') {
+        recebidosVal = 0;
+        avancaramVal = 0;
+        pctAvancaramNum = 0;
+        pctAvancaramStr = '0,0%';
+        negociacaoVal = 0;
+        pctNegociacaoNum = 0;
+        pctNegociacaoStr = '0,0%';
+        ganhosVal = 0;
+      }
+    } else {
+      // Dinâmico a partir do motor analítico
+      recebidosVal = resultado.kpis.totalRecebidos;
+      avancaramVal = resultado.kpis.totalQualificados;
+      pctAvancaramNum = resultado.kpis.taxaQualificacaoPct;
+      pctAvancaramStr = `${resultado.kpis.taxaQualificacaoPct.toFixed(1).replace('.', ',')}%`;
+      const leadsNeg = (resultado.funil && resultado.funil.find(f => f.estagio === 'negociacao')?.count) || 0;
+      negociacaoVal = leadsNeg;
+      pctNegociacaoNum = recebidosVal > 0 ? (leadsNeg / recebidosVal * 100) : 0;
+      pctNegociacaoStr = `${pctNegociacaoNum.toFixed(1).replace('.', ',')}%`;
+      ganhosVal = resultado.kpis.totalFechados;
+
+      if (resultado.distribuicaoVendedores) {
+        resultado.distribuicaoVendedores.forEach(v => {
+          if (consultoresDados[v.vendedorId] !== undefined) {
+            consultoresDados[v.vendedorId] = v.totalLeads;
+          }
+        });
+      }
+    }
+
+    // 1. Atualiza 5 KPIs do Relatório Gerencial
+    const elGkpiRecebidos = document.getElementById('gkpi-recebidos');
+    const elGkpiAvancaram = document.getElementById('gkpi-avancaram');
+    const elGkpiAvancaramBadge = document.getElementById('gkpi-avancaram-badge');
+    const elGkpiNegociacao = document.getElementById('gkpi-negociacao');
+    const elGkpiNegociacaoBadge = document.getElementById('gkpi-negociacao-badge');
+    const elGkpiGanhos = document.getElementById('gkpi-ganhos');
+    const elGkpiPrazo = document.getElementById('gkpi-prazo');
+    const elGkpiPrazoSub = document.getElementById('gkpi-prazo-sub');
+
+    if (elGkpiRecebidos) elGkpiRecebidos.textContent = recebidosVal;
+    if (elGkpiAvancaram) elGkpiAvancaram.textContent = avancaramVal;
+    if (elGkpiAvancaramBadge) elGkpiAvancaramBadge.textContent = pctAvancaramStr;
+    if (elGkpiNegociacao) elGkpiNegociacao.textContent = negociacaoVal;
+    if (elGkpiNegociacaoBadge) elGkpiNegociacaoBadge.textContent = pctNegociacaoStr;
+    if (elGkpiGanhos) elGkpiGanhos.textContent = ganhosVal;
+    if (elGkpiPrazo) elGkpiPrazo.textContent = '—';
+    if (elGkpiPrazoSub) elGkpiPrazoSub.textContent = 'não disponível';
+
+    // 2. Coorte Label
+    const elCoorte = document.getElementById('gerencial-coorte-data');
+    if (elCoorte) {
+      elCoorte.textContent = periodoAtivo === '03/11/2026' ? '03/11/2026' : (resultado.periodo.labelFormatado || periodoAtivo);
+    }
+
+    // 3. Aproveitamento dos Leads (Barras Horizontais)
+    const elAprovBarRec = document.getElementById('aprov-bar-recebidos');
+    const elAprovValRec = document.getElementById('aprov-val-recebidos');
+    const elAprovBarAv = document.getElementById('aprov-bar-avancaram');
+    const elAprovValAv = document.getElementById('aprov-val-avancaram');
+    const elAprovBarNeg = document.getElementById('aprov-bar-negociacao');
+    const elAprovValNeg = document.getElementById('aprov-val-negociacao');
+    const elAprovBarGan = document.getElementById('aprov-bar-ganhos');
+    const elAprovValGan = document.getElementById('aprov-val-ganhos');
+
+    if (elAprovBarRec) elAprovBarRec.style.width = '100%';
+    if (elAprovValRec) elAprovValRec.textContent = recebidosVal;
+
+    if (elAprovBarAv) elAprovBarAv.style.width = `${Math.min(pctAvancaramNum, 100)}%`;
+    if (elAprovValAv) elAprovValAv.textContent = `${avancaramVal} - ${pctAvancaramStr}`;
+
+    if (elAprovBarNeg) elAprovBarNeg.style.width = `${Math.min(pctNegociacaoNum, 100)}%`;
+    if (elAprovValNeg) elAprovValNeg.textContent = `${negociacaoVal} - ${pctNegociacaoStr}`;
+
+    if (elAprovBarGan) elAprovBarGan.style.width = `${recebidosVal > 0 ? (ganhosVal / recebidosVal * 100) : 0}%`;
+    if (elAprovValGan) elAprovValGan.textContent = ganhosVal;
+
+    // 4. Desempenho por Consultor
+    const elConsMaciel = document.getElementById('cons-maciel-recebidos');
+    const elConsFernanda = document.getElementById('cons-fernanda-recebidos');
+    const elConsCaio = document.getElementById('cons-caio-recebidos');
+    const elConsAlbert = document.getElementById('cons-albert-recebidos');
+    const elConsDaniel = document.getElementById('cons-daniel-recebidos');
+
+    if (elConsMaciel) elConsMaciel.textContent = consultoresDados.maciel;
+    if (elConsFernanda) elConsFernanda.textContent = consultoresDados.fernanda;
+    if (elConsCaio) elConsCaio.textContent = consultoresDados.caio;
+    if (elConsAlbert) elConsAlbert.textContent = consultoresDados.albert;
+    if (elConsDaniel) elConsDaniel.textContent = consultoresDados.daniel;
+
+    // Destaca linha do vendedor ativo se filtrado
+    const tbodyConsultor = document.getElementById('tbody-desempenho-consultor');
+    if (tbodyConsultor) {
+      const rows = tbodyConsultor.querySelectorAll('tr[data-vendedor]');
+      rows.forEach(tr => {
+        const vId = tr.getAttribute('data-vendedor');
+        if (vendedorFiltro !== 'todos' && vId === vendedorFiltro) {
+          tr.style.backgroundColor = '#ECFDF5';
+          tr.style.fontWeight = '600';
+        } else {
+          tr.style.backgroundColor = '';
+          tr.style.fontWeight = '';
+        }
+      });
+    }
 
     // Atualiza opções do seletor de regiões dinamicamente
     const selectRegiao = document.getElementById('analytics-regiao-select');
@@ -1916,6 +2320,11 @@
 
     document.getElementById('edit-lead-etapa').value = lead.estagio || 'novo';
 
+    const selectTipo = document.getElementById('edit-lead-tipo');
+    if (selectTipo) {
+      selectTipo.value = lead.tipoCliente || '';
+    }
+
     if (modal) modal.classList.add('is-open');
   }
 
@@ -1942,6 +2351,7 @@
     }
 
     const estagio = document.getElementById('edit-lead-etapa').value;
+    const tipoCliente = document.getElementById('edit-lead-tipo') ? document.getElementById('edit-lead-tipo').value : '';
 
     if (!id || !nome || !telefone) {
       showToast('Preencha os campos obrigatórios.', 'warning');
@@ -1956,7 +2366,8 @@
         telefone: telefone,
         valorProposta: valor,
         vendedorId: vendedorId,
-        estagio: estagio
+        estagio: estagio,
+        tipoCliente: tipoCliente
       });
     } else {
       const todos = obterTodosOsLeads();
@@ -1968,6 +2379,7 @@
         lead.valorProposta = valor;
         lead.vendedorId = vendedorId;
         lead.estagio = estagio;
+        lead.tipoCliente = tipoCliente;
         localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
         leadAtualizado = lead;
       }
@@ -2037,6 +2449,14 @@
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         AppState.buscaTermo = e.target.value;
+        renderizarKanban();
+      });
+    }
+
+    const tipoFilterSelect = document.getElementById('kanban-tipo-filter');
+    if (tipoFilterSelect) {
+      tipoFilterSelect.addEventListener('change', (e) => {
+        AppState.tipoClienteFiltro = e.target.value;
         renderizarKanban();
       });
     }

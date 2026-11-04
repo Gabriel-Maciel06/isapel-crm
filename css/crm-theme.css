@@ -956,6 +956,185 @@ a:hover {
   transform: scale(0.95);
 }
 
+/* ==========================================================================
+   TIPO / PERFIL DE CLIENTE NO CARD DO FUNIL (DISTRIBUIDOR, LICITAÇÃO, ETC)
+   ========================================================================== */
+.crm-card__tipo-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 0.1rem;
+  margin-bottom: 0.15rem;
+}
+
+.crm-card__tipo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.22rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: #F1F5F9;
+  color: #475569;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  user-select: none;
+  line-height: 1.2;
+}
+
+.crm-card__tipo-btn:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.crm-card__tipo-btn:active {
+  transform: translateY(0);
+}
+
+.crm-card__tipo-btn--distribuidor {
+  background: #F3E8FF;
+  color: #6B21A8;
+  border-color: #D8B4FE;
+}
+
+.crm-card__tipo-btn--licitacao {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #FCD34D;
+}
+
+.crm-card__tipo-btn--consumidor_final {
+  background: #D1FAE5;
+  color: #065F46;
+  border-color: #6EE7B7;
+}
+
+.crm-card__tipo-btn--outro {
+  background: #F1F5F9;
+  color: #334155;
+  border-color: #CBD5E1;
+}
+
+.crm-card__tipo-btn--indefinido {
+  background: #F8FAFC;
+  color: #0369A1;
+  border: 1.5px dashed #93C5FD;
+}
+
+.crm-card__tipo-btn--indefinido:hover {
+  background: #EFF6FF;
+  border-color: #38BDF8;
+}
+
+.crm-card__tipo-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.crm-card__tipo-chevron {
+  opacity: 0.7;
+  transition: transform var(--transition-fast);
+}
+
+.crm-card__tipo-btn[aria-expanded="true"] .crm-card__tipo-chevron {
+  transform: rotate(180deg);
+}
+
+/* Popover Flutuante de Seleção de Tipo */
+.crm-tipo-popover {
+  position: fixed;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 36px -4px rgba(0, 51, 96, 0.22), 0 6px 14px -2px rgba(0, 0, 0, 0.1);
+  padding: 0.45rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 230px;
+  animation: popoverFadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.crm-tipo-popover__header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: 0.3rem 0.5rem 0.2rem;
+  border-bottom: 1px solid #F1F5F9;
+  margin-bottom: 0.15rem;
+}
+
+.crm-tipo-popover__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--transition-fast);
+  width: 100%;
+}
+
+.crm-tipo-popover__option:hover {
+  background: #F8FAFC;
+}
+
+.crm-tipo-popover__option.is-active {
+  background: #EFF6FF;
+  border-color: #BFDBFE;
+}
+
+.crm-tipo-popover__left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crm-tipo-popover__opt-icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.crm-tipo-popover__opt-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1E293B;
+  display: block;
+}
+
+.crm-tipo-popover__opt-desc {
+  font-size: 0.7rem;
+  color: #64748B;
+  display: block;
+}
+
+.crm-tipo-popover__check {
+  color: #0284C7;
+  font-weight: 800;
+}
+
 /* Trecho de Anotações */
 .crm-card__notes-snippet {
   font-size: 0.78rem;
@@ -3344,5 +3523,560 @@ a:hover {
   }
   .crm-avatar-stage-canvas-wrap {
     min-height: 300px;
+  }
+}
+
+/* ==========================================================================
+   RELATÓRIO GERENCIAL DE LEADS (DESIGN IDÊNTICO AO PRINT EXECUTIVO)
+   ========================================================================== */
+.crm-gerencial-report {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 31, 63, 0.06);
+  margin-bottom: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Barra Superior Escura */
+.crm-gerencial-topbar {
+  background: #001F3F;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  min-height: 50px;
+}
+
+.crm-gerencial-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crm-gerencial-topbar__badge {
+  background: #FFFFFF;
+  border-radius: 6px;
+  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+
+.crm-gerencial-logo-text {
+  color: #003360;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.5px;
+}
+
+.crm-gerencial-logo-leaf {
+  font-size: 0.85rem;
+}
+
+.crm-gerencial-topbar__brand {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.8px;
+}
+
+.crm-gerencial-topbar__right {
+  color: #CBD5E1;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Corpo Principal */
+.crm-gerencial-body {
+  padding: 22px 24px 26px 24px;
+}
+
+/* Cabeçalho do Relatório e Filtros */
+.crm-gerencial-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.crm-gerencial-title-group {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.crm-gerencial-title-bar {
+  width: 4px;
+  background: #10B981;
+  border-radius: 2px;
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
+.crm-gerencial-title-texts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.crm-gerencial-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #001F3F;
+  letter-spacing: 0.4px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.crm-gerencial-subtitle {
+  font-size: 0.82rem;
+  color: #64748B;
+  margin: 3px 0 0 0;
+  font-weight: 400;
+}
+
+/* Filtros Superiores */
+.crm-gerencial-filters {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.crm-gerencial-filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crm-gerencial-filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.crm-gerencial-select-box {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 34px;
+  min-width: 130px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.crm-gerencial-filter-icon {
+  font-size: 0.85rem;
+  margin-right: 6px;
+}
+
+.crm-gerencial-select {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #0F172A;
+  outline: none;
+  cursor: pointer;
+  padding-right: 18px;
+  width: 100%;
+}
+
+.crm-gerencial-chevron {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  color: #64748B;
+  font-size: 0.85rem;
+}
+
+/* Linha da Coorte */
+.crm-gerencial-coorte-row {
+  font-size: 0.84rem;
+  color: #334155;
+  font-weight: 500;
+  margin: 14px 0 18px 0;
+  display: flex;
+  align-items: center;
+}
+
+.crm-gerencial-coorte-row strong {
+  font-weight: 700;
+  color: #0F172A;
+  margin-left: 4px;
+}
+
+/* 5 Cards de KPIs */
+.crm-gerencial-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.crm-gerencial-kpi-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.crm-gerencial-kpi-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.crm-gerencial-kpi-icon--green {
+  background: #ECFDF5;
+  color: #10B981;
+}
+
+.crm-gerencial-kpi-icon--amber {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.crm-gerencial-kpi-icon--slate {
+  background: #F1F5F9;
+  color: #64748B;
+}
+
+.crm-gerencial-kpi-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.crm-gerencial-kpi-label {
+  font-size: 0.76rem;
+  color: #475569;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.crm-gerencial-kpi-val {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.1;
+}
+
+.crm-gerencial-kpi-val-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crm-gerencial-kpi-divider {
+  color: #CBD5E1;
+  font-weight: 300;
+  font-size: 1.1rem;
+}
+
+.crm-gerencial-kpi-badge {
+  padding: 2px 7px;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.crm-gerencial-kpi-badge--green {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.crm-gerencial-kpi-badge--amber {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.crm-gerencial-kpi-sub {
+  font-size: 0.72rem;
+  color: #94A3B8;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Cards Bento Internos */
+.crm-gerencial-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.crm-gerencial-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.crm-gerencial-card--full {
+  margin-bottom: 14px;
+}
+
+.crm-gerencial-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.crm-gerencial-card__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crm-gerencial-card__icon--green {
+  color: #10B981;
+  display: inline-flex;
+}
+
+.crm-gerencial-card__title {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.crm-gerencial-badge-pill {
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.crm-gerencial-card__subtext {
+  font-size: 0.72rem;
+  color: #64748B;
+  font-style: italic;
+}
+
+/* Tabelas Gerenciais */
+.crm-gerencial-table-wrap {
+  overflow-x: auto;
+}
+
+.crm-gerencial-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.crm-gerencial-table th {
+  color: #64748B;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 6px 10px;
+  border-bottom: 1px solid #E2E8F0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.crm-gerencial-table th:first-child {
+  text-align: left;
+}
+
+.crm-gerencial-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #334155;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.crm-gerencial-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: #0F172A;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Indicadores de Cor das Tabelas */
+.crm-gdot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.crm-gdot--green {
+  background: #529E72;
+}
+
+.crm-gdot--amber {
+  background: #F59E0B;
+}
+
+.crm-gdot--blue {
+  background: #0284C7;
+}
+
+.crm-gdot--gray {
+  background: #94A3B8;
+}
+
+.crm-gdot--red {
+  background: #EF4444;
+}
+
+/* Mini barras de Leads na Tabela */
+.crm-mini-bar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.crm-mini-bar--green {
+  background: #529E72;
+  width: 36px;
+}
+
+.crm-mini-bar--amber {
+  background: #F59E0B;
+  width: 28px;
+}
+
+.crm-mini-bar--blue {
+  background: #0284C7;
+  width: 28px;
+}
+
+.crm-mini-bar--gray {
+  background: #94A3B8;
+  width: 22px;
+}
+
+.crm-mini-bar--red {
+  background: #EF4444;
+  width: 30px;
+}
+
+/* Aproveitamento dos Leads (Barras Horizontais) */
+.crm-gerencial-aproveitamento-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.crm-aprov-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.crm-aprov-lbl {
+  font-size: 0.82rem;
+  color: #334155;
+  font-weight: 500;
+  min-width: 110px;
+}
+
+.crm-aprov-bar-track {
+  flex: 1;
+  height: 13px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  margin: 0 16px;
+  overflow: hidden;
+}
+
+.crm-aprov-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.35s ease;
+}
+
+.crm-aprov-bar-fill--green {
+  background: #529E72;
+}
+
+.crm-aprov-bar-fill--amber {
+  background: #D97706;
+}
+
+.crm-aprov-val {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0F172A;
+  min-width: 80px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Rodapé Informativo */
+.crm-gerencial-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #64748B;
+  font-style: italic;
+  margin-top: 14px;
+}
+
+.crm-gerencial-footer-icon {
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+/* Responsividade Mobile / Tablet do Relatório Gerencial */
+@media (max-width: 1100px) {
+  .crm-gerencial-kpi-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .crm-gerencial-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .crm-gerencial-grid-2col {
+    grid-template-columns: 1fr;
+  }
+  .crm-gerencial-header-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .crm-gerencial-filters {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .crm-gerencial-filter-item {
+    flex: 1;
+    min-width: 120px;
   }
 }

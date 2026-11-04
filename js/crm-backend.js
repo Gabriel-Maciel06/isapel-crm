@@ -1041,6 +1041,16 @@
   };
 
   // ==========================================================================
+  // CLASSIFICAÇÃO OFICIAL DE CLIENTES (PERFIL COMERCIAL B2B)
+  // ==========================================================================
+  const TIPOS_CLIENTE = [
+    { id: 'distribuidor', titulo: 'Distribuidor', icon: '🏢', cor: '#6D28D9', bg: '#F5F3FF', border: '#DDD6FE', desc: 'Revenda / Atacado' },
+    { id: 'licitacao', titulo: 'Licitação', icon: '🏛️', cor: '#B45309', bg: '#FFFBEB', border: '#FDE68A', desc: 'Órgãos Públicos / Pregão' },
+    { id: 'consumidor_final', titulo: 'Consumidor Final', icon: '🛒', cor: '#047857', bg: '#ECFDF5', border: '#A7F3D0', desc: 'Uso Próprio / Facilities' },
+    { id: 'outro', titulo: 'Outro', icon: '📦', cor: '#475569', bg: '#F1F5F9', border: '#CBD5E1', desc: 'Parcerias / Outros' }
+  ];
+
+  // ==========================================================================
   // CATÁLOGO DE PRODUTOS ISAPEL PAPÉIS (REFERÊNCIA B2B)
   // ==========================================================================
   const PRODUTOS_ISAPEL = [
@@ -1115,6 +1125,7 @@
       vendedorId: 'maciel',
       estagio: 'negociacao',
       segmento: 'Hospitalar / Saúde',
+      tipoCliente: 'licitacao',
       produtosInteresse: [
         'Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)',
         'Papel Higiênico Rolão Institucional 300 Metros',
@@ -1172,6 +1183,7 @@
       vendedorId: 'maciel',
       estagio: 'fechado',
       segmento: 'Facilities / Condomínios Corporativos',
+      tipoCliente: 'consumidor_final',
       produtosInteresse: [
         'Papel Toalha Interfolha Luxo Extra Branco (3 Dobras)',
         'Papel Higiênico Cai-Cai Intercalado Folha Dupla',
@@ -1221,6 +1233,7 @@
       vendedorId: 'maciel',
       estagio: 'proposta',
       segmento: 'Indústria / Logística',
+      tipoCliente: 'distribuidor',
       produtosInteresse: [
         'Papel Higiênico Rolão 500 Metros',
         'Papel Toalha Bobina Autocorte 200 Metros'
@@ -1263,6 +1276,7 @@
       vendedorId: 'fernanda',
       estagio: 'negociacao',
       segmento: 'Hotelaria & Gastronomia',
+      tipoCliente: 'consumidor_final',
       produtosInteresse: [
         'Papel Toalha Interfolha Luxo Extra Branco (3 Dobras)',
         'Papel Higiênico Cai-Cai Intercalado Folha Dupla',
@@ -1312,6 +1326,7 @@
       vendedorId: 'fernanda',
       estagio: 'proposta',
       segmento: 'Educação / Universidades',
+      tipoCliente: 'licitacao',
       produtosInteresse: [
         'Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)',
         'Papel Higiênico Rolão 300 Metros'
@@ -1352,6 +1367,7 @@
       vendedorId: 'fernanda',
       estagio: 'qualificacao',
       segmento: 'Indústria / Alimentos',
+      tipoCliente: 'consumidor_final',
       produtosInteresse: [
         'Papel Toalha Bobina Autocorte 200 Metros 100% Celulose',
         'Sabonete Espuma Refil 800ml'
@@ -1386,6 +1402,7 @@
       vendedorId: 'caio',
       estagio: 'novo',
       segmento: 'Clínicas / Consultórios',
+      tipoCliente: 'consumidor_final',
       produtosInteresse: [
         'Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)'
       ],
@@ -1417,6 +1434,7 @@
       vendedorId: 'caio',
       estagio: 'qualificacao',
       segmento: 'Indústria / Logística',
+      tipoCliente: 'outro',
       produtosInteresse: [
         'Papel Higiênico Rolão Institucional 300 Metros',
         'Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)'
@@ -1457,6 +1475,7 @@
       vendedorId: 'caio',
       estagio: 'proposta',
       segmento: 'Distribuição / Farmacêutico',
+      tipoCliente: 'distribuidor',
       produtosInteresse: [
         'Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)',
         'Papel Higiênico Rolão 300 Metros'
@@ -1523,7 +1542,14 @@
         if (dados !== null) {
           const parsed = JSON.parse(dados);
           if (Array.isArray(parsed)) {
-            memoriaLeads = parsed;
+            // Garante migração transparente de tipoCliente se ausente
+            memoriaLeads = parsed.map(lead => {
+              if (lead.tipoCliente === undefined) {
+                const inicial = LEADS_INICIAIS.find(li => li.id === lead.id);
+                lead.tipoCliente = inicial ? inicial.tipoCliente : '';
+              }
+              return lead;
+            });
             return memoriaLeads;
           }
         }
@@ -1574,6 +1600,7 @@
       tempoEntrega: infoDDD.tempoEntrega,
       frotaPropria: infoDDD.frotaPropria,
       tipoFretePadrao: infoDDD.tipoFretePadrao,
+      tipoCliente: lead.tipoCliente || '',
       telefoneFormatado: formatarTelefone(lead.telefone),
       telefonePuro: String(lead.telefone || '').replace(/\D/g, '')
     };
@@ -1604,6 +1631,7 @@
       vendedorId: dados.vendedorId || 'maciel',
       estagio: dados.estagio || 'novo',
       segmento: dados.segmento || 'Corporativo / Geral',
+      tipoCliente: dados.tipoCliente || dados.tipo || '',
       produtosInteresse: Array.isArray(dados.produtosInteresse) && dados.produtosInteresse.length > 0
         ? dados.produtosInteresse
         : ['Papel Toalha Interfolha 100% Celulose Virgem (2 Dobras)'],
@@ -2340,6 +2368,7 @@
     TABELA_DDDS_BRASIL: TABELA_DDDS_BRASIL,
     VENDEDORES_CONFIG: VENDEDORES_CONFIG,
     ETAPAS_FUNIL: ETAPAS_FUNIL,
+    TIPOS_CLIENTE: TIPOS_CLIENTE,
     PRODUTOS_ISAPEL: PRODUTOS_ISAPEL,
 
     // Resolução de DDD & Logística
