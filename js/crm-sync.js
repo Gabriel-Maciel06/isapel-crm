@@ -221,12 +221,14 @@
       });
 
       if (!res.ok) {
-        throw new Error(`Falha HTTP ${res.status}`);
+        const errorText = await res.text().catch(() => '');
+        throw new Error(`Falha HTTP ${res.status}${errorText ? ': ' + errorText : ''}`);
       }
 
       statusConexao.supabaseAtivo = true;
       statusConexao.ultimoSync = new Date();
       notificarStatus();
+      console.log(`[Isapel Sync] Lead salvo com sucesso no Supabase: ${lead.id} (${lead.nome || 'sem nome'})`);
       return true;
     } catch (err) {
       console.warn('⚠️ [Isapel Sync] Falha ao salvar no Supabase (salvo localmente no backup):', err.message);

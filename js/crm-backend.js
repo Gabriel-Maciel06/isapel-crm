@@ -1575,11 +1575,103 @@
     }
   }
 
-  function definirLeads(novosLeads) {
-    if (!Array.isArray(novosLeads)) return [];
-    memoriaLeads = novosLeads.map(l => enriquecerLeadComDDD(l));
+  /**
+   * Reconciliação inteligente e não-destrutiva entre o estado local e os dados da nuvem (Supabase).
+   * Diretrizes R1, R2, R3 e R4:
+   * 1. Nunca remove leads locais que ainda não foram sincronizados na nuvem (ex: cadastros recentes ou offline).
+   * 2. Preserva tipoCliente local se o registro remoto vier sem essa classificação.
+   * 3. Preserva estágio, valores e notas locais caso o lead local tenha atualização mais recente ou pendência de sync.
+   * 4. Persiste o conjunto consolidado em memoriaLeads e localStorage (chave 'isapel_crm_leads_v1').
+   */
+  function mesclarLeadsNuvem(novosLeads) {
+    if (!Array.isArray(novosLeads)) {
+      return carregarLeadsArmazenados();
+    }
+
+    const leadsLocais = carregarLeadsArmazenados();
+    const mapaLocais = new Map();
+    leadsLocais.forEach(l => {
+      if (l && l.id) {
+        mapaLocais.set(String(l.id), { ...l });
+      }
+    });
+
+    const resultadoMesclado = [];
+    const idsRemotosProcessados = new Set();
+
+    novosLeads.forEach(leadRemotoBruto => {
+      if (!leadRemotoBruto || !leadRemotoBruto.id) return;
+      const leadRemoto = enriquecerLeadComDDD(leadRemotoBruto);
+      const idKey = String(leadRemoto.id);
+      idsRemotosProcessados.add(idKey);
+      const leadLocal = mapaLocais.get(idKey);
+
+      if (!leadLocal) {
+        resultadoMesclado.push(leadRemoto);
+        return;
+      }
+
+      // Conflito / fusão de propriedades
+      const mesclado = { ...leadLocal, ...leadRemoto };
+
+      // 1. Preservar tipoCliente local se o remoto estiver vazio
+      if (leadLocal.tipoCliente && !leadRemoto.tipoCliente) {
+        mesclado.tipoCliente = leadLocal.tipoCliente;
+      } else if (leadRemoto.tipoCliente) {
+        mesclado.tipoCliente = leadRemoto.tipoCliente;
+      }
+
+      // 2. Extrair e comparar timestamps de atualização
+      const extrairTimestamp = (obj) => {
+        if (!obj) return 0;
+        const d = obj.dataAtualizacao || obj.data_atualizacao || obj.dataUltimoContato;
+        if (!d) return 0;
+        const t = new Date(d).getTime();
+        return isNaN(t) ? 0 : t;
+      };
+
+      const tsLocal = Math.max(extrairTimestamp(leadLocal), leadLocal._tsLocal || 0);
+      const tsRemoto = extrairTimestamp(leadRemoto);
+
+      // Se a versão local tiver sido alterada mais recentemente que a da nuvem ou tiver pendência de sincronização
+      if (tsLocal > tsRemoto || leadLocal._pendenteSync) {
+        mesclado.estagio = leadLocal.estagio || mesclado.estagio;
+        mesclado.valorProposta = (leadLocal.valorProposta !== undefined && leadLocal.valorProposta !== null)
+          ? leadLocal.valorProposta
+          : mesclado.valorProposta;
+        mesclado.dataUltimoContato = leadLocal.dataUltimoContato || mesclado.dataUltimoContato;
+        mesclado.dataAtualizacao = leadLocal.dataAtualizacao || leadLocal.data_atualizacao || new Date().toISOString();
+        if (leadLocal.tipoCliente) {
+          mesclado.tipoCliente = leadLocal.tipoCliente;
+        }
+        if (Array.isArray(leadLocal.historico) && leadLocal.historico.length > (leadRemoto.historico || []).length) {
+          mesclado.historico = leadLocal.historico;
+        }
+      }
+
+      resultadoMesclado.push(enriquecerLeadComDDD(mesclado));
+      mapaLocais.delete(idKey);
+    });
+
+    // 3. Adicionar leads locais que ainda não constam na lista remota (novos clientes cadastrados localmente)
+    const leadsLocaisPendentes = [];
+    mapaLocais.forEach(leadLocal => {
+      leadsLocaisPendentes.push(enriquecerLeadComDDD(leadLocal));
+    });
+
+    memoriaLeads = [...leadsLocaisPendentes, ...resultadoMesclado];
     salvarLeads(memoriaLeads);
     return memoriaLeads;
+  }
+
+  function definirLeads(novosLeads, options) {
+    if (!Array.isArray(novosLeads)) return carregarLeadsArmazenados();
+    if (options && options.forcarSubstituicao === true) {
+      memoriaLeads = novosLeads.map(l => enriquecerLeadComDDD(l));
+      salvarLeads(memoriaLeads);
+      return memoriaLeads;
+    }
+    return mesclarLeadsNuvem(novosLeads);
   }
 
   /**
@@ -1641,6 +1733,8 @@
       amostraEnviada: Boolean(dados.amostraEnviada),
       amostraDetalhe: dados.amostraDetalhe || '',
       dataCriacao: agora,
+      dataAtualizacao: agora,
+      _tsLocal: Date.now(),
       dataUltimoContato: dados.observacoes ? agora : null,
       prazoFollowUp: dados.prazoFollowUp || new Date(Date.now() + 24 * 3600 * 1000).toISOString(),
       observacoes: dados.observacoes || 'Lead cadastrado via formulário de entrada rápida.',
@@ -1685,9 +1779,12 @@
     }
 
     const leadAtual = leads[index];
+    const agora = new Date().toISOString();
     const leadAtualizado = {
       ...leadAtual,
-      ...updates
+      ...updates,
+      dataAtualizacao: agora,
+      _tsLocal: Date.now()
     };
 
     // Se o telefone foi atualizado, reprocessa as diretrizes de DDD e Logística
@@ -1719,6 +1816,8 @@
     const estagioAnterior = lead.estagio;
     lead.estagio = novoEstagio;
     lead.dataUltimoContato = agora;
+    lead.dataAtualizacao = agora;
+    lead._tsLocal = Date.now();
 
     const autor = autorNome || VENDEDORES_CONFIG[lead.vendedorId]?.nome || 'Comercial';
     const desc = notaDescricao
@@ -2387,6 +2486,7 @@
     cadastrarLeadRapido: cadastrarLeadRapido,
     atualizarLead: atualizarLead,
     definirLeads: definirLeads,
+    mesclarLeadsNuvem: mesclarLeadsNuvem,
     moverEstagioLead: moverEstagioLead,
     registrarContatoLead: registrarContatoLead,
     removerLead: removerLead,

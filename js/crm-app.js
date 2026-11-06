@@ -340,10 +340,11 @@
   }
 
   function criarLeadAutonomo(nome, telefone, vendedorId) {
-    const leadsSalvos = JSON.parse(localStorage.getItem('isapel_leads_v1') || '[]');
+    const leadsSalvos = JSON.parse(localStorage.getItem('isapel_crm_leads_v1') || '[]');
     const digits = extrairApenasDigitos(telefone);
     const ddd = parseInt(digits.slice(0, 2), 10) || 11;
     const infoDDD = resolverDDDFallback(ddd);
+    const agora = new Date().toISOString();
 
     const novoLead = {
       id: `lead_${Date.now()}`,
@@ -359,12 +360,15 @@
       frotaPropria: infoDDD.frotaPropria,
       estagio: 'novo',
       vendedorId: vendedorId,
+      tipoCliente: '',
       valorProposta: 0,
-      dataCriacao: new Date().toISOString(),
-      dataUltimoContato: new Date().toISOString(),
+      dataCriacao: agora,
+      dataAtualizacao: agora,
+      _tsLocal: Date.now(),
+      dataUltimoContato: agora,
       historicoContatos: [
         {
-          data: new Date().toISOString(),
+          data: agora,
           anotacao: 'Lead cadastrado via entrada rápida do CRM.',
           autor: vendedorId
         }
@@ -372,7 +376,7 @@
     };
 
     leadsSalvos.unshift(novoLead);
-    localStorage.setItem('isapel_leads_v1', JSON.stringify(leadsSalvos));
+    localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(leadsSalvos));
     return novoLead;
   }
 
@@ -385,7 +389,7 @@
     if (window.IsapelCRM && typeof window.IsapelCRM.listarLeads === 'function') {
       return window.IsapelCRM.listarLeads() || [];
     }
-    return JSON.parse(localStorage.getItem('isapel_crm_leads_v1') || localStorage.getItem('isapel_leads_v1') || '[]');
+    return JSON.parse(localStorage.getItem('isapel_crm_leads_v1') || '[]');
   }
 
   function renderizarKanban() {
@@ -576,6 +580,8 @@
       const lead = todos.find(l => l.id === leadId);
       if (lead) {
         lead.tipoCliente = novoTipo;
+        lead.dataAtualizacao = new Date().toISOString();
+        lead._tsLocal = Date.now();
         localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
         leadAtualizado = lead;
       }
@@ -809,15 +815,20 @@
   function moverLeadDeEstagio(leadId, novoEstagio) {
     if (!leadId || !novoEstagio) return;
 
+    let leadAtualizado = null;
     if (window.IsapelCRM && typeof window.IsapelCRM.moverEstagioLead === 'function') {
-      window.IsapelCRM.moverEstagioLead(leadId, novoEstagio);
+      leadAtualizado = window.IsapelCRM.moverEstagioLead(leadId, novoEstagio);
     } else {
       const todos = obterTodosOsLeads();
       const lead = todos.find(l => l.id === leadId);
       if (lead) {
         lead.estagio = novoEstagio;
-        lead.dataUltimoContato = new Date().toISOString();
-        localStorage.setItem('isapel_leads_v1', JSON.stringify(todos));
+        const agora = new Date().toISOString();
+        lead.dataUltimoContato = agora;
+        lead.dataAtualizacao = agora;
+        lead._tsLocal = Date.now();
+        localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
+        leadAtualizado = lead;
       }
     }
 
@@ -827,10 +838,14 @@
 
     // Sincronizar mudança de estágio no Supabase
     if (window.IsapelCRM && typeof window.IsapelCRM.obterLeadPorId === 'function' && window.IsapelSync) {
-      const leadAtualizado = window.IsapelCRM.obterLeadPorId(leadId);
+      if (!leadAtualizado) {
+        leadAtualizado = window.IsapelCRM.obterLeadPorId(leadId);
+      }
       if (leadAtualizado) {
         window.IsapelSync.salvarLeadNuvem(leadAtualizado);
       }
+    } else if (leadAtualizado && window.IsapelSync && typeof window.IsapelSync.salvarLeadNuvem === 'function') {
+      window.IsapelSync.salvarLeadNuvem(leadAtualizado);
     }
 
     // Microinteração elástica de assentamento do card
@@ -3333,7 +3348,7 @@
       });
 
       // Sincronização em tempo real com Supabase (Nuvem como fonte primária)
-      window.IsapelSync.carregarLeadsNuvem().then(leadsNuvem => {
+      window.IsapelSync.carregarLeadsNuvem('todos').then(leadsNuvem => {
         if (leadsNuvem && Array.isArray(leadsNuvem) && window.IsapelCRM) {
           if (leadsNuvem.length > 0) {
             window.IsapelCRM.definirLeads(leadsNuvem);
@@ -3347,7 +3362,7 @@
 
       // Auto-polling para sincronizar alterações feitas por outros vendedores (Maciel, Fernanda, Caio)
       setInterval(async () => {
-        const novos = await window.IsapelSync.carregarLeadsNuvem();
+        const novos = await window.IsapelSync.carregarLeadsNuvem('todos');
         if (novos && Array.isArray(novos) && window.IsapelCRM) {
           window.IsapelCRM.definirLeads(novos);
           renderizarKanban();

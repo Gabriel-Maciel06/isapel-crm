@@ -1,0 +1,3454 @@
+{
+  "metadata": {
+    "timestamp": "2026-11-05T11:24:37.744Z",
+    "source": "Supabase table public.crm_isapel_leads",
+    "project_id": "xpjhpskjetpcglkxdjag",
+    "total_rows": 73
+  },
+  "rows": [
+    {
+      "id": "lead-1793370513990-fsd8v",
+      "nome": "Laís Splendida",
+      "telefone": "(11) 94519-0641",
+      "telefone_formatado": "(11) 94519-0641",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "perdido",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "São fabricantes de chapas e caixas de papelão ondulado.",
+      "historico": [
+        {
+          "id": "hist-1793370513991",
+          "data": "2026-10-30T14:28:33.990Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793370516850",
+          "data": "2026-10-30T14:28:36.850Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793370564686",
+          "data": "2026-10-30T14:29:24.686Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "São fabricantes de chapas e caixas de papelão ondulado."
+        },
+        {
+          "id": "hist-1793730646869",
+          "data": "2026-11-03T18:30:46.869Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "perdido",
+          "estagioPara": "perdido"
+        }
+      ],
+      "data_cadastro": "2026-10-30T14:28:34.431257+00:00",
+      "data_atualizacao": "2026-11-03T18:30:46.874+00:00"
+    },
+    {
+      "id": "lead-1793370900392-mye1g",
+      "nome": "Nutre",
+      "telefone": "(85) 8476-0026",
+      "telefone_formatado": "(85) 8476-0026",
+      "ddd": 85,
+      "cidade": "Fortaleza, Caucaia e Maracanaú",
+      "regiao": "Região Metropolitana de Fortaleza (RMF)",
+      "uf": "CE",
+      "estagio": "perdido",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Licitação e Consumo, pedido mínimo não atende.",
+      "historico": [
+        {
+          "id": "hist-1793370900392",
+          "data": "2026-10-30T14:35:00.392Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793370905500",
+          "data": "2026-10-30T14:35:05.500Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793370916028",
+          "data": "2026-10-30T14:35:16.028Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "qualificacao",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793370927689",
+          "data": "2026-10-30T14:35:27.689Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "Licitação."
+        },
+        {
+          "id": "hist-1793377697642",
+          "data": "2026-10-30T16:28:17.642Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793379074913",
+          "data": "2026-10-30T16:51:14.913Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "qualificacao",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793379550467",
+          "data": "2026-10-30T16:59:10.467Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "qualificacao",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793379576722",
+          "data": "2026-10-30T16:59:36.722Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "Licitação e Consumo, pedido mínimo não atende."
+        }
+      ],
+      "data_cadastro": "2026-10-30T14:35:00.503144+00:00",
+      "data_atualizacao": "2026-10-30T16:59:36.722+00:00"
+    },
+    {
+      "id": "lead-1793384160653-tfguh",
+      "nome": "dinho",
+      "telefone": "(19) 92003-2074",
+      "telefone_formatado": "(19) 92003-2074",
+      "ddd": 19,
+      "cidade": "Campinas, Piracicaba, Limeira e Americana",
+      "regiao": "Região Metropolitana de Campinas (RMC) e Leste Paulista",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "gancho de valor",
+      "historico": [
+        {
+          "id": "hist-1793384160656",
+          "data": "2026-10-30T18:16:00.653Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793821120279",
+          "data": "2026-11-04T19:38:40.279Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793821143532",
+          "data": "2026-11-04T19:39:03.532Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "gancho de valor"
+        }
+      ],
+      "data_cadastro": "2026-10-30T18:16:01.006105+00:00",
+      "data_atualizacao": "2026-11-04T19:39:03.532+00:00"
+    },
+    {
+      "id": "lead-1793384195492-mzc6z",
+      "nome": "multimp express",
+      "telefone": "(19) 99191-4976",
+      "telefone_formatado": "(19) 99191-4976",
+      "ddd": 19,
+      "cidade": "Campinas, Piracicaba, Limeira e Americana",
+      "regiao": "Região Metropolitana de Campinas (RMC) e Leste Paulista",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793384195492",
+          "data": "2026-10-30T18:16:35.492Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793384341138",
+          "data": "2026-10-30T18:19:01.138Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793384348205",
+          "data": "2026-10-30T18:19:08.205Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "qualificacao",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793820570740",
+          "data": "2026-11-04T19:29:30.740Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820612796",
+          "data": "2026-11-04T19:30:12.796Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-10-30T18:16:36.009768+00:00",
+      "data_atualizacao": "2026-11-04T19:30:12.805+00:00"
+    },
+    {
+      "id": "lead-1793384240363-3eila",
+      "nome": "yumi",
+      "telefone": "(11) 99397-2444",
+      "telefone_formatado": "(11) 99397-2444",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "perdido",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "licitação",
+      "historico": [
+        {
+          "id": "hist-1793384240363",
+          "data": "2026-10-30T18:17:20.363Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793384284613",
+          "data": "2026-10-30T18:18:04.613Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820723475",
+          "data": "2026-11-04T19:32:03.475Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "qualificacao",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793820871423",
+          "data": "2026-11-04T19:34:31.423Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "licitação"
+        }
+      ],
+      "data_cadastro": "2026-10-30T18:17:20.58884+00:00",
+      "data_atualizacao": "2026-11-04T19:34:31.423+00:00"
+    },
+    {
+      "id": "lead-1793384267139-m833o",
+      "nome": "ednelson",
+      "telefone": "(91) 98499-9488",
+      "telefone_formatado": "(91) 98499-9488",
+      "ddd": 91,
+      "cidade": "Belém, Ananindeua e Castanhal",
+      "regiao": "Região Metropolitana de Belém e Nordeste Paraense",
+      "uf": "PA",
+      "estagio": "qualificacao",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "licitação",
+      "historico": [
+        {
+          "id": "hist-1793384267139",
+          "data": "2026-10-30T18:17:47.139Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793384271991",
+          "data": "2026-10-30T18:17:51.991Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793384281476",
+          "data": "2026-10-30T18:18:01.476Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "licitação"
+        },
+        {
+          "id": "hist-1793384291955",
+          "data": "2026-10-30T18:18:11.955Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "licitação"
+        },
+        {
+          "id": "hist-1793385218424",
+          "data": "2026-10-30T18:33:38.424Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385219591",
+          "data": "2026-10-30T18:33:39.591Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793385221068",
+          "data": "2026-10-30T18:33:41.068Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385223020",
+          "data": "2026-10-30T18:33:43.020Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793385224556",
+          "data": "2026-10-30T18:33:44.556Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385225389",
+          "data": "2026-10-30T18:33:45.389Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793385226308",
+          "data": "2026-10-30T18:33:46.308Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385227099",
+          "data": "2026-10-30T18:33:47.099Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793385228025",
+          "data": "2026-10-30T18:33:48.025Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385229330",
+          "data": "2026-10-30T18:33:49.330Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793385230338",
+          "data": "2026-10-30T18:33:50.338Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385231242",
+          "data": "2026-10-30T18:33:51.242Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793385551566",
+          "data": "2026-10-30T18:39:11.566Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793385553534",
+          "data": "2026-10-30T18:39:13.534Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "proposta",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793385564121",
+          "data": "2026-10-30T18:39:24.121Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "negociacao",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-10-30T18:17:47.365251+00:00",
+      "data_atualizacao": "2026-10-30T18:39:24.124+00:00"
+    },
+    {
+      "id": "lead-1793481626771-w0gw2",
+      "nome": "Distribuidora Express Papéis Ltda",
+      "telefone": "(11) 98888-7777",
+      "telefone_formatado": "(11) 98888-7777",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Licitação.",
+      "historico": [
+        {
+          "id": "hist-1793481626771",
+          "data": "2026-10-31T21:20:26.771Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793481628325",
+          "data": "2026-10-31T21:20:28.325Z",
+          "tipo": "anotacao",
+          "autor": "Comercial",
+          "canal": "whatsapp",
+          "descricao": "Cliente precisa de 40 caixas de Papel Toalha Interfolha"
+        },
+        {
+          "id": "hist-1793481628961",
+          "data": "2026-10-31T21:20:28.961Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793717395812",
+          "data": "2026-11-03T14:49:55.812Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "LICITAÇÃO"
+        },
+        {
+          "id": "hist-1793798943494",
+          "data": "2026-11-04T13:29:03.494Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "Licitação."
+        }
+      ],
+      "data_cadastro": "2026-10-31T21:20:27.261755+00:00",
+      "data_atualizacao": "2026-11-04T13:29:03.494+00:00"
+    },
+    {
+      "id": "lead-1793704881446-6onxa",
+      "nome": "STS",
+      "telefone": "(11) 93704-1606",
+      "telefone_formatado": "(11) 93704-1606",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "LICITAÇÃO",
+      "historico": [
+        {
+          "id": "hist-1793704881446",
+          "data": "2026-11-03T11:21:21.446Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793705120788",
+          "data": "2026-11-03T11:25:20.788Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "LICITAÇÃO"
+        },
+        {
+          "id": "hist-1793705129044",
+          "data": "2026-11-03T11:25:29.044Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:21:23.745523+00:00",
+      "data_atualizacao": "2026-11-03T11:25:29.051+00:00"
+    },
+    {
+      "id": "lead-1793704907350-a2fev",
+      "nome": "zenilda",
+      "telefone": "(49) 9954-8732",
+      "telefone_formatado": "(49) 9954-8732",
+      "ddd": 49,
+      "cidade": "Chapecó, Concórdia e Lages",
+      "regiao": "Oeste Catarinense e Planalto Serrano",
+      "uf": "SC",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "enviado gancho de valor",
+      "historico": [
+        {
+          "id": "hist-1793704907350",
+          "data": "2026-11-03T11:21:47.350Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793821238925",
+          "data": "2026-11-04T19:40:38.925Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793821338690",
+          "data": "2026-11-04T19:42:18.690Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "enviado gancho de valor"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:21:49.490255+00:00",
+      "data_atualizacao": "2026-11-04T19:42:18.69+00:00"
+    },
+    {
+      "id": "lead-1793706621340-3jswi",
+      "nome": "Ana",
+      "telefone": "(41) 98470-0886",
+      "telefone_formatado": "(41) 98470-0886",
+      "ddd": 41,
+      "cidade": "Curitiba e São José dos Pinhais",
+      "regiao": "Região Metropolitana de Curitiba (RMC) e Litoral Paranaense",
+      "uf": "PR",
+      "estagio": "perdido",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "CONSUMIDOR FINAL CURITIBA",
+      "historico": [
+        {
+          "id": "hist-1793706621340",
+          "data": "2026-11-03T11:50:21.340Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793800396475",
+          "data": "2026-11-04T13:53:16.475Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793800414164",
+          "data": "2026-11-04T13:53:34.164Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "CONSUMIDOR FINAL CURITIBA"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:50:21.470208+00:00",
+      "data_atualizacao": "2026-11-04T13:53:34.165+00:00"
+    },
+    {
+      "id": "lead-1793706647949-f50xg",
+      "nome": "Maria Jose",
+      "telefone": "(15) 98123-9762",
+      "telefone_formatado": "(15) 98123-9762",
+      "ddd": 15,
+      "cidade": "Sorocaba e Itapetininga",
+      "regiao": "Sudoeste Paulista e Região Metropolitana de Sorocaba",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793706647949",
+          "data": "2026-11-03T11:50:47.949Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793800393964",
+          "data": "2026-11-04T13:53:13.964Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:50:48.015824+00:00",
+      "data_atualizacao": "2026-11-04T13:53:13.968+00:00"
+    },
+    {
+      "id": "lead-1793706688632-tjhzp",
+      "nome": "Google 03/11",
+      "telefone": "(32) 9946-6385",
+      "telefone_formatado": "(32) 9946-6385",
+      "ddd": 32,
+      "cidade": "Juiz de Fora e Barbacena",
+      "regiao": "Zona da Mata Mineira e Campo das Vertentes",
+      "uf": "MG",
+      "estagio": "qualificacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793706688632",
+          "data": "2026-11-03T11:51:28.632Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793708221717",
+          "data": "2026-11-03T12:17:01.717Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793800391546",
+          "data": "2026-11-04T13:53:11.546Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:51:28.699808+00:00",
+      "data_atualizacao": "2026-11-04T13:53:11.55+00:00"
+    },
+    {
+      "id": "lead-1793706730717-rdtxs",
+      "nome": "Irineu",
+      "telefone": "(13) 99740-0077",
+      "telefone_formatado": "(13) 99740-0077",
+      "ddd": 13,
+      "cidade": "Santos e Baixada Santista",
+      "regiao": "Baixada Santista e Litoral Sul Paulista",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793706730717",
+          "data": "2026-11-03T11:52:10.717Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:52:10.790993+00:00",
+      "data_atualizacao": "2026-11-03T11:52:10.717+00:00"
+    },
+    {
+      "id": "lead-1793706776000-9i7rv",
+      "nome": "Lead 03/11 2",
+      "telefone": "(21) 96634-1021",
+      "telefone_formatado": "(21) 96634-1021",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "novo",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793706776000",
+          "data": "2026-11-03T11:52:56.000Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:52:56.086349+00:00",
+      "data_atualizacao": "2026-11-03T11:52:56+00:00"
+    },
+    {
+      "id": "lead-1793706810959-ug0bg",
+      "nome": "Missionaria dinarma",
+      "telefone": "(24) 98100-3240",
+      "telefone_formatado": "(24) 98100-3240",
+      "ddd": 24,
+      "cidade": "Volta Redonda, Petrópolis e Resende",
+      "regiao": "Sul Fluminense e Região Serrana",
+      "uf": "RJ",
+      "estagio": "novo",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793706810959",
+          "data": "2026-11-03T11:53:30.959Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:53:31.040026+00:00",
+      "data_atualizacao": "2026-11-03T11:53:30.96+00:00"
+    },
+    {
+      "id": "lead-1793706838097-tz6oz",
+      "nome": "Pedro",
+      "telefone": "(63) 9992-7447",
+      "telefone_formatado": "(63) 9992-7447",
+      "ddd": 63,
+      "cidade": "Palmas, Araguaína e Gurupi",
+      "regiao": "Todo o Estado do Tocantins",
+      "uf": "TO",
+      "estagio": "qualificacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793706838097",
+          "data": "2026-11-03T11:53:58.097Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793800389740",
+          "data": "2026-11-04T13:53:09.740Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:53:58.180502+00:00",
+      "data_atualizacao": "2026-11-04T13:53:09.744+00:00"
+    },
+    {
+      "id": "lead-1793706856848-nrf9x",
+      "nome": "Miguel",
+      "telefone": "(21) 99581-7756",
+      "telefone_formatado": "(21) 99581-7756",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "perdido",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Licitação",
+      "historico": [
+        {
+          "id": "hist-1793706856848",
+          "data": "2026-11-03T11:54:16.848Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793706858318",
+          "data": "2026-11-03T11:54:18.318Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793706879456",
+          "data": "2026-11-03T11:54:39.456Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Falou para eu falar com ele as 13 do dia 03/11"
+        },
+        {
+          "id": "hist-1793726924764",
+          "data": "2026-11-03T17:28:44.764Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "qualificacao",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793726933226",
+          "data": "2026-11-03T17:28:53.226Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "REPRESENTANTE COMERCIAL"
+        },
+        {
+          "id": "hist-1793738232330",
+          "data": "2026-11-03T20:37:12.330Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Licitação"
+        }
+      ],
+      "data_cadastro": "2026-11-03T11:54:16.935589+00:00",
+      "data_atualizacao": "2026-11-03T20:37:12.33+00:00"
+    },
+    {
+      "id": "lead-1793707939644-jhsq6",
+      "nome": "Eliana",
+      "telefone": "(11) 95464-9298",
+      "telefone_formatado": "(11) 95464-9298",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793707939644",
+          "data": "2026-11-03T12:12:19.644Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:12:24.462465+00:00",
+      "data_atualizacao": "2026-11-03T12:12:19.661+00:00"
+    },
+    {
+      "id": "lead-1793707988057-vpi1x",
+      "nome": "Jeane",
+      "telefone": "11 94188-8441",
+      "telefone_formatado": "(11) 94188-8441",
+      "ddd": 11,
+      "cidade": "Santa Maria e Uruguaiana",
+      "regiao": "Centro e Fronteira Oeste Gaúcha",
+      "uf": "RS",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793707988058",
+          "data": "2026-11-03T12:13:08.057Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:13:12.817853+00:00",
+      "data_atualizacao": "2026-11-03T12:16:58.368+00:00"
+    },
+    {
+      "id": "lead-1793708000738-lsj7z",
+      "nome": "Veronica",
+      "telefone": "21 99784-1012",
+      "telefone_formatado": "(21) 99784-1012",
+      "ddd": 21,
+      "cidade": "Santa Maria e Uruguaiana",
+      "regiao": "Centro e Fronteira Oeste Gaúcha",
+      "uf": "RS",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793708000738",
+          "data": "2026-11-03T12:13:20.738Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:13:25.733287+00:00",
+      "data_atualizacao": "2026-11-03T12:16:39.754+00:00"
+    },
+    {
+      "id": "lead-1793708058561-xn56g",
+      "nome": "Sergio Gomes",
+      "telefone": "21 96688-2857",
+      "telefone_formatado": "(21) 96688-2857",
+      "ddd": 21,
+      "cidade": "Santa Maria e Uruguaiana",
+      "regiao": "Centro e Fronteira Oeste Gaúcha",
+      "uf": "RS",
+      "estagio": "qualificacao",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Licitação.",
+      "historico": [
+        {
+          "id": "hist-1793708058561",
+          "data": "2026-11-03T12:14:18.561Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793717377752",
+          "data": "2026-11-03T14:49:37.752Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793798911853",
+          "data": "2026-11-04T13:28:31.853Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "Licitação."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:14:23.31467+00:00",
+      "data_atualizacao": "2026-11-04T13:28:31.853+00:00"
+    },
+    {
+      "id": "lead-1793708074866-a296p",
+      "nome": "Maria Zelia",
+      "telefone": "32 9944-6288",
+      "telefone_formatado": "(32) 9944-6288",
+      "ddd": 32,
+      "cidade": "Santa Maria e Uruguaiana",
+      "regiao": "Centro e Fronteira Oeste Gaúcha",
+      "uf": "RS",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793708074866",
+          "data": "2026-11-03T12:14:34.866Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:14:39.884026+00:00",
+      "data_atualizacao": "2026-11-03T12:15:59.536+00:00"
+    },
+    {
+      "id": "lead-1793708096104-umv3t",
+      "nome": "Simone",
+      "telefone": "33 9941-6058",
+      "telefone_formatado": "(33) 9941-6058",
+      "ddd": 33,
+      "cidade": "Santa Maria e Uruguaiana",
+      "regiao": "Centro e Fronteira Oeste Gaúcha",
+      "uf": "RS",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793708096104",
+          "data": "2026-11-03T12:14:56.104Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793730629262",
+          "data": "2026-11-03T18:30:29.262Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793730642701",
+          "data": "2026-11-03T18:30:42.701Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793730650141",
+          "data": "2026-11-03T18:30:50.141Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "perdido",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793801635449",
+          "data": "2026-11-04T14:13:55.449Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:15:00.862279+00:00",
+      "data_atualizacao": "2026-11-04T14:13:55.454+00:00"
+    },
+    {
+      "id": "lead-1793708128448-kj9ep",
+      "nome": "Leonilda",
+      "telefone": "(42) 9131-0642",
+      "telefone_formatado": "(42) 9131-0642",
+      "ddd": 42,
+      "cidade": "Ponta Grossa e Guarapuava",
+      "regiao": "Campos Gerais e Centro-Sul do Paraná",
+      "uf": "PR",
+      "estagio": "perdido",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Clicou sem querer",
+      "historico": [
+        {
+          "id": "hist-1793708128448",
+          "data": "2026-11-03T12:15:28.448Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793730617537",
+          "data": "2026-11-03T18:30:17.537Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793730694182",
+          "data": "2026-11-03T18:31:34.182Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793730704443",
+          "data": "2026-11-03T18:31:44.443Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "Clicou sem querer"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:15:33.208241+00:00",
+      "data_atualizacao": "2026-11-03T18:31:44.443+00:00"
+    },
+    {
+      "id": "lead-1793708360915-gzdox",
+      "nome": "maria",
+      "telefone": "(16) 98154-1231",
+      "telefone_formatado": "(16) 98154-1231",
+      "ddd": 16,
+      "cidade": "Ribeirão Preto, Franca e Araraquara",
+      "regiao": "Nordeste Paulista e Região de Ribeirão Preto",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "ribeirão",
+      "historico": [
+        {
+          "id": "hist-1793708360915",
+          "data": "2026-11-03T12:19:20.915Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793708363684",
+          "data": "2026-11-03T12:19:23.684Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793708370330",
+          "data": "2026-11-03T12:19:30.330Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "revenda"
+        },
+        {
+          "id": "hist-1793708775062",
+          "data": "2026-11-03T12:26:15.062Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793708775575",
+          "data": "2026-11-03T12:26:15.575Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "proposta",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793708798871",
+          "data": "2026-11-03T12:26:38.871Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "ribeirão"
+        },
+        {
+          "id": "hist-1793791362045",
+          "data": "2026-11-04T11:22:42.045Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "proposta",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820634211",
+          "data": "2026-11-04T19:30:34.211Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "qualificacao",
+          "estagioPara": "novo"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:19:23.191339+00:00",
+      "data_atualizacao": "2026-11-04T19:30:34.221+00:00"
+    },
+    {
+      "id": "lead-1793708398793-fiw5b",
+      "nome": "romildo",
+      "telefone": "(21) 99954-3444",
+      "telefone_formatado": "(21) 99954-3444",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "qualificacao",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Rio de janeiro, já compra com fábrica",
+      "historico": [
+        {
+          "id": "hist-1793708398793",
+          "data": "2026-11-03T12:19:58.793Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793708411867",
+          "data": "2026-11-03T12:20:11.867Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "Rio de janeiro, já compra com fábrica"
+        },
+        {
+          "id": "hist-1793708413800",
+          "data": "2026-11-03T12:20:13.800Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793708806175",
+          "data": "2026-11-03T12:26:46.175Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "qualificacao",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:20:01.040033+00:00",
+      "data_atualizacao": "2026-11-03T12:26:46.18+00:00"
+    },
+    {
+      "id": "lead-1793708930835-pri7r",
+      "nome": "03/11 lead 1",
+      "telefone": "(31) 8364-5274",
+      "telefone_formatado": "(31) 8364-5274",
+      "ddd": 31,
+      "cidade": "Belo Horizonte, Betim e Contagem",
+      "regiao": "Região Metropolitana de Belo Horizonte (RMBH)",
+      "uf": "MG",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "cliente agradeceu mas não deu retorno",
+      "historico": [
+        {
+          "id": "hist-1793708930835",
+          "data": "2026-11-03T12:28:50.835Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793821507016",
+          "data": "2026-11-04T19:45:07.016Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "cliente agradeceu mas não deu retorno"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:28:53.118556+00:00",
+      "data_atualizacao": "2026-11-04T19:45:07.016+00:00"
+    },
+    {
+      "id": "lead-1793709036306-6g6l8",
+      "nome": "03/11 lead 2",
+      "telefone": "(11) 94540-0017",
+      "telefone_formatado": "(11) 94540-0017",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "mandei gancho de valor",
+      "historico": [
+        {
+          "id": "hist-1793709036306",
+          "data": "2026-11-03T12:30:36.306Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793821639958",
+          "data": "2026-11-04T19:47:19.958Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "mandei gancho de valor"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:30:38.583279+00:00",
+      "data_atualizacao": "2026-11-04T19:47:19.958+00:00"
+    },
+    {
+      "id": "lead-1793709060386-dmqg9",
+      "nome": "anderson",
+      "telefone": "(48) 98817-1970",
+      "telefone_formatado": "(48) 98817-1970",
+      "ddd": 48,
+      "cidade": "Florianópolis, Criciúma e Tubarão",
+      "regiao": "Grande Florianópolis e Sul Catarinense",
+      "uf": "SC",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "mandei gancho de valor",
+      "historico": [
+        {
+          "id": "hist-1793709060386",
+          "data": "2026-11-03T12:31:00.386Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793821971766",
+          "data": "2026-11-04T19:52:51.766Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "mandei gancho de valor"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:31:02.67325+00:00",
+      "data_atualizacao": "2026-11-04T19:52:51.767+00:00"
+    },
+    {
+      "id": "lead-1793709076738-xnd2i",
+      "nome": "felipe",
+      "telefone": "(22) 97405-0810",
+      "telefone_formatado": "(22) 97405-0810",
+      "ddd": 22,
+      "cidade": "Campos dos Goytacazes, Macaé e Cabo Frio",
+      "regiao": "Norte Fluminense e Região dos Lagos",
+      "uf": "RJ",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "licitação / 20109 R$11,80",
+      "historico": [
+        {
+          "id": "hist-1793709076738",
+          "data": "2026-11-03T12:31:16.738Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793714568583",
+          "data": "2026-11-03T14:02:48.583Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "licitação"
+        },
+        {
+          "id": "hist-1793714570981",
+          "data": "2026-11-03T14:02:50.981Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793714624990",
+          "data": "2026-11-03T14:03:44.990Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "licitação / 20109 R$11,80"
+        },
+        {
+          "id": "hist-1793820638076",
+          "data": "2026-11-04T19:30:38.076Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "qualificacao",
+          "estagioPara": "novo"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:31:19.010069+00:00",
+      "data_atualizacao": "2026-11-04T19:30:38.085+00:00"
+    },
+    {
+      "id": "lead-1793709089865-qla75",
+      "nome": "francisco",
+      "telefone": "(21) 96563-7907",
+      "telefone_formatado": "(21) 96563-7907",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "proposta",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793709089865",
+          "data": "2026-11-03T12:31:29.865Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793800528577",
+          "data": "2026-11-04T13:55:28.577Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820622772",
+          "data": "2026-11-04T19:30:22.772Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:31:32.142102+00:00",
+      "data_atualizacao": "2026-11-04T19:30:22.781+00:00"
+    },
+    {
+      "id": "lead-1793709110505-415c6",
+      "nome": "salvar",
+      "telefone": "(11) 98913-1103",
+      "telefone_formatado": "(11) 98913-1103",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793709110505",
+          "data": "2026-11-03T12:31:50.505Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793791374368",
+          "data": "2026-11-04T11:22:54.368Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820630980",
+          "data": "2026-11-04T19:30:30.980Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "qualificacao",
+          "estagioPara": "novo"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:31:52.927571+00:00",
+      "data_atualizacao": "2026-11-04T19:30:30.988+00:00"
+    },
+    {
+      "id": "lead-1793709126897-qypkp",
+      "nome": "heleno",
+      "telefone": "(11) 99997-8772",
+      "telefone_formatado": "(11) 99997-8772",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793709126897",
+          "data": "2026-11-03T12:32:06.897Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:32:09.174426+00:00",
+      "data_atualizacao": "2026-11-03T12:32:06.898+00:00"
+    },
+    {
+      "id": "lead-1793709148058-k5gh9",
+      "nome": "ronaldo",
+      "telefone": "(11) 94798-9416",
+      "telefone_formatado": "(11) 94798-9416",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "negociacao",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 1000,
+      "observacoes": "cliente trabalha com bom e omega",
+      "historico": [
+        {
+          "id": "hist-1793709148058",
+          "data": "2026-11-03T12:32:28.058Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793826130431",
+          "data": "2026-11-04T21:02:10.431Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "novo",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793826165093",
+          "data": "2026-11-04T21:02:45.093Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "cliente trabalha com bom e omega"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:32:30.338757+00:00",
+      "data_atualizacao": "2026-11-04T21:03:05.365+00:00"
+    },
+    {
+      "id": "lead-1793709166089-qktnv",
+      "nome": "sueli",
+      "telefone": "(11) 94179-1637",
+      "telefone_formatado": "(11) 94179-1637",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793709166089",
+          "data": "2026-11-03T12:32:46.089Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:32:48.36992+00:00",
+      "data_atualizacao": "2026-11-03T12:32:46.09+00:00"
+    },
+    {
+      "id": "lead-1793709186769-0rnjm",
+      "nome": "03/11 lead 4",
+      "telefone": "(11) 98083-2903",
+      "telefone_formatado": "(11) 98083-2903",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793709186769",
+          "data": "2026-11-03T12:33:06.769Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:33:09.053619+00:00",
+      "data_atualizacao": "2026-11-03T12:33:06.769+00:00"
+    },
+    {
+      "id": "lead-1793709243978-xect4",
+      "nome": "carlinhos",
+      "telefone": "(14) 99187-0765",
+      "telefone_formatado": "(14) 99187-0765",
+      "ddd": 14,
+      "cidade": "Bauru, Marília e Jaú",
+      "regiao": "Centro-Oeste Paulista (Bauru, Marília, Botucatu)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793709243978",
+          "data": "2026-11-03T12:34:03.978Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:34:06.25873+00:00",
+      "data_atualizacao": "2026-11-03T12:34:03.979+00:00"
+    },
+    {
+      "id": "lead-1793709599501-bp21f",
+      "nome": "JMS COMERCIAL",
+      "telefone": "(16) 99162-0336",
+      "telefone_formatado": "(16) 99162-0336",
+      "ddd": 16,
+      "cidade": "Ribeirão Preto, Franca e Araraquara",
+      "regiao": "Nordeste Paulista e Região de Ribeirão Preto",
+      "uf": "SP",
+      "estagio": "negociacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 3000,
+      "observacoes": "vai fechar para fim do mês pois já tem estoque!",
+      "historico": [
+        {
+          "id": "hist-1793709599501",
+          "data": "2026-11-03T12:39:59.501Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793709734917",
+          "data": "2026-11-03T12:42:14.917Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793709737087",
+          "data": "2026-11-03T12:42:17.087Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793709753759",
+          "data": "2026-11-03T12:42:33.759Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Interfolha 100% celulose virgem 20037 \nR$ 8,10"
+        },
+        {
+          "id": "hist-1793715030796",
+          "data": "2026-11-03T14:10:30.796Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "OFERTA 10022 E 10025 \n15,50\n25,41"
+        },
+        {
+          "id": "hist-1793717415994",
+          "data": "2026-11-03T14:50:15.994Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "proposta",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793717421221",
+          "data": "2026-11-03T14:50:21.221Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "negociacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793717423000",
+          "data": "2026-11-03T14:50:23.000Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "proposta",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793717460648",
+          "data": "2026-11-03T14:51:00.648Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Está em Sertãozinho, enviei diversos produtos estamos em etapa de fechamento"
+        },
+        {
+          "id": "hist-1793726988969",
+          "data": "2026-11-03T17:29:48.969Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "vai fechar para fim do mês pois já tem estoque!"
+        }
+      ],
+      "data_cadastro": "2026-11-03T12:39:59.586226+00:00",
+      "data_atualizacao": "2026-11-04T13:52:39.304+00:00"
+    },
+    {
+      "id": "lead-1793711470728-jvmwh",
+      "nome": "Deus",
+      "telefone": "(11) 94448-7583",
+      "telefone_formatado": "(11) 94448-7583",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793711470728",
+          "data": "2026-11-03T13:11:10.728Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        }
+      ],
+      "data_cadastro": "2026-11-03T13:11:20.631434+00:00",
+      "data_atualizacao": "2026-11-03T13:11:10.729+00:00"
+    },
+    {
+      "id": "lead-1793717718926-by8hi",
+      "nome": "Arreio (prospec)",
+      "telefone": "(21) 99463-6881",
+      "telefone_formatado": "(21) 99463-6881",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "negociacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 2000,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793717718926",
+          "data": "2026-11-03T14:55:18.926Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793717722256",
+          "data": "2026-11-03T14:55:22.256Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "novo",
+          "estagioPara": "negociacao"
+        }
+      ],
+      "data_cadastro": "2026-11-03T14:55:19.258457+00:00",
+      "data_atualizacao": "2026-11-04T13:52:57.631+00:00"
+    },
+    {
+      "id": "lead-1793717761474-z6db1",
+      "nome": "kiessencias (prospec)",
+      "telefone": "(12) 98176-3688",
+      "telefone_formatado": "(12) 98176-3688",
+      "ddd": 12,
+      "cidade": "São José dos Campos e Taubaté",
+      "regiao": "Vale do Paraíba e Litoral Norte",
+      "uf": "SP",
+      "estagio": "negociacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 1000,
+      "observacoes": "Enviei propostas no hig 100% 25,41 e interfolha 100% 400g 7,60",
+      "historico": [
+        {
+          "id": "hist-1793717761474",
+          "data": "2026-11-03T14:56:01.474Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793717764148",
+          "data": "2026-11-03T14:56:04.148Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "novo",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793717826018",
+          "data": "2026-11-03T14:57:06.018Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Enviei propostas no hig 100% 25,41 e interfolha 100% 400g 7,60"
+        }
+      ],
+      "data_cadastro": "2026-11-03T14:56:01.831375+00:00",
+      "data_atualizacao": "2026-11-04T13:52:48.36+00:00"
+    },
+    {
+      "id": "lead-1793738219669-7snqs",
+      "nome": "Jersfson vital",
+      "telefone": "(34) 9651-2995",
+      "telefone_formatado": "(34) 9651-2995",
+      "ddd": 34,
+      "cidade": "Uberlândia e Uberaba",
+      "regiao": "Triângulo Mineiro e Alto Paranaíba",
+      "uf": "MG",
+      "estagio": "perdido",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793738219669",
+          "data": "2026-11-03T20:36:59.669Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793738223398",
+          "data": "2026-11-03T20:37:03.398Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        }
+      ],
+      "data_cadastro": "2026-11-03T20:37:02.243329+00:00",
+      "data_atualizacao": "2026-11-03T20:37:03.402+00:00"
+    },
+    {
+      "id": "lead-1793791540205-ghzue",
+      "nome": "Nélio Dias",
+      "telefone": "(19) 99561-9698",
+      "telefone_formatado": "(19) 99561-9698",
+      "ddd": 19,
+      "cidade": "Campinas, Piracicaba, Limeira e Americana",
+      "regiao": "Região Metropolitana de Campinas (RMC) e Leste Paulista",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "-Trabalha com diversas marcas: Primepel, Sulleg, Personal, Artlimp e Santher.\n-Compra Hig, Cai Cai, Guardanapo TV e Interfolhas.",
+      "historico": [
+        {
+          "id": "hist-1793791540205",
+          "data": "2026-11-04T11:25:40.205Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793795592506",
+          "data": "2026-11-04T12:33:12.506Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793798866224",
+          "data": "2026-11-04T13:27:46.224Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "-Trabalha com diversas marcas: Primepel, Sulleg, Personal, Artlimp e Santher.\n-Compra Hig, Cai Cai, Guardanapo TV e Interfolhas."
+        }
+      ],
+      "data_cadastro": "2026-11-04T11:25:42.002863+00:00",
+      "data_atualizacao": "2026-11-04T13:27:46.224+00:00"
+    },
+    {
+      "id": "lead-1793798729173-g8ucg",
+      "nome": "marcelo",
+      "telefone": "(11) 97850-1146",
+      "telefone_formatado": "(11) 97850-1146",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798729174",
+          "data": "2026-11-04T13:25:29.173Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799117835",
+          "data": "2026-11-04T13:31:57.834Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:25:29.893677+00:00",
+      "data_atualizacao": "2026-11-04T13:31:57.84+00:00"
+    },
+    {
+      "id": "lead-1793798790035-olj1x",
+      "nome": "HF SOLUÇÕES",
+      "telefone": "(17) 99229-5936",
+      "telefone_formatado": "(17) 99229-5936",
+      "ddd": 17,
+      "cidade": "São José do Rio Preto e Barretos",
+      "regiao": "Noroeste Paulista",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798790035",
+          "data": "2026-11-04T13:26:30.035Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799113946",
+          "data": "2026-11-04T13:31:53.946Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "novo",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:26:30.672805+00:00",
+      "data_atualizacao": "2026-11-04T13:31:53.952+00:00"
+    },
+    {
+      "id": "lead-1793798815091-vrx5o",
+      "nome": "BETEL EXCELENTE",
+      "telefone": "(21) 99946-1985",
+      "telefone_formatado": "(21) 99946-1985",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "negociacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798815091",
+          "data": "2026-11-04T13:26:55.091Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799108122",
+          "data": "2026-11-04T13:31:48.122Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "novo",
+          "estagioPara": "negociacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:26:55.455923+00:00",
+      "data_atualizacao": "2026-11-04T13:31:48.129+00:00"
+    },
+    {
+      "id": "lead-1793798832668-twgko",
+      "nome": "MILTON",
+      "telefone": "(11) 91495-2867",
+      "telefone_formatado": "(11) 91495-2867",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "negociacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798832668",
+          "data": "2026-11-04T13:27:12.668Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799104891",
+          "data": "2026-11-04T13:31:44.891Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "novo",
+          "estagioPara": "negociacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:27:13.029715+00:00",
+      "data_atualizacao": "2026-11-04T13:31:44.896+00:00"
+    },
+    {
+      "id": "lead-1793798846939-v3tfx",
+      "nome": "KERISON",
+      "telefone": "(11) 97420-2001",
+      "telefone_formatado": "(11) 97420-2001",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798846939",
+          "data": "2026-11-04T13:27:26.939Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799102427",
+          "data": "2026-11-04T13:31:42.427Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "novo",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:27:27.292562+00:00",
+      "data_atualizacao": "2026-11-04T13:31:42.433+00:00"
+    },
+    {
+      "id": "lead-1793798861306-414t5",
+      "nome": "BRUNO",
+      "telefone": "(11) 93208-2166",
+      "telefone_formatado": "(11) 93208-2166",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798861306",
+          "data": "2026-11-04T13:27:41.306Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799100523",
+          "data": "2026-11-04T13:31:40.523Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:27:41.679173+00:00",
+      "data_atualizacao": "2026-11-04T13:31:40.528+00:00"
+    },
+    {
+      "id": "lead-1793798878644-3y0uk",
+      "nome": "GERALDO",
+      "telefone": "(16) 99747-3787",
+      "telefone_formatado": "(16) 99747-3787",
+      "ddd": 16,
+      "cidade": "Ribeirão Preto, Franca e Araraquara",
+      "regiao": "Nordeste Paulista e Região de Ribeirão Preto",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798878644",
+          "data": "2026-11-04T13:27:58.644Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799098587",
+          "data": "2026-11-04T13:31:38.587Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:27:59.01198+00:00",
+      "data_atualizacao": "2026-11-04T13:31:38.592+00:00"
+    },
+    {
+      "id": "lead-1793798901466-0368f",
+      "nome": "SIMONE",
+      "telefone": "(21) 97498-7542",
+      "telefone_formatado": "(21) 97498-7542",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798901466",
+          "data": "2026-11-04T13:28:21.466Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799097258",
+          "data": "2026-11-04T13:31:37.258Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:28:21.820308+00:00",
+      "data_atualizacao": "2026-11-04T13:31:37.264+00:00"
+    },
+    {
+      "id": "lead-1793798917890-zeaia",
+      "nome": "FABIO",
+      "telefone": "(16) 99215-0117",
+      "telefone_formatado": "(16) 99215-0117",
+      "ddd": 16,
+      "cidade": "Ribeirão Preto, Franca e Araraquara",
+      "regiao": "Nordeste Paulista e Região de Ribeirão Preto",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798917890",
+          "data": "2026-11-04T13:28:37.890Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799095410",
+          "data": "2026-11-04T13:31:35.410Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:28:38.262492+00:00",
+      "data_atualizacao": "2026-11-04T13:31:35.417+00:00"
+    },
+    {
+      "id": "lead-1793798934978-0n3vn",
+      "nome": "EIVELTON",
+      "telefone": "(32) 9852-7578",
+      "telefone_formatado": "(32) 9852-7578",
+      "ddd": 32,
+      "cidade": "Juiz de Fora e Barbacena",
+      "regiao": "Zona da Mata Mineira e Campo das Vertentes",
+      "uf": "MG",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798934978",
+          "data": "2026-11-04T13:28:54.978Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799092331",
+          "data": "2026-11-04T13:31:32.330Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:28:55.326984+00:00",
+      "data_atualizacao": "2026-11-04T13:31:32.336+00:00"
+    },
+    {
+      "id": "lead-1793798948449-zuuor",
+      "nome": "MARA",
+      "telefone": "(15) 99100-4171",
+      "telefone_formatado": "(15) 99100-4171",
+      "ddd": 15,
+      "cidade": "Sorocaba e Itapetininga",
+      "regiao": "Sudoeste Paulista e Região Metropolitana de Sorocaba",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793798948449",
+          "data": "2026-11-04T13:29:08.449Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799088746",
+          "data": "2026-11-04T13:31:28.746Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:29:09.095698+00:00",
+      "data_atualizacao": "2026-11-04T13:31:28.752+00:00"
+    },
+    {
+      "id": "lead-1793799015554-o4ygc",
+      "nome": "ANTHONY",
+      "telefone": "(17) 99741-4742",
+      "telefone_formatado": "(17) 99741-4742",
+      "ddd": 17,
+      "cidade": "São José do Rio Preto e Barretos",
+      "regiao": "Noroeste Paulista",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793799015554",
+          "data": "2026-11-04T13:30:15.554Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799084843",
+          "data": "2026-11-04T13:31:24.843Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "novo",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:30:15.955279+00:00",
+      "data_atualizacao": "2026-11-04T13:31:24.849+00:00"
+    },
+    {
+      "id": "lead-1793799067696-4s3ac",
+      "nome": "APARECIDO",
+      "telefone": "(19) 99914-7223",
+      "telefone_formatado": "(19) 99914-7223",
+      "ddd": 19,
+      "cidade": "Campinas, Piracicaba, Limeira e Americana",
+      "regiao": "Região Metropolitana de Campinas (RMC) e Leste Paulista",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "albert",
+      "vendedor_nome": "Albert",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793799067696",
+          "data": "2026-11-04T13:31:07.696Z",
+          "tipo": "cadastro",
+          "autor": "Albert",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Albert."
+        },
+        {
+          "id": "hist-1793799076224",
+          "data": "2026-11-04T13:31:16.224Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Albert",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "novo",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:31:08.048883+00:00",
+      "data_atualizacao": "2026-11-04T13:31:16.231+00:00"
+    },
+    {
+      "id": "lead-1793799171392-82hov",
+      "nome": "ZENIPACK - JAMILSON",
+      "telefone": "(11) 91784-5513",
+      "telefone_formatado": "(11) 91784-5513",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "daniel",
+      "vendedor_nome": "Daniel",
+      "valor_proposta": 0,
+      "observacoes": "Objeção: PAPEL NÃO VIR COM MIL FOLHAS, proposta enviada via Whatsapp",
+      "historico": [
+        {
+          "id": "hist-1793799171392",
+          "data": "2026-11-04T13:32:51.392Z",
+          "tipo": "cadastro",
+          "autor": "Daniel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Daniel."
+        },
+        {
+          "id": "hist-1793799233895",
+          "data": "2026-11-04T13:33:53.895Z",
+          "tipo": "anotacao",
+          "autor": "daniel",
+          "canal": "whatsapp",
+          "descricao": "Objeção: PAPEL NÃO VIR COM MIL FOLHAS, proposta enviada via Whatsapp"
+        },
+        {
+          "id": "hist-1793805375164",
+          "data": "2026-11-04T15:16:15.164Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:32:51.621474+00:00",
+      "data_atualizacao": "2026-11-04T15:16:15.168+00:00"
+    },
+    {
+      "id": "lead-1793799823810-l3nrv",
+      "nome": "Emillyn freitas",
+      "telefone": "(24) 97401-4335",
+      "telefone_formatado": "(24) 97401-4335",
+      "ddd": 24,
+      "cidade": "Volta Redonda, Petrópolis e Resende",
+      "regiao": "Sul Fluminense e Região Serrana",
+      "uf": "RJ",
+      "estagio": "negociacao",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 5000,
+      "observacoes": "CNPJ 55.536.182/0001-01",
+      "historico": [
+        {
+          "id": "hist-1793799823810",
+          "data": "2026-11-04T13:43:43.810Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793799828013",
+          "data": "2026-11-04T13:43:48.013Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "novo",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793800017372",
+          "data": "2026-11-04T13:46:57.372Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Trabalha com Abaspel, esta avaliando proposta com financeiro"
+        },
+        {
+          "id": "hist-1793800020536",
+          "data": "2026-11-04T13:47:00.536Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "proposta",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793800338056",
+          "data": "2026-11-04T13:52:18.056Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "CNPJ 55.536.182/0001-01"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:43:44.163415+00:00",
+      "data_atualizacao": "2026-11-04T13:52:31.836+00:00"
+    },
+    {
+      "id": "lead-1793800531046-pd64h",
+      "nome": "Gráfica Betel Excelente",
+      "telefone": "(21) 99946-1985",
+      "telefone_formatado": "(21) 99946-1985",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "negociacao",
+      "vendedor_id": "daniel",
+      "vendedor_nome": "Daniel",
+      "valor_proposta": 0,
+      "observacoes": "Solicitou envio de amostra física e catálogo. Amostras já enviadas",
+      "historico": [
+        {
+          "id": "hist-1793800531046",
+          "data": "2026-11-04T13:55:31.046Z",
+          "tipo": "cadastro",
+          "autor": "Daniel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Daniel."
+        },
+        {
+          "id": "hist-1793800535261",
+          "data": "2026-11-04T13:55:35.261Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793800537461",
+          "data": "2026-11-04T13:55:37.461Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793800861851",
+          "data": "2026-11-04T14:01:01.851Z",
+          "tipo": "anotacao",
+          "autor": "daniel",
+          "canal": "whatsapp",
+          "descricao": "Solicitou envio de amostra física e catálogo. Amostras já enviadas"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:55:31.077732+00:00",
+      "data_atualizacao": "2026-11-04T14:01:01.851+00:00"
+    },
+    {
+      "id": "lead-1793800696396-ph8xk",
+      "nome": "Romano Mercado",
+      "telefone": "(14) 99755-7683",
+      "telefone_formatado": "(14) 99755-7683",
+      "ddd": 14,
+      "cidade": "Bauru, Marília e Jaú",
+      "regiao": "Centro-Oeste Paulista (Bauru, Marília, Botucatu)",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "daniel",
+      "vendedor_nome": "Daniel",
+      "valor_proposta": 0,
+      "observacoes": "Estipula trabalhar com papel. Empresa em dificuldade para atender ao pedido mínimo. Forneci opção de fazer pagamento do pedido mín 3x no crédito. Aguardando CNPJ e resposta. Enviei catálogo",
+      "historico": [
+        {
+          "id": "hist-1793800696396",
+          "data": "2026-11-04T13:58:16.396Z",
+          "tipo": "cadastro",
+          "autor": "Daniel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Daniel."
+        },
+        {
+          "id": "hist-1793800699839",
+          "data": "2026-11-04T13:58:19.839Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793800700915",
+          "data": "2026-11-04T13:58:20.915Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793800816499",
+          "data": "2026-11-04T14:00:16.499Z",
+          "tipo": "anotacao",
+          "autor": "daniel",
+          "canal": "whatsapp",
+          "descricao": "Estipula trabalhar com papel. Empresa em dificuldade para atender ao pedido mínimo. Forneci opção de fazer pagamento do pedido mín 3x no crédito. Aguardando CNPJ e resposta. Enviei catálogo"
+        }
+      ],
+      "data_cadastro": "2026-11-04T13:58:16.466517+00:00",
+      "data_atualizacao": "2026-11-04T14:00:16.499+00:00"
+    },
+    {
+      "id": "lead-1793803224171-mo38k",
+      "nome": "Eu amo minhas filhas",
+      "telefone": "(21) 95926-9789",
+      "telefone_formatado": "(21) 95926-9789",
+      "ddd": 21,
+      "cidade": "Rio de Janeiro e Grande Rio",
+      "regiao": "Região Metropolitana do Rio de Janeiro",
+      "uf": "RJ",
+      "estagio": "novo",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793803224171",
+          "data": "2026-11-04T14:40:24.171Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        }
+      ],
+      "data_cadastro": "2026-11-04T14:40:24.109604+00:00",
+      "data_atualizacao": "2026-11-04T14:40:24.172+00:00"
+    },
+    {
+      "id": "lead-1793804224940-numff",
+      "nome": "Adilson Embalagens",
+      "telefone": "(11) 94719-8656",
+      "telefone_formatado": "(11) 94719-8656",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "qualificacao",
+      "vendedor_id": "daniel",
+      "vendedor_nome": "Daniel",
+      "valor_proposta": 0,
+      "observacoes": "Compra pouco devido a baixa demanda atual. Entrar em contato novamente em 2 dias.",
+      "historico": [
+        {
+          "id": "hist-1793804224940",
+          "data": "2026-11-04T14:57:04.940Z",
+          "tipo": "cadastro",
+          "autor": "Daniel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Daniel."
+        },
+        {
+          "id": "hist-1793804242659",
+          "data": "2026-11-04T14:57:22.659Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793804353698",
+          "data": "2026-11-04T14:59:13.698Z",
+          "tipo": "anotacao",
+          "autor": "daniel",
+          "canal": "whatsapp",
+          "descricao": "Compra pouco devido a baixa demanda atual. Entrar em contato novamente em 2 dias."
+        }
+      ],
+      "data_cadastro": "2026-11-04T14:57:04.981681+00:00",
+      "data_atualizacao": "2026-11-04T14:59:13.699+00:00"
+    },
+    {
+      "id": "lead-1793805369107-x2kfr",
+      "nome": "MOGLIMP",
+      "telefone": "(11) 4724-8696",
+      "telefone_formatado": "(11) 4724-8696",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "daniel",
+      "vendedor_nome": "Daniel",
+      "valor_proposta": 0,
+      "observacoes": "Erick; Já trabalham com Mili e Ipel; Interfolhado e rolão 300 metros são os que vendem mais; Enviei proposta de ambos",
+      "historico": [
+        {
+          "id": "hist-1793805369107",
+          "data": "2026-11-04T15:16:09.107Z",
+          "tipo": "cadastro",
+          "autor": "Daniel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Daniel."
+        },
+        {
+          "id": "hist-1793805479722",
+          "data": "2026-11-04T15:17:59.722Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793805495395",
+          "data": "2026-11-04T15:18:15.395Z",
+          "tipo": "anotacao",
+          "autor": "daniel",
+          "canal": "whatsapp",
+          "descricao": "Já trabalham com Milli e Ipel; Vendem mais: Interfolhado e Rolão 300 metros. Já tem fornecedor atualmente."
+        },
+        {
+          "id": "hist-1793806011279",
+          "data": "2026-11-04T15:26:51.279Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Daniel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793806054607",
+          "data": "2026-11-04T15:27:34.607Z",
+          "tipo": "anotacao",
+          "autor": "daniel",
+          "canal": "whatsapp",
+          "descricao": "Erick; Já trabalham com Mili e Ipel; Interfolhado e rolão 300 metros são os que vendem mais; Enviei proposta de ambos"
+        }
+      ],
+      "data_cadastro": "2026-11-04T15:16:09.100857+00:00",
+      "data_atualizacao": "2026-11-04T15:27:34.607+00:00"
+    },
+    {
+      "id": "lead-1793810736019-vdnya",
+      "nome": "Luciana",
+      "telefone": "(17) 99156-9038",
+      "telefone_formatado": "(17) 99156-9038",
+      "ddd": 17,
+      "cidade": "São José do Rio Preto e Barretos",
+      "regiao": "Noroeste Paulista",
+      "uf": "SP",
+      "estagio": "perdido",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "Licitação",
+      "historico": [
+        {
+          "id": "hist-1793810736019",
+          "data": "2026-11-04T16:45:36.019Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793810745376",
+          "data": "2026-11-04T16:45:45.376Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793811002642",
+          "data": "2026-11-04T16:50:02.642Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "qualificacao",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793811080317",
+          "data": "2026-11-04T16:51:20.317Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "Licitação"
+        }
+      ],
+      "data_cadastro": "2026-11-04T16:45:36.309519+00:00",
+      "data_atualizacao": "2026-11-04T16:51:20.317+00:00"
+    },
+    {
+      "id": "lead-1793819350173-wsucm",
+      "nome": "NARC",
+      "telefone": "(27) 99515-3118",
+      "telefone_formatado": "(27) 99515-3118",
+      "ddd": 27,
+      "cidade": "Vitória e Vila Velha",
+      "regiao": "Região Metropolitana de Vitória e Norte Capixaba",
+      "uf": "ES",
+      "estagio": "perdido",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "- Precisava de papel para cuidar da mãe... (Consumo)\n- Mínimo alto",
+      "historico": [
+        {
+          "id": "hist-1793819350173",
+          "data": "2026-11-04T19:09:10.173Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793822874742",
+          "data": "2026-11-04T20:07:54.742Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "- Precisava de papel para cuidar da mãe... (Consumo)\n- Mínimo alto"
+        },
+        {
+          "id": "hist-1793822877613",
+          "data": "2026-11-04T20:07:57.613Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "novo",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793822881341",
+          "data": "2026-11-04T20:08:01.341Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "negociacao",
+          "estagioPara": "perdido"
+        }
+      ],
+      "data_cadastro": "2026-11-04T19:09:09.847641+00:00",
+      "data_atualizacao": "2026-11-04T20:08:01.346+00:00"
+    },
+    {
+      "id": "lead-1793819940075-0phpd",
+      "nome": "Anderson",
+      "telefone": "(11) 98687-0271",
+      "telefone_formatado": "(11) 98687-0271",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793819940075",
+          "data": "2026-11-04T19:19:00.075Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793819944950",
+          "data": "2026-11-04T19:19:04.950Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793819948563",
+          "data": "2026-11-04T19:19:08.563Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T19:19:01.093143+00:00",
+      "data_atualizacao": "2026-11-04T19:19:08.571+00:00"
+    },
+    {
+      "id": "lead-1793820128991-3615d",
+      "nome": "larissa",
+      "telefone": "(42) 9999-1127",
+      "telefone_formatado": "(42) 9999-1127",
+      "ddd": 42,
+      "cidade": "Ponta Grossa e Guarapuava",
+      "regiao": "Campos Gerais e Centro-Sul do Paraná",
+      "uf": "PR",
+      "estagio": "proposta",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 1000,
+      "observacoes": "20095 - R$ 10,10",
+      "historico": [
+        {
+          "id": "hist-1793820128994",
+          "data": "2026-11-04T19:22:08.991Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793820150993",
+          "data": "2026-11-04T19:22:30.993Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820162446",
+          "data": "2026-11-04T19:22:42.446Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "licitação"
+        },
+        {
+          "id": "hist-1793820515181",
+          "data": "2026-11-04T19:28:35.181Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "qualificacao",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793820520574",
+          "data": "2026-11-04T19:28:40.574Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Negociação / Amostra",
+          "estagioDe": "perdido",
+          "estagioPara": "negociacao"
+        },
+        {
+          "id": "hist-1793820556074",
+          "data": "2026-11-04T19:29:16.074Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "20095 - R$ 10,10"
+        },
+        {
+          "id": "hist-1793820610990",
+          "data": "2026-11-04T19:30:10.990Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "negociacao",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T19:22:09.982422+00:00",
+      "data_atualizacao": "2026-11-04T19:30:10.999+00:00"
+    },
+    {
+      "id": "lead-1793820210341-yihxx",
+      "nome": "canto mágico",
+      "telefone": "(13) 99747-1557",
+      "telefone_formatado": "(13) 99747-1557",
+      "ddd": 13,
+      "cidade": "Santos e Baixada Santista",
+      "regiao": "Baixada Santista e Litoral Sul Paulista",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "cliente quente trabalha com charm",
+      "historico": [
+        {
+          "id": "hist-1793820210341",
+          "data": "2026-11-04T19:23:30.341Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793820213936",
+          "data": "2026-11-04T19:23:33.936Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "novo",
+          "estagioPara": "proposta"
+        },
+        {
+          "id": "hist-1793820236077",
+          "data": "2026-11-04T19:23:56.077Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "cliente quente trabalha com charm"
+        }
+      ],
+      "data_cadastro": "2026-11-04T19:23:31.317437+00:00",
+      "data_atualizacao": "2026-11-04T19:23:56.077+00:00"
+    },
+    {
+      "id": "lead-1793820273557-7zqqx",
+      "nome": "disk embalagens",
+      "telefone": "(12) 98851-0495",
+      "telefone_formatado": "(12) 98851-0495",
+      "ddd": 12,
+      "cidade": "São José dos Campos e Taubaté",
+      "regiao": "Vale do Paraíba e Litoral Norte",
+      "uf": "SP",
+      "estagio": "proposta",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "cliente quente, trabalha com polipel",
+      "historico": [
+        {
+          "id": "hist-1793820273557",
+          "data": "2026-11-04T19:24:33.557Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        },
+        {
+          "id": "hist-1793820361989",
+          "data": "2026-11-04T19:26:01.989Z",
+          "tipo": "anotacao",
+          "autor": "fernanda",
+          "canal": "whatsapp",
+          "descricao": "cliente quente, trabalha com polipel"
+        },
+        {
+          "id": "hist-1793820509072",
+          "data": "2026-11-04T19:28:29.070Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Contato Feito / Qualificação",
+          "estagioDe": "novo",
+          "estagioPara": "qualificacao"
+        },
+        {
+          "id": "hist-1793820614324",
+          "data": "2026-11-04T19:30:14.324Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Fernanda",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Cotação / Proposta Enviada",
+          "estagioDe": "qualificacao",
+          "estagioPara": "proposta"
+        }
+      ],
+      "data_cadastro": "2026-11-04T19:24:34.51699+00:00",
+      "data_atualizacao": "2026-11-04T19:30:14.332+00:00"
+    },
+    {
+      "id": "lead-1793820495167-xnytn",
+      "nome": "fort gás 04/11",
+      "telefone": "(85) 98801-6999",
+      "telefone_formatado": "(85) 98801-6999",
+      "ddd": 85,
+      "cidade": "Fortaleza, Caucaia e Maracanaú",
+      "regiao": "Região Metropolitana de Fortaleza (RMF)",
+      "uf": "CE",
+      "estagio": "novo",
+      "vendedor_id": "fernanda",
+      "vendedor_nome": "Fernanda",
+      "valor_proposta": 0,
+      "observacoes": "Lead cadastrado via formulário de entrada rápida.",
+      "historico": [
+        {
+          "id": "hist-1793820495167",
+          "data": "2026-11-04T19:28:15.167Z",
+          "tipo": "cadastro",
+          "autor": "Fernanda",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Fernanda."
+        }
+      ],
+      "data_cadastro": "2026-11-04T19:28:16.461194+00:00",
+      "data_atualizacao": "2026-11-04T19:33:22.624+00:00"
+    },
+    {
+      "id": "lead-1793824780497-zqdak",
+      "nome": "MANTER ATACADO",
+      "telefone": "(43) 9184-6191",
+      "telefone_formatado": "(43) 9184-6191",
+      "ddd": 43,
+      "cidade": "Londrina e Apucarana",
+      "regiao": "Norte Pioneiro e Norte Central Paranaense",
+      "uf": "PR",
+      "estagio": "perdido",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": "GOLPE",
+      "historico": [
+        {
+          "id": "hist-1793824780497",
+          "data": "2026-11-04T20:39:40.497Z",
+          "tipo": "cadastro",
+          "autor": "Gabriel Maciel",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Gabriel Maciel."
+        },
+        {
+          "id": "hist-1793824782228",
+          "data": "2026-11-04T20:39:42.228Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Gabriel Maciel",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        },
+        {
+          "id": "hist-1793824789016",
+          "data": "2026-11-04T20:39:49.016Z",
+          "tipo": "anotacao",
+          "autor": "maciel",
+          "canal": "whatsapp",
+          "descricao": "GOLPE"
+        }
+      ],
+      "data_cadastro": "2026-11-04T20:39:40.680644+00:00",
+      "data_atualizacao": "2026-11-04T20:39:49.017+00:00"
+    },
+    {
+      "id": "lead-1793826095730-0sp76",
+      "nome": "Thales Phelipe",
+      "telefone": "(11) 99612-5092",
+      "telefone_formatado": "(11) 99612-5092",
+      "ddd": 11,
+      "cidade": "São Paulo e Grande SP",
+      "regiao": "Região Metropolitana de São Paulo (Grande SP e ABC)",
+      "uf": "SP",
+      "estagio": "perdido",
+      "vendedor_id": "caio",
+      "vendedor_nome": "Caio",
+      "valor_proposta": 0,
+      "observacoes": "Vaga de emprego.",
+      "historico": [
+        {
+          "id": "hist-1793826095730",
+          "data": "2026-11-04T21:01:35.730Z",
+          "tipo": "cadastro",
+          "autor": "Caio",
+          "canal": "sistema",
+          "descricao": "Lead cadastrado na carteira do consultor Caio."
+        },
+        {
+          "id": "hist-1793826106194",
+          "data": "2026-11-04T21:01:46.194Z",
+          "tipo": "anotacao",
+          "autor": "caio",
+          "canal": "whatsapp",
+          "descricao": "Vaga de emprego."
+        },
+        {
+          "id": "hist-1793826107990",
+          "data": "2026-11-04T21:01:47.989Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Novo Lead",
+          "estagioDe": "novo",
+          "estagioPara": "novo"
+        },
+        {
+          "id": "hist-1793826110750",
+          "data": "2026-11-04T21:01:50.750Z",
+          "tipo": "mudanca_estagio",
+          "autor": "Caio",
+          "canal": "funil",
+          "descricao": "Estágio alterado para: Perdido / Standby",
+          "estagioDe": "novo",
+          "estagioPara": "perdido"
+        }
+      ],
+      "data_cadastro": "2026-11-04T21:01:35.575162+00:00",
+      "data_atualizacao": "2026-11-04T21:01:50.756+00:00"
+    },
+    {
+      "id": "test-probe-12345",
+      "nome": "Probe Test",
+      "telefone": "(11) 99999-9999",
+      "telefone_formatado": null,
+      "ddd": null,
+      "cidade": null,
+      "regiao": null,
+      "uf": null,
+      "estagio": "novo",
+      "vendedor_id": "maciel",
+      "vendedor_nome": "Gabriel Maciel",
+      "valor_proposta": 0,
+      "observacoes": null,
+      "historico": [],
+      "data_cadastro": "2026-11-05T11:18:34.176046+00:00",
+      "data_atualizacao": "2026-11-05T11:18:34.176046+00:00"
+    }
+  ]
+}
