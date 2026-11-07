@@ -768,6 +768,13 @@
             </div>
             <div class="crm-gerencial-topbar__right">
               <span>Relatórios / Qualidade dos Leads</span>
+              <button id="btn-capturar-relatorio-foto" class="crm-gerencial-btn-foto" title="Tirar foto deste relatório para enviar à diretoria" aria-label="Tirar foto do relatório para a diretoria">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                <span>Tirar Foto</span>
+              </button>
             </div>
           </div>
 
@@ -831,6 +838,15 @@
                     <span class="crm-gerencial-chevron" aria-hidden="true">⌄</span>
                   </div>
                 </div>
+
+                <!-- Botão de Ação: Foto para a Diretoria -->
+                <button id="btn-capturar-relatorio-foto-header" class="crm-gerencial-btn-foto-action" title="Tirar foto em alta resolução de todo o relatório para enviar à diretoria" aria-label="Tirar foto do relatório para enviar à diretoria">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                  <span>Foto p/ Diretoria</span>
+                </button>
               </div>
             </div>
 
@@ -1047,25 +1063,65 @@
                     <tbody id="tbody-leads-regiao">
                       <tr>
                         <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> SP</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--green" title="SP"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="SP: 16 leads (45,7%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="45.7" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--green" style="width: 45.7%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">16</strong>
+                              <span class="crm-lead-metric-pct">(45,7%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                       </tr>
                       <tr>
                         <td><span class="crm-gdot crm-gdot--amber" aria-hidden="true"></span> Litoral Sul</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--amber" title="Litoral Sul"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="Litoral Sul: 1 leads (2,9%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="2.9" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--amber" style="width: 5%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">1</strong>
+                              <span class="crm-lead-metric-pct">(2,9%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                       </tr>
                       <tr>
                         <td><span class="crm-gdot crm-gdot--blue" aria-hidden="true"></span> Rio de Janeiro</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--blue" title="Rio de Janeiro"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="Rio de Janeiro: 9 leads (25,7%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="25.7" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--blue" style="width: 25.7%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">9</strong>
+                              <span class="crm-lead-metric-pct">(25,7%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                       </tr>
                       <tr>
                         <td><span class="crm-gdot crm-gdot--gray" aria-hidden="true"></span> Paraná</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--gray" title="Paraná"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="Paraná: 1 leads (2,9%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="2.9" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--gray" style="width: 5%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">1</strong>
+                              <span class="crm-lead-metric-pct">(2,9%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                       </tr>
@@ -1098,21 +1154,51 @@
                     <tbody id="tbody-qualidade-leads">
                       <tr>
                         <td><span class="crm-gdot crm-gdot--red" aria-hidden="true"></span> Perdido</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--red" title="Perdido"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="Perdido: 4 leads (11,4%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="11.4" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--red" style="width: 11.4%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">4</strong>
+                              <span class="crm-lead-metric-pct">(11,4%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                         <td>—</td>
                       </tr>
                       <tr>
                         <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Avançado</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--green" title="Avançado"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="Avançado: 11 leads (31,4%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="31.4" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--green" style="width: 31.4%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">11</strong>
+                              <span class="crm-lead-metric-pct">(31,4%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                         <td>—</td>
                       </tr>
                       <tr>
                         <td><span class="crm-gdot crm-gdot--gray" aria-hidden="true"></span> Sem retorno</td>
-                        <td><span class="crm-mini-bar crm-mini-bar--gray" title="Sem retorno"></span></td>
+                        <td>
+                          <div class="crm-lead-metric-cell" title="Sem retorno: 20 leads (57,1%)">
+                            <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="57.1" aria-valuemin="0" aria-valuemax="100">
+                              <div class="crm-lead-metric-bar crm-lead-metric-bar--gray" style="width: 57.1%;"></div>
+                            </div>
+                            <div class="crm-lead-metric-stat">
+                              <strong class="crm-lead-metric-num">20</strong>
+                              <span class="crm-lead-metric-pct">(57,1%)</span>
+                            </div>
+                          </div>
+                        </td>
                         <td>—</td>
                         <td>—</td>
                         <td>—</td>
@@ -1902,6 +1988,15 @@
 
   <!-- Módulo 3D da Arena de Vendedores -->
   <script src="js/arena-3d.js"></script>
+
+  <!-- Captura e Exportação Visual de Relatórios em Imagem (html2canvas) -->
+  <script src="js/html2canvas.min.js"></script>
+  <script>
+    if (typeof html2canvas === 'undefined') {
+      console.warn('html2canvas local indisponível. Carregando via CDN...');
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>');
+    }
+  </script>
 
   <!-- Aplicação Principal -->
   <script src="js/crm-app.js"></script>

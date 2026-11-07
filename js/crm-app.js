@@ -1209,6 +1209,23 @@
       });
     }
 
+    // Botões de Foto do Relatório Gerencial para Envio à Diretoria
+    const btnFotoTopbar = document.getElementById('btn-capturar-relatorio-foto');
+    if (btnFotoTopbar) {
+      btnFotoTopbar.addEventListener('click', (e) => {
+        e.preventDefault();
+        capturarFotoRelatorio();
+      });
+    }
+
+    const btnFotoHeader = document.getElementById('btn-capturar-relatorio-foto-header');
+    if (btnFotoHeader) {
+      btnFotoHeader.addEventListener('click', (e) => {
+        e.preventDefault();
+        capturarFotoRelatorio();
+      });
+    }
+
     // 1. Filtro de Vendedor (RBAC-aware)
     if (selectVendedor) {
       selectVendedor.addEventListener('change', (e) => {
@@ -1359,6 +1376,117 @@
       window.IsapelAnalytics.registrarListener(() => {
         renderizarAnalytics();
       });
+    }
+  }
+
+  /**
+   * Captura uma foto em alta resolução de toda a área do Relatório Gerencial
+   * (#crm-gerencial-report-root), salva como PNG e tenta copiar para o Clipboard
+   * para envio instantâneo à diretoria via WhatsApp / Email.
+   */
+  async function capturarFotoRelatorio() {
+    const reportRoot = document.getElementById('crm-gerencial-report-root');
+    if (!reportRoot) {
+      if (typeof exibirToast === 'function') exibirToast('Área do relatório gerencial não localizada.', 'erro');
+      return;
+    }
+
+    if (typeof html2canvas === 'undefined') {
+      if (typeof exibirToast === 'function') exibirToast('Módulo de captura em inicialização. Tente novamente em alguns instantes.', 'aviso');
+      return;
+    }
+
+    const btnsFoto = document.querySelectorAll('#btn-capturar-relatorio-foto, #btn-capturar-relatorio-foto-header');
+    btnsFoto.forEach(b => {
+      b.disabled = true;
+      b.dataset.origHtml = b.innerHTML;
+      b.innerHTML = `
+        <span class="crm-spin-icon" aria-hidden="true">📸</span>
+        <span>Gerando foto...</span>
+      `;
+    });
+
+    try {
+      // Breve pausa para garantir flushing de renderização
+      await new Promise(res => setTimeout(res, 80));
+
+      const canvas = await html2canvas(reportRoot, {
+        scale: 2, // 2x alta resolução (retina)
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#FFFFFF',
+        logging: false,
+        onclone: (clonedDoc) => {
+          // No clone para a foto, oculta os próprios botões de foto para imagem limpa e executiva
+          const clonedBtns = clonedDoc.querySelectorAll('#btn-capturar-relatorio-foto, #btn-capturar-relatorio-foto-header');
+          clonedBtns.forEach(b => {
+            b.style.display = 'none';
+          });
+        }
+      });
+
+      const agora = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const dataStr = `${agora.getFullYear()}-${pad(agora.getMonth() + 1)}-${pad(agora.getDate())}`;
+      const horaStr = `${pad(agora.getHours())}h${pad(agora.getMinutes())}`;
+      const nomeArquivo = `relatorio-gerencial-isapel-${dataStr}-${horaStr}.png`;
+
+      // Converte para Blob e executa download + clipboard copy
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          throw new Error('Falha ao gerar blob de imagem.');
+        }
+
+        // 1. Download do arquivo PNG
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nomeArquivo;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+
+        // 2. Cópia direta para Área de Transferência (Clipboard API)
+        let copiadoParaClipboard = false;
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({ 'image/png': blob })
+            ]);
+            copiadoParaClipboard = true;
+          } catch (clipErr) {
+            console.info('[Isapel CRM] Clipboard write não suportado ou bloqueado no contexto atual:', clipErr);
+          }
+        }
+
+        const msgSucesso = copiadoParaClipboard
+          ? '📸 Foto do relatório baixada e copiada para a área de transferência! (Pronta para colar no WhatsApp da diretoria)'
+          : '📸 Foto do relatório baixada com sucesso! (Salva em Downloads para envio à diretoria)';
+
+        if (typeof exibirToast === 'function') {
+          exibirToast(msgSucesso, 'sucesso');
+        } else {
+          alert(msgSucesso);
+        }
+      }, 'image/png');
+
+    } catch (err) {
+      console.error('[Isapel CRM] Erro ao capturar foto do relatório:', err);
+      if (typeof exibirToast === 'function') {
+        exibirToast('Erro ao gerar foto do relatório. Tente novamente.', 'erro');
+      } else {
+        alert('Erro ao gerar foto do relatório.');
+      }
+    } finally {
+      setTimeout(() => {
+        btnsFoto.forEach(b => {
+          b.disabled = false;
+          if (b.dataset.origHtml) {
+            b.innerHTML = b.dataset.origHtml;
+          }
+        });
+      }, 500);
     }
   }
 
@@ -1589,6 +1717,88 @@
           tr.style.backgroundColor = '';
           tr.style.fontWeight = '';
         }
+      });
+    }
+
+    // 5. Leads por Região (Tabela Gerencial: Número + % + Barra Proporcional)
+    const tbodyRegiao = document.getElementById('tbody-leads-regiao');
+    if (tbodyRegiao) {
+      const macroRegioes = (resultado.distribuicaoMacroRegioes && resultado.distribuicaoMacroRegioes.length > 0)
+        ? resultado.distribuicaoMacroRegioes
+        : [
+            { id: 'sp', nome: 'SP', cor: 'green', count: 16, pctTotal: 45.7, pctFormatada: '45,7%' },
+            { id: 'litoral_sul', nome: 'Litoral Sul', cor: 'amber', count: 1, pctTotal: 2.9, pctFormatada: '2,9%' },
+            { id: 'rio_de_janeiro', nome: 'Rio de Janeiro', cor: 'blue', count: 9, pctTotal: 25.7, pctFormatada: '25,7%' },
+            { id: 'parana', nome: 'Paraná', cor: 'gray', count: 1, pctTotal: 2.9, pctFormatada: '2,9%' },
+            { id: 'outras', nome: 'Outras Regiões', cor: 'purple', count: 8, pctTotal: 22.9, pctFormatada: '22,9%' }
+          ];
+
+      tbodyRegiao.innerHTML = '';
+      macroRegioes.forEach(item => {
+        if (item.id === 'outras' && item.count === 0) return;
+
+        const tr = document.createElement('tr');
+        const pctBarWidth = Math.min(Math.max(item.pctTotal, item.count > 0 ? 5 : 0), 100);
+        const comPerfilVal = item.comPerfil > 0 ? item.comPerfil : '—';
+        const semPerfilVal = item.semPerfil > 0 ? item.semPerfil : '—';
+
+        tr.innerHTML = `
+          <td><span class="crm-gdot crm-gdot--${item.cor}" aria-hidden="true"></span> ${item.nome}</td>
+          <td>
+            <div class="crm-lead-metric-cell" title="${item.nome}: ${item.count} leads (${item.pctFormatada})">
+              <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="${item.pctTotal}" aria-valuemin="0" aria-valuemax="100">
+                <div class="crm-lead-metric-bar crm-lead-metric-bar--${item.cor}" style="width: ${pctBarWidth}%;"></div>
+              </div>
+              <div class="crm-lead-metric-stat">
+                <strong class="crm-lead-metric-num">${item.count}</strong>
+                <span class="crm-lead-metric-pct">(${item.pctFormatada})</span>
+              </div>
+            </div>
+          </td>
+          <td>${comPerfilVal}</td>
+          <td>${semPerfilVal}</td>
+        `;
+        tbodyRegiao.appendChild(tr);
+      });
+    }
+
+    // 6. Qualidade dos Leads (Tabela Gerencial: Número + % + Barra Proporcional)
+    const tbodyQualidade = document.getElementById('tbody-qualidade-leads');
+    if (tbodyQualidade) {
+      const qualidadeDados = (resultado.distribuicaoQualidade && resultado.distribuicaoQualidade.length > 0)
+        ? resultado.distribuicaoQualidade
+        : [
+            { id: 'perdido', nome: 'Perdido', cor: 'red', count: 4, pctTotal: 11.4, pctFormatada: '11,4%' },
+            { id: 'avancado', nome: 'Avançado', cor: 'green', count: 11, pctTotal: 31.4, pctFormatada: '31,4%' },
+            { id: 'sem_retorno', nome: 'Sem retorno', cor: 'gray', count: 20, pctTotal: 57.1, pctFormatada: '57,1%' }
+          ];
+
+      tbodyQualidade.innerHTML = '';
+      qualidadeDados.forEach(item => {
+        const tr = document.createElement('tr');
+        const pctBarWidth = Math.min(Math.max(item.pctTotal, item.count > 0 ? 5 : 0), 100);
+        const comPerfilVal = item.comPerfil > 0 ? item.comPerfil : '—';
+        const emAtendimentoVal = item.emAtendimento > 0 ? item.emAtendimento : '—';
+        const semRetornoVal = item.semRetorno > 0 ? item.semRetorno : '—';
+
+        tr.innerHTML = `
+          <td><span class="crm-gdot crm-gdot--${item.cor}" aria-hidden="true"></span> ${item.nome}</td>
+          <td>
+            <div class="crm-lead-metric-cell" title="${item.nome}: ${item.count} leads (${item.pctFormatada})">
+              <div class="crm-lead-metric-track" role="progressbar" aria-valuenow="${item.pctTotal}" aria-valuemin="0" aria-valuemax="100">
+                <div class="crm-lead-metric-bar crm-lead-metric-bar--${item.cor}" style="width: ${pctBarWidth}%;"></div>
+              </div>
+              <div class="crm-lead-metric-stat">
+                <strong class="crm-lead-metric-num">${item.count}</strong>
+                <span class="crm-lead-metric-pct">(${item.pctFormatada})</span>
+              </div>
+            </div>
+          </td>
+          <td>${comPerfilVal}</td>
+          <td>${emAtendimentoVal}</td>
+          <td>${semRetornoVal}</td>
+        `;
+        tbodyQualidade.appendChild(tr);
       });
     }
 

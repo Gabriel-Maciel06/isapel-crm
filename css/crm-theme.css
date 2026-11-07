@@ -3588,6 +3588,67 @@ a:hover {
   color: #CBD5E1;
   font-size: 0.82rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botão de Captura de Foto na Barra Superior Escura */
+.crm-gerencial-btn-foto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.18);
+  color: #34D399;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.crm-gerencial-btn-foto:hover {
+  background: #10B981;
+  color: #FFFFFF;
+  border-color: #10B981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+  transform: translateY(-1px);
+}
+
+.crm-gerencial-btn-foto:active {
+  transform: translateY(0);
+}
+
+/* Botão de Foto na Linha de Filtros do Relatório */
+.crm-gerencial-btn-foto-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #001F3F;
+  color: #FFFFFF;
+  border: 1px solid #001F3F;
+  border-radius: 8px;
+  padding: 0 14px;
+  height: 34px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.crm-gerencial-btn-foto-action:hover {
+  background: #0A3663;
+  border-color: #0A3663;
+  box-shadow: 0 2px 8px rgba(0, 31, 63, 0.25);
+  transform: translateY(-1px);
+}
+
+.crm-gerencial-btn-foto-action:active {
+  transform: translateY(0);
 }
 
 /* Corpo Principal */
@@ -3951,7 +4012,81 @@ a:hover {
   background: #EF4444;
 }
 
-/* Mini barras de Leads na Tabela */
+.crm-gdot--purple {
+  background: #8B5CF6;
+}
+
+/* Célula aprimorada de Leads nas Tabelas Gerenciais (Barra + Número + Porcentagem) */
+.crm-lead-metric-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
+.crm-lead-metric-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.crm-lead-metric-num {
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.crm-lead-metric-pct {
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: #64748B;
+}
+
+.crm-lead-metric-track {
+  width: 48px;
+  height: 6px;
+  background-color: #E2E8F0;
+  border-radius: 3px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.crm-lead-metric-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.crm-lead-metric-bar--green {
+  background-color: #529E72;
+}
+
+.crm-lead-metric-bar--amber {
+  background-color: #F59E0B;
+}
+
+.crm-lead-metric-bar--blue {
+  background-color: #0284C7;
+}
+
+.crm-lead-metric-bar--gray {
+  background-color: #94A3B8;
+}
+
+.crm-lead-metric-bar--red {
+  background-color: #EF4444;
+}
+
+.crm-lead-metric-bar--purple {
+  background-color: #8B5CF6;
+}
+
+/* Mini barras legadas de Leads na Tabela */
 .crm-mini-bar {
   display: inline-block;
   height: 6px;

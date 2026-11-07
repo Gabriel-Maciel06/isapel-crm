@@ -346,7 +346,10 @@
     let dataInicioLim = null;
     let dataFimLim = null;
 
-    if (periodoTipo === 'hoje') {
+    if (periodoTipo === '03/11/2026') {
+      dataInicioLim = new Date(2026, 10, 3, 0, 0, 0, 0);
+      dataFimLim = new Date(2026, 10, 3, 23, 59, 59, 999);
+    } else if (periodoTipo === 'hoje') {
       dataInicioLim = new Date(dataRefSegura.getFullYear(), dataRefSegura.getMonth(), dataRefSegura.getDate(), 0, 0, 0, 0);
       dataFimLim = new Date(dataRefSegura.getFullYear(), dataRefSegura.getMonth(), dataRefSegura.getDate(), 23, 59, 59, 999);
     } else if (periodoTipo === '7dias') {
@@ -654,7 +657,86 @@
     });
 
     // ------------------------------------------------------------------------
-    // F. Retorno Estruturado Conforme Contrato de Interface
+    // F. Distribuição Macro Regional (SP, Litoral Sul, Rio de Janeiro, Paraná, Outras)
+    // ------------------------------------------------------------------------
+    const macroRegioesContadores = {
+      sp: { id: 'sp', nome: 'SP', cor: 'green', count: 0, comPerfil: 0, semPerfil: 0 },
+      litoral_sul: { id: 'litoral_sul', nome: 'Litoral Sul', cor: 'amber', count: 0, comPerfil: 0, semPerfil: 0 },
+      rio_de_janeiro: { id: 'rio_de_janeiro', nome: 'Rio de Janeiro', cor: 'blue', count: 0, comPerfil: 0, semPerfil: 0 },
+      parana: { id: 'parana', nome: 'Paraná', cor: 'gray', count: 0, comPerfil: 0, semPerfil: 0 },
+      outras: { id: 'outras', nome: 'Outras Regiões', cor: 'purple', count: 0, comPerfil: 0, semPerfil: 0 }
+    };
+
+    const qualidadeContadores = {
+      perdido: { id: 'perdido', nome: 'Perdido', cor: 'red', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 },
+      avancado: { id: 'avancado', nome: 'Avançado', cor: 'green', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 },
+      sem_retorno: { id: 'sem_retorno', nome: 'Sem retorno', cor: 'gray', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 }
+    };
+
+    leads.forEach(lead => {
+      const dddNum = Number(lead.ddd) || 0;
+      const regStr = String(lead.regiao || '').toLowerCase();
+      const cidStr = String(lead.cidade || '').toLowerCase();
+      const ufStr = String(lead.uf || lead.estado || '').toUpperCase();
+      const temPerfil = Boolean(lead.tipoCliente || lead.tipo_cliente);
+
+      let macroId = 'outras';
+      if (dddNum === 13 || regStr.includes('litoral sul') || regStr.includes('baixada santista')) {
+        macroId = 'litoral_sul';
+      } else if (ufStr === 'SP' || [11, 12, 14, 15, 16, 17, 18, 19].includes(dddNum) || regStr.includes('são paulo') || regStr.includes('paulista') || cidStr.includes('são paulo') || cidStr.includes('campinas') || cidStr.includes('sorocaba') || cidStr.includes('ribeirão') || cidStr.includes('são josé')) {
+        macroId = 'sp';
+      } else if (ufStr === 'RJ' || [21, 22, 24].includes(dddNum) || regStr.includes('rio de janeiro') || regStr.includes('fluminense')) {
+        macroId = 'rio_de_janeiro';
+      } else if (ufStr === 'PR' || [41, 42, 43, 44, 45, 46].includes(dddNum) || regStr.includes('paraná') || regStr.includes('paranaense')) {
+        macroId = 'parana';
+      }
+
+      if (macroRegioesContadores[macroId]) {
+        macroRegioesContadores[macroId].count += 1;
+        if (temPerfil) macroRegioesContadores[macroId].comPerfil += 1;
+        else macroRegioesContadores[macroId].semPerfil += 1;
+      }
+
+      const estagioLead = String(lead.estagio || '').toLowerCase();
+      let qualId = 'sem_retorno';
+      if (estagioLead === 'perdido') {
+        qualId = 'perdido';
+      } else if (['qualificacao', 'proposta', 'negociacao', 'fechado'].includes(estagioLead)) {
+        qualId = 'avancado';
+      }
+
+      if (qualidadeContadores[qualId]) {
+        qualidadeContadores[qualId].count += 1;
+        if (temPerfil) qualidadeContadores[qualId].comPerfil += 1;
+        if (['qualificacao', 'proposta', 'negociacao'].includes(estagioLead)) {
+          qualidadeContadores[qualId].emAtendimento += 1;
+        }
+        if (estagioLead === 'novo' || qualId === 'sem_retorno') {
+          qualidadeContadores[qualId].semRetorno += 1;
+        }
+      }
+    });
+
+    const distribuicaoMacroRegioes = Object.values(macroRegioesContadores).map(r => {
+      const pct = totalRecebidos > 0 ? Number(((r.count / totalRecebidos) * 100).toFixed(1)) : 0.0;
+      return {
+        ...r,
+        pctTotal: pct,
+        pctFormatada: `${pct.toFixed(1).replace('.', ',')}%`
+      };
+    });
+
+    const distribuicaoQualidade = Object.values(qualidadeContadores).map(q => {
+      const pct = totalRecebidos > 0 ? Number(((q.count / totalRecebidos) * 100).toFixed(1)) : 0.0;
+      return {
+        ...q,
+        pctTotal: pct,
+        pctFormatada: `${pct.toFixed(1).replace('.', ',')}%`
+      };
+    });
+
+    // ------------------------------------------------------------------------
+    // G. Retorno Estruturado Conforme Contrato de Interface
     // ------------------------------------------------------------------------
     return {
       periodo: {
@@ -679,7 +761,9 @@
       },
       funil: funil,
       distribuicaoVendedores: distribuicaoVendedores,
-      distribuicaoRegioes: distribuicaoRegioes
+      distribuicaoRegioes: distribuicaoRegioes,
+      distribuicaoMacroRegioes: distribuicaoMacroRegioes,
+      distribuicaoQualidade: distribuicaoQualidade
     };
   }
 
