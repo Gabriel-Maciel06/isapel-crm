@@ -520,6 +520,12 @@
       ? Number(((totalQualificados / totalRecebidos) * 100).toFixed(1))
       : 0.0;
 
+    // Leads que avançaram: clientes que estão depois da etapa de qualificação no funil ('proposta', 'negociacao', 'fechado')
+    const totalAvancaram = leads.filter(l => ['proposta', 'negociacao', 'fechado'].includes(l.estagio)).length;
+    const taxaAvancaramPct = totalRecebidos > 0
+      ? Number(((totalAvancaram / totalRecebidos) * 100).toFixed(1))
+      : 0.0;
+
     // Leads fechados: etapa 'fechado'
     const totalFechados = leads.filter(l => l.estagio === 'fechado').length;
     const taxaConversaoPct = totalRecebidos > 0
@@ -644,6 +650,19 @@
         ? Number(((fechadosVendedor / totalVendedor) * 100).toFixed(1))
         : 0.0;
 
+      // Perfil: distribuidor e consumidor_final entram em com perfil; licitacao e outros entram em sem perfil
+      const comPerfilVendedor = leadsVendedor.filter(l => {
+        const t = String(l.tipoCliente || l.tipo_cliente || '').trim().toLowerCase();
+        return t === 'distribuidor' || t === 'consumidor_final';
+      }).length;
+      const semPerfilVendedor = totalVendedor - comPerfilVendedor;
+
+      // Avançaram: clientes que estão depois da etapa de qualificação no funil (proposta, negociacao, fechado)
+      const avancaramVendedor = leadsVendedor.filter(l => {
+        const e = String(l.estagio || '').trim().toLowerCase();
+        return ['proposta', 'negociacao', 'fechado'].includes(e);
+      }).length;
+
       return {
         vendedorId: vId,
         nome: vendedorCfg.nome,
@@ -652,7 +671,10 @@
         fechados: fechadosVendedor,
         valorPipeline: valorPipeline,
         valorFechado: valorFechado,
-        taxaConversaoPct: taxaConversao
+        taxaConversaoPct: taxaConversao,
+        comPerfil: comPerfilVendedor,
+        semPerfil: semPerfilVendedor,
+        avancaram: avancaramVendedor
       };
     });
 
@@ -678,7 +700,8 @@
       const regStr = String(lead.regiao || '').toLowerCase();
       const cidStr = String(lead.cidade || '').toLowerCase();
       const ufStr = String(lead.uf || lead.estado || '').toUpperCase();
-      const temPerfil = Boolean(lead.tipoCliente || lead.tipo_cliente);
+      const tipoCli = String(lead.tipoCliente || lead.tipo_cliente || '').trim().toLowerCase();
+      const temPerfil = (tipoCli === 'distribuidor' || tipoCli === 'consumidor_final');
 
       let macroId = 'outras';
       if (dddNum === 13 || regStr.includes('litoral sul') || regStr.includes('baixada santista')) {
@@ -701,7 +724,7 @@
       let qualId = 'sem_retorno';
       if (estagioLead === 'perdido') {
         qualId = 'perdido';
-      } else if (['qualificacao', 'proposta', 'negociacao', 'fechado'].includes(estagioLead)) {
+      } else if (['proposta', 'negociacao', 'fechado'].includes(estagioLead)) {
         qualId = 'avancado';
       }
 
@@ -751,6 +774,8 @@
         totalRecebidos: totalRecebidos,
         totalQualificados: totalQualificados,
         taxaQualificacaoPct: taxaQualificacaoPct,
+        totalAvancaram: totalAvancaram,
+        taxaAvancaramPct: taxaAvancaramPct,
         totalFechados: totalFechados,
         taxaConversaoPct: taxaConversaoPct,
         valorPipelineTotal: valorPipelineTotal,

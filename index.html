@@ -803,9 +803,25 @@
                       <option value="7dias">Últimos 7 dias</option>
                       <option value="mes">Este Mês</option>
                       <option value="todos">Todo o Histórico</option>
+                      <option value="custom">Personalizado</option>
                     </select>
                     <span class="crm-gerencial-chevron" aria-hidden="true">⌄</span>
                   </div>
+                </div>
+
+                <!-- Box de Período Personalizado (De / Até) -->
+                <div id="gerencial-custom-dates" class="crm-gerencial-custom-dates" style="display: none;">
+                  <div class="crm-gerencial-date-group">
+                    <label for="gerencial-data-inicio" class="crm-gerencial-filter-label">De:</label>
+                    <input type="date" id="gerencial-data-inicio" class="crm-gerencial-date-input" aria-label="Data inicial" value="2026-11-01">
+                  </div>
+                  <div class="crm-gerencial-date-group">
+                    <label for="gerencial-data-fim" class="crm-gerencial-filter-label">Até:</label>
+                    <input type="date" id="gerencial-data-fim" class="crm-gerencial-date-input" aria-label="Data final" value="2026-11-09">
+                  </div>
+                  <button type="button" id="btn-aplicar-gerencial-data" class="crm-gerencial-btn-aplicar-data" title="Aplicar período personalizado">
+                    <span>Filtrar</span>
+                  </button>
                 </div>
 
                 <!-- Filtro Origem -->
@@ -917,22 +933,6 @@
                 <div class="crm-gerencial-kpi-info">
                   <div class="crm-gerencial-kpi-label">Ganhos</div>
                   <div class="crm-gerencial-kpi-val" id="gkpi-ganhos">0</div>
-                </div>
-              </div>
-
-              <!-- 5. 1º contato dentro do prazo -->
-              <div class="crm-gerencial-kpi-card">
-                <div class="crm-gerencial-kpi-icon crm-gerencial-kpi-icon--slate" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/>
-                  </svg>
-                </div>
-                <div class="crm-gerencial-kpi-info">
-                  <div class="crm-gerencial-kpi-label">1º contato dentro do prazo</div>
-                  <div class="crm-gerencial-kpi-val-row">
-                    <span class="crm-gerencial-kpi-val" id="gkpi-prazo">—</span>
-                    <span class="crm-gerencial-kpi-sub" id="gkpi-prazo-sub">não disponível</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1228,49 +1228,43 @@
                       <th>Com perfil</th>
                       <th>Avançaram</th>
                       <th>Sem perfil</th>
-                      <th>Tempo 1º contato</th>
                     </tr>
                   </thead>
                   <tbody id="tbody-desempenho-consultor">
                     <tr data-vendedor="maciel">
                       <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Gabriel Maciel</td>
                       <td id="cons-maciel-recebidos">12</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
+                      <td id="cons-maciel-com-perfil">—</td>
+                      <td id="cons-maciel-avancaram">—</td>
+                      <td id="cons-maciel-sem-perfil">—</td>
                     </tr>
                     <tr data-vendedor="fernanda">
                       <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Fernanda</td>
                       <td id="cons-fernanda-recebidos">15</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
+                      <td id="cons-fernanda-com-perfil">—</td>
+                      <td id="cons-fernanda-avancaram">—</td>
+                      <td id="cons-fernanda-sem-perfil">—</td>
                     </tr>
                     <tr data-vendedor="caio">
                       <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Caio</td>
                       <td id="cons-caio-recebidos">8</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
+                      <td id="cons-caio-com-perfil">—</td>
+                      <td id="cons-caio-avancaram">—</td>
+                      <td id="cons-caio-sem-perfil">—</td>
                     </tr>
                     <tr data-vendedor="albert">
-                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Albert</td>
+                      <td><span class="crm-gdot crm-gdot--gray" aria-hidden="true"></span> Albert</td>
                       <td id="cons-albert-recebidos">0</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
+                      <td id="cons-albert-com-perfil">—</td>
+                      <td id="cons-albert-avancaram">—</td>
+                      <td id="cons-albert-sem-perfil">—</td>
                     </tr>
                     <tr data-vendedor="daniel">
-                      <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Daniel</td>
+                      <td><span class="crm-gdot crm-gdot--gray" aria-hidden="true"></span> Daniel</td>
                       <td id="cons-daniel-recebidos">0</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
-                      <td>—</td>
+                      <td id="cons-daniel-com-perfil">—</td>
+                      <td id="cons-daniel-avancaram">—</td>
+                      <td id="cons-daniel-sem-perfil">—</td>
                     </tr>
                   </tbody>
                 </table>

@@ -1194,12 +1194,73 @@
     }
 
     const selectGerencialPeriodo = document.getElementById('gerencial-periodo-select');
+    const gerencialCustomDates = document.getElementById('gerencial-custom-dates');
+    const inputGerencialInicio = document.getElementById('gerencial-data-inicio');
+    const inputGerencialFim = document.getElementById('gerencial-data-fim');
+    const btnAplicarGerencialData = document.getElementById('btn-aplicar-gerencial-data');
+
+    // Inicializa valores padrões do filtro personalizado gerencial se vazios
+    if (inputGerencialInicio && inputGerencialFim && (!inputGerencialInicio.value || !inputGerencialFim.value)) {
+      const agora = new Date();
+      const ano = agora.getFullYear();
+      const mes = String(agora.getMonth() + 1).padStart(2, '0');
+      const dia = String(agora.getDate()).padStart(2, '0');
+      inputGerencialInicio.value = `${ano}-${mes}-01`;
+      inputGerencialFim.value = `${ano}-${mes}-${dia}`;
+    }
+
     if (selectGerencialPeriodo) {
       selectGerencialPeriodo.addEventListener('change', (e) => {
-        AppState.analytics.periodo = e.target.value;
+        const val = e.target.value;
+        if (val === 'custom') {
+          if (gerencialCustomDates) gerencialCustomDates.style.display = 'flex';
+          AppState.analytics.periodo = 'custom';
+          if (inputGerencialInicio && inputGerencialFim && inputGerencialInicio.value && inputGerencialFim.value) {
+            AppState.analytics.dataInicio = inputGerencialInicio.value;
+            AppState.analytics.dataFim = inputGerencialFim.value;
+          }
+        } else {
+          if (gerencialCustomDates) gerencialCustomDates.style.display = 'none';
+          AppState.analytics.periodo = val;
+          AppState.analytics.dataInicio = null;
+          AppState.analytics.dataFim = null;
+        }
         renderizarAnalytics();
       });
     }
+
+    if (btnAplicarGerencialData) {
+      btnAplicarGerencialData.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!inputGerencialInicio || !inputGerencialFim || !inputGerencialInicio.value || !inputGerencialFim.value) {
+          if (typeof showToast === 'function') showToast('Selecione as datas inicial e final.', 'warning', 2500);
+          return;
+        }
+        if (inputGerencialInicio.value > inputGerencialFim.value) {
+          if (typeof showToast === 'function') showToast('A data inicial não pode ser maior que a final.', 'warning', 2500);
+          return;
+        }
+        AppState.analytics.periodo = 'custom';
+        AppState.analytics.dataInicio = inputGerencialInicio.value;
+        AppState.analytics.dataFim = inputGerencialFim.value;
+        renderizarAnalytics();
+        if (typeof showToast === 'function') showToast('Período personalizado aplicado.', 'info', 2000);
+      });
+    }
+
+    // Reatividade imediata ao trocar qualquer data dos inputs
+    [inputGerencialInicio, inputGerencialFim].forEach(inp => {
+      if (inp) {
+        inp.addEventListener('change', () => {
+          if (inputGerencialInicio.value && inputGerencialFim.value && inputGerencialInicio.value <= inputGerencialFim.value) {
+            AppState.analytics.periodo = 'custom';
+            AppState.analytics.dataInicio = inputGerencialInicio.value;
+            AppState.analytics.dataFim = inputGerencialFim.value;
+            renderizarAnalytics();
+          }
+        });
+      }
+    });
 
     const selectGerencialOrigem = document.getElementById('gerencial-origem-select');
     if (selectGerencialOrigem) {
@@ -1528,6 +1589,11 @@
       selectGerencialPeriodo.value = AppState.analytics.periodo || '03/11/2026';
     }
 
+    const gerencialCustomDates = document.getElementById('gerencial-custom-dates');
+    if (gerencialCustomDates) {
+      gerencialCustomDates.style.display = AppState.analytics.periodo === 'custom' ? 'flex' : 'none';
+    }
+
     const selectGerencialOrigem = document.getElementById('gerencial-origem-select');
     if (selectGerencialOrigem) {
       selectGerencialOrigem.value = AppState.analytics.origemFiltro || 'todas';
@@ -1569,90 +1635,29 @@
     const periodoAtivo = AppState.analytics.periodo || '03/11/2026';
     const vendedorFiltro = AppState.analytics.vendedorFiltro || 'todos';
 
-    let recebidosVal = 35;
-    let avancaramVal = 12;
-    let pctAvancaramNum = 34.3;
-    let pctAvancaramStr = '34,3%';
-    let negociacaoVal = 3;
-    let pctNegociacaoNum = 8.6;
-    let pctNegociacaoStr = '8,6%';
-    let ganhosVal = 0;
-    let consultoresDados = {
-      maciel: 12,
-      fernanda: 15,
-      caio: 8,
-      albert: 0,
-      daniel: 0
-    };
+    // Dinâmico a partir do motor analítico
+    const recebidosVal = resultado.kpis.totalRecebidos;
+    const avancaramVal = resultado.kpis.totalAvancaram !== undefined
+      ? resultado.kpis.totalAvancaram
+      : (resultado.kpis.totalQualificados || 0);
+    const pctAvancaramNum = resultado.kpis.taxaAvancaramPct !== undefined
+      ? resultado.kpis.taxaAvancaramPct
+      : (resultado.kpis.taxaQualificacaoPct || 0);
+    const pctAvancaramStr = `${pctAvancaramNum.toFixed(1).replace('.', ',')}%`;
 
-    if (periodoAtivo === '03/11/2026') {
-      if (vendedorFiltro === 'maciel') {
-        recebidosVal = 12;
-        avancaramVal = 4;
-        pctAvancaramNum = 33.3;
-        pctAvancaramStr = '33,3%';
-        negociacaoVal = 1;
-        pctNegociacaoNum = 8.3;
-        pctNegociacaoStr = '8,3%';
-        ganhosVal = 0;
-      } else if (vendedorFiltro === 'fernanda') {
-        recebidosVal = 15;
-        avancaramVal = 5;
-        pctAvancaramNum = 33.3;
-        pctAvancaramStr = '33,3%';
-        negociacaoVal = 1;
-        pctNegociacaoNum = 6.7;
-        pctNegociacaoStr = '6,7%';
-        ganhosVal = 0;
-      } else if (vendedorFiltro === 'caio') {
-        recebidosVal = 8;
-        avancaramVal = 3;
-        pctAvancaramNum = 37.5;
-        pctAvancaramStr = '37,5%';
-        negociacaoVal = 1;
-        pctNegociacaoNum = 12.5;
-        pctNegociacaoStr = '12,5%';
-        ganhosVal = 0;
-      } else if (vendedorFiltro === 'albert' || vendedorFiltro === 'daniel') {
-        recebidosVal = 0;
-        avancaramVal = 0;
-        pctAvancaramNum = 0;
-        pctAvancaramStr = '0,0%';
-        negociacaoVal = 0;
-        pctNegociacaoNum = 0;
-        pctNegociacaoStr = '0,0%';
-        ganhosVal = 0;
-      }
-    } else {
-      // Dinâmico a partir do motor analítico
-      recebidosVal = resultado.kpis.totalRecebidos;
-      avancaramVal = resultado.kpis.totalQualificados;
-      pctAvancaramNum = resultado.kpis.taxaQualificacaoPct;
-      pctAvancaramStr = `${resultado.kpis.taxaQualificacaoPct.toFixed(1).replace('.', ',')}%`;
-      const leadsNeg = (resultado.funil && resultado.funil.find(f => f.estagio === 'negociacao')?.count) || 0;
-      negociacaoVal = leadsNeg;
-      pctNegociacaoNum = recebidosVal > 0 ? (leadsNeg / recebidosVal * 100) : 0;
-      pctNegociacaoStr = `${pctNegociacaoNum.toFixed(1).replace('.', ',')}%`;
-      ganhosVal = resultado.kpis.totalFechados;
+    const leadsNeg = (resultado.funil && resultado.funil.find(f => f.estagio === 'negociacao')?.count) || 0;
+    const negociacaoVal = leadsNeg;
+    const pctNegociacaoNum = recebidosVal > 0 ? (leadsNeg / recebidosVal * 100) : 0;
+    const pctNegociacaoStr = `${pctNegociacaoNum.toFixed(1).replace('.', ',')}%`;
+    const ganhosVal = resultado.kpis.totalFechados;
 
-      if (resultado.distribuicaoVendedores) {
-        resultado.distribuicaoVendedores.forEach(v => {
-          if (consultoresDados[v.vendedorId] !== undefined) {
-            consultoresDados[v.vendedorId] = v.totalLeads;
-          }
-        });
-      }
-    }
-
-    // 1. Atualiza 5 KPIs do Relatório Gerencial
+    // 1. Atualiza 4 KPIs Executivos do Relatório Gerencial
     const elGkpiRecebidos = document.getElementById('gkpi-recebidos');
     const elGkpiAvancaram = document.getElementById('gkpi-avancaram');
     const elGkpiAvancaramBadge = document.getElementById('gkpi-avancaram-badge');
     const elGkpiNegociacao = document.getElementById('gkpi-negociacao');
     const elGkpiNegociacaoBadge = document.getElementById('gkpi-negociacao-badge');
     const elGkpiGanhos = document.getElementById('gkpi-ganhos');
-    const elGkpiPrazo = document.getElementById('gkpi-prazo');
-    const elGkpiPrazoSub = document.getElementById('gkpi-prazo-sub');
 
     if (elGkpiRecebidos) elGkpiRecebidos.textContent = recebidosVal;
     if (elGkpiAvancaram) elGkpiAvancaram.textContent = avancaramVal;
@@ -1660,13 +1665,19 @@
     if (elGkpiNegociacao) elGkpiNegociacao.textContent = negociacaoVal;
     if (elGkpiNegociacaoBadge) elGkpiNegociacaoBadge.textContent = pctNegociacaoStr;
     if (elGkpiGanhos) elGkpiGanhos.textContent = ganhosVal;
-    if (elGkpiPrazo) elGkpiPrazo.textContent = '—';
-    if (elGkpiPrazoSub) elGkpiPrazoSub.textContent = 'não disponível';
 
     // 2. Coorte Label
     const elCoorte = document.getElementById('gerencial-coorte-data');
     if (elCoorte) {
-      elCoorte.textContent = periodoAtivo === '03/11/2026' ? '03/11/2026' : (resultado.periodo.labelFormatado || periodoAtivo);
+      if (periodoAtivo === '03/11/2026') {
+        elCoorte.textContent = '03/11/2026';
+      } else if (periodoAtivo === 'custom') {
+        const dIniStr = AppState.analytics.dataInicio ? AppState.analytics.dataInicio.split('-').reverse().join('/') : '';
+        const dFimStr = AppState.analytics.dataFim ? AppState.analytics.dataFim.split('-').reverse().join('/') : '';
+        elCoorte.textContent = (dIniStr && dFimStr) ? `${dIniStr} a ${dFimStr}` : (resultado.periodo.labelFormatado || 'Personalizado');
+      } else {
+        elCoorte.textContent = resultado.periodo.labelFormatado || periodoAtivo;
+      }
     }
 
     // 3. Aproveitamento dos Leads (Barras Horizontais)
@@ -1691,33 +1702,32 @@
     if (elAprovBarGan) elAprovBarGan.style.width = `${recebidosVal > 0 ? (ganhosVal / recebidosVal * 100) : 0}%`;
     if (elAprovValGan) elAprovValGan.textContent = ganhosVal;
 
-    // 4. Desempenho por Consultor
-    const elConsMaciel = document.getElementById('cons-maciel-recebidos');
-    const elConsFernanda = document.getElementById('cons-fernanda-recebidos');
-    const elConsCaio = document.getElementById('cons-caio-recebidos');
-    const elConsAlbert = document.getElementById('cons-albert-recebidos');
-    const elConsDaniel = document.getElementById('cons-daniel-recebidos');
-
-    if (elConsMaciel) elConsMaciel.textContent = consultoresDados.maciel;
-    if (elConsFernanda) elConsFernanda.textContent = consultoresDados.fernanda;
-    if (elConsCaio) elConsCaio.textContent = consultoresDados.caio;
-    if (elConsAlbert) elConsAlbert.textContent = consultoresDados.albert;
-    if (elConsDaniel) elConsDaniel.textContent = consultoresDados.daniel;
-
-    // Destaca linha do vendedor ativo se filtrado
+    // 4. Desempenho por Consultor (Consultor, Recebidos, Com perfil, Avançaram, Sem perfil)
     const tbodyConsultor = document.getElementById('tbody-desempenho-consultor');
     if (tbodyConsultor) {
-      const rows = tbodyConsultor.querySelectorAll('tr[data-vendedor]');
-      rows.forEach(tr => {
-        const vId = tr.getAttribute('data-vendedor');
-        if (vendedorFiltro !== 'todos' && vId === vendedorFiltro) {
-          tr.style.backgroundColor = '#ECFDF5';
-          tr.style.fontWeight = '600';
-        } else {
-          tr.style.backgroundColor = '';
-          tr.style.fontWeight = '';
-        }
-      });
+      if (Array.isArray(resultado.distribuicaoVendedores) && resultado.distribuicaoVendedores.length > 0) {
+        tbodyConsultor.innerHTML = '';
+        resultado.distribuicaoVendedores.forEach(v => {
+          const tr = document.createElement('tr');
+          tr.setAttribute('data-vendedor', v.vendedorId);
+          if (vendedorFiltro !== 'todos' && v.vendedorId === vendedorFiltro) {
+            tr.style.backgroundColor = '#ECFDF5';
+            tr.style.fontWeight = '600';
+          }
+
+          const isAtivo = (v.vendedorId === 'maciel' || v.vendedorId === 'fernanda' || v.vendedorId === 'caio');
+          const corDot = isAtivo ? 'green' : 'gray';
+
+          tr.innerHTML = `
+            <td><span class="crm-gdot crm-gdot--${corDot}" aria-hidden="true"></span> ${v.nome}</td>
+            <td id="cons-${v.vendedorId}-recebidos">${v.totalLeads}</td>
+            <td id="cons-${v.vendedorId}-com-perfil">${v.comPerfil > 0 ? v.comPerfil : (v.totalLeads > 0 ? '0' : '—')}</td>
+            <td id="cons-${v.vendedorId}-avancaram">${v.avancaram > 0 ? v.avancaram : (v.totalLeads > 0 ? '0' : '—')}</td>
+            <td id="cons-${v.vendedorId}-sem-perfil">${v.semPerfil > 0 ? v.semPerfil : (v.totalLeads > 0 ? '0' : '—')}</td>
+          `;
+          tbodyConsultor.appendChild(tr);
+        });
+      }
     }
 
     // 5. Leads por Região (Tabela Gerencial: Número + % + Barra Proporcional)
