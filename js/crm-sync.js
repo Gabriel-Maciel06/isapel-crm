@@ -704,6 +704,7 @@
 
     perfis[vid] = {
       ...config,
+      versaoFotoReal: 3,
       atualizadoEm: new Date().toISOString()
     };
     safeSetStorage(SUPABASE_CONFIG.storageAvatarKey, JSON.stringify(perfis));
@@ -760,6 +761,7 @@
   function obterPerfilAvatar(vendedorId) {
     const vid = String(vendedorId || '').trim().toLowerCase();
     const padraoBase = PERFIS_AVATAR_PADRAO[vid] || PERFIL_AVATAR_GENERICO;
+    const isConsultorOficial = Boolean(PERFIS_AVATAR_PADRAO[vid]);
 
     let perfilStorage = null;
     try {
@@ -767,7 +769,10 @@
       if (raw) {
         const perfis = JSON.parse(raw);
         if (perfis && typeof perfis === 'object' && perfis[vid]) {
-          perfilStorage = perfis[vid];
+          // Para os 5 consultores oficiais, ignora perfis legados sem versaoFotoReal === 3
+          if (!isConsultorOficial || perfis[vid].versaoFotoReal === 3) {
+            perfilStorage = perfis[vid];
+          }
         }
       }
     } catch (e) {}

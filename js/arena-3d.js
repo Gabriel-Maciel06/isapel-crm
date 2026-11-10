@@ -537,20 +537,25 @@
     return norm;
   }
 
+  function limparCacheAvataresAntigosNavegador() {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+    try {
+      if (localStorage.getItem('isapel_crm_avatar_migration_v3') !== 'done') {
+        localStorage.removeItem('isapel_crm_avatar_profiles');
+        localStorage.removeItem('isapel_avatar_customizations');
+        localStorage.removeItem('isapel_vendedores_custom_v1');
+        localStorage.setItem('isapel_crm_avatar_migration_v3', 'done');
+      }
+    } catch (e) {}
+  }
+
+  limparCacheAvataresAntigosNavegador();
+
   function obterConfigAvatarSalva(vendedorId) {
     const vid = String(vendedorId || '').trim().toLowerCase();
+    const isConsultorOficial = Boolean(VENDEDORES_DEFAULT_AVATARS[vid]);
 
-    // 1. Consulta IsapelSync se disponível
-    if (typeof window !== 'undefined' && window.IsapelSync && typeof window.IsapelSync.obterPerfilAvatar === 'function') {
-      try {
-        const cfgSync = window.IsapelSync.obterPerfilAvatar(vid);
-        if (cfgSync && (cfgSync.uniforme || cfgSync.cabeloEstilo || cfgSync.cabelo)) {
-          return normalizarConfigAvatar(cfgSync, vid);
-        }
-      } catch (e) {}
-    }
-
-    // 2. Consulta localStorage (chaves oficiais e legadas de fallback)
+    // 1. Consulta localStorage apenas se foi salvo na revisão v3 (evita sobrescrever fotos reais com cache antigo)
     if (typeof localStorage !== 'undefined') {
       try {
         const chaves = ['isapel_crm_avatar_profiles', 'isapel_avatar_customizations', 'isapel_vendedores_custom_v1'];
@@ -559,15 +564,27 @@
           if (raw) {
             const parsed = JSON.parse(raw);
             if (parsed && parsed[vid]) {
-              return normalizarConfigAvatar(parsed[vid], vid);
+              if (!isConsultorOficial || parsed[vid].versaoFotoReal === 3) {
+                return normalizarConfigAvatar(parsed[vid], vid);
+              }
             }
           }
         }
       } catch (e) {}
     }
 
-    // 3. Fallback canônico
-    return normalizarConfigAvatar({}, vid);
+    // 2. Consulta IsapelSync para os padrões oficiais ou novos consultores
+    if (typeof window !== 'undefined' && window.IsapelSync && typeof window.IsapelSync.obterPerfilAvatar === 'function') {
+      try {
+        const cfgSync = window.IsapelSync.obterPerfilAvatar(vid);
+        if (cfgSync && (!isConsultorOficial || cfgSync.versaoFotoReal === 3)) {
+          return normalizarConfigAvatar(cfgSync, vid);
+        }
+      } catch (e) {}
+    }
+
+    // 3. Fallback canônico baseado nas 5 fotos oficiais
+    return normalizarConfigAvatar(VENDEDORES_DEFAULT_AVATARS[vid] || {}, vid);
   }
 
   // ==========================================================================

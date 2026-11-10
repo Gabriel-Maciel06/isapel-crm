@@ -3047,51 +3047,46 @@
   // ==========================================================================
 
   function obterConfigAvatarVendedor(vendedorId) {
-    const vid = vendedorId || 'maciel';
+    const vid = (vendedorId || 'maciel').toLowerCase();
 
-    // 1. Tentar obter do IsapelSync
-    if (window.IsapelSync && typeof window.IsapelSync.obterPerfilAvatar === 'function') {
-      const cfg = window.IsapelSync.obterPerfilAvatar(vid);
-      if (cfg) return { ...cfg };
-    }
-
-    // 2. Tentar obter do localStorage
+    // 1. Tentar obter do localStorage se foi salvo na revisão v3
     try {
-      const raw1 = localStorage.getItem('isapel_crm_avatar_profiles');
-      if (raw1) {
-        const p1 = JSON.parse(raw1);
-        if (p1 && p1[vid]) return { ...p1[vid] };
-      }
-      const raw2 = localStorage.getItem('isapel_avatar_customizations');
-      if (raw2) {
-        const p2 = JSON.parse(raw2);
-        if (p2 && p2[vid]) return { ...p2[vid] };
-      }
-      const raw3 = localStorage.getItem('isapel_vendedores_custom_v1');
-      if (raw3) {
-        const p3 = JSON.parse(raw3);
-        if (p3 && p3[vid]) return { ...p3[vid] };
+      const chaves = ['isapel_crm_avatar_profiles', 'isapel_avatar_customizations', 'isapel_vendedores_custom_v1'];
+      for (const k of chaves) {
+        const raw = localStorage.getItem(k);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed[vid] && parsed[vid].versaoFotoReal === 3) {
+            return { ...parsed[vid] };
+          }
+        }
       }
     } catch (e) {
       console.warn('[AvatarCustomizer] Erro ao ler avatar do localStorage:', e);
     }
 
-    // 3. Presets oficiais de AvatarBuilder
+    // 2. Presets oficiais de AvatarBuilder (fotos reais dos 5 consultores)
     if (window.Arena3D && window.Arena3D.AvatarBuilder && typeof window.Arena3D.AvatarBuilder.obterPresetsPadrao === 'function') {
       const presets = window.Arena3D.AvatarBuilder.obterPresetsPadrao();
       if (presets && presets[vid]) return { ...presets[vid] };
     }
 
+    // 3. Tentar obter do IsapelSync
+    if (window.IsapelSync && typeof window.IsapelSync.obterPerfilAvatar === 'function') {
+      const cfg = window.IsapelSync.obterPerfilAvatar(vid);
+      if (cfg) return { ...cfg };
+    }
+
     // 4. Fallback padrão seguro
     return {
-      uniforme: 'polo-navy',
+      uniforme: vid === 'fernanda' ? 'blusa-rosa' : 'polo-navy',
       cabeloEstilo: vid === 'fernanda' ? 'liso-comprido' : (vid === 'caio' ? 'cacheado-volumoso' : 'cacheado-curto'),
-      cabeloHex: vid === 'fernanda' ? '#F7CF46' : '#1A1514',
+      cabeloHex: vid === 'fernanda' ? '#D6B254' : '#1A1514',
       barbaEstilo: vid === 'maciel' ? 'com-bigode' : 'sem-barba',
       barbaHex: '#161211',
-      peleHex: vid === 'fernanda' ? '#F9D3B4' : (vid === 'caio' ? '#DFA980' : '#E6B994'),
+      peleHex: vid === 'fernanda' ? '#E6B896' : (vid === 'caio' ? '#CF966E' : '#D49B72'),
       oculos: 'nenhum',
-      cracha: true
+      cracha: false
     };
   }
 
@@ -3305,8 +3300,11 @@
         barbaHex: '#161211',
         peleHex: selPele ? selPele.value : '#e6b994',
         oculos: selOc ? selOc.value : 'nenhum',
-        cracha: chkCracha ? chkCracha.checked : true
+        cracha: chkCracha ? chkCracha.checked : true,
+        versaoFotoReal: 3
       };
+    } else {
+      configParaSalvar = { ...configParaSalvar, versaoFotoReal: 3 };
     }
 
     // 1. Gravar via IsapelSync (Supabase / Local)
