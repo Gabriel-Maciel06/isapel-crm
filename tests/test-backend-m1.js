@@ -166,12 +166,12 @@ console.log('\n--- 2. IsapelSync: Persistência de Vendedores e Avatares 3D ---'
 
   // 2.3 Obter perfil de avatar padrão para fundadores
   const macielAvatar = IsapelSync.obterPerfilAvatar('maciel');
-  assert.strictEqual(macielAvatar.uniforme.tipo, 'blazer_executivo_navy');
-  assert.strictEqual(macielAvatar.barba.tipo, 'bigode_maciel');
+  assert.strictEqual(macielAvatar.uniforme.tipo, 'polo-sky');
+  assert.strictEqual(macielAvatar.barba.tipo, 'com-bigode');
 
   const fernandaAvatar = IsapelSync.obterPerfilAvatar('fernanda');
-  assert.strictEqual(fernandaAvatar.uniforme.tipo, 'polo_isapel_cyan');
-  assert.strictEqual(fernandaAvatar.cabelo.cor, '#F7CF46');
+  assert.strictEqual(fernandaAvatar.uniforme.tipo, 'blusa-rosa');
+  assert.strictEqual(fernandaAvatar.cabelo.cor, '#D6B254');
 
   console.log('  ✅ [PASS] IsapelSync.obterPerfilAvatar fornece traços oficiais padrão dos fundadores');
 

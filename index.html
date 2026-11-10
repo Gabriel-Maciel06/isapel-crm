@@ -937,103 +937,49 @@
               </div>
             </div>
 
-            <!-- Grade 2 Colunas: Linha 1 (Qualidade por Origem & Aproveitamento dos Leads) -->
-            <div class="crm-gerencial-grid-2col">
-              <!-- Card 1: QUALIDADE POR ORIGEM -->
-              <div class="crm-gerencial-card">
-                <div class="crm-gerencial-card__header">
-                  <div class="crm-gerencial-card__title-wrap">
-                    <span class="crm-gerencial-card__icon--green" aria-hidden="true">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                    </span>
-                    <h3 class="crm-gerencial-card__title">QUALIDADE POR ORIGEM</h3>
-                  </div>
-                  <span class="crm-gerencial-badge-pill">Dados a coletar</span>
+            <!-- Linha: APROVEITAMENTO DOS LEADS (Card Completo) -->
+            <div class="crm-gerencial-card crm-gerencial-card--full">
+              <div class="crm-gerencial-card__header">
+                <div class="crm-gerencial-card__title-wrap">
+                  <span class="crm-gerencial-card__icon--green" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                  </span>
+                  <h3 class="crm-gerencial-card__title">APROVEITAMENTO DOS LEADS</h3>
                 </div>
-                <div class="crm-gerencial-table-wrap">
-                  <table class="crm-gerencial-table" id="tabela-qualidade-origem">
-                    <thead>
-                      <tr>
-                        <th style="text-align: left;">Origem (canal)</th>
-                        <th>Leads</th>
-                        <th>Com perfil</th>
-                        <th>Sem perfil</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbody-qualidade-origem">
-                      <tr>
-                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Google / Site</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                      </tr>
-                      <tr>
-                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Redes sociais</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                      </tr>
-                      <tr>
-                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Indicação</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                      </tr>
-                      <tr>
-                        <td><span class="crm-gdot crm-gdot--green" aria-hidden="true"></span> Outros</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <span class="crm-gerencial-card__subtext">Progress: da coorte (não é taxa de fechamento instantânea)</span>
               </div>
-
-              <!-- Card 2: APROVEITAMENTO DOS LEADS -->
-              <div class="crm-gerencial-card">
-                <div class="crm-gerencial-card__header">
-                  <div class="crm-gerencial-card__title-wrap">
-                    <span class="crm-gerencial-card__icon--green" aria-hidden="true">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                    </span>
-                    <h3 class="crm-gerencial-card__title">APROVEITAMENTO DOS LEADS</h3>
+              <div class="crm-gerencial-aproveitamento-list" id="aproveitamento-progress-container">
+                <!-- Recebidos -->
+                <div class="crm-aprov-row">
+                  <span class="crm-aprov-lbl">Recebidos</span>
+                  <div class="crm-aprov-bar-track">
+                    <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-recebidos" style="width: 100%;"></div>
                   </div>
-                  <span class="crm-gerencial-card__subtext">Progress: da coorte (não é taxa de fechamento instantânea)</span>
+                  <span class="crm-aprov-val" id="aprov-val-recebidos">35</span>
                 </div>
-                <div class="crm-gerencial-aproveitamento-list" id="aproveitamento-progress-container">
-                  <!-- Recebidos -->
-                  <div class="crm-aprov-row">
-                    <span class="crm-aprov-lbl">Recebidos</span>
-                    <div class="crm-aprov-bar-track">
-                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-recebidos" style="width: 100%;"></div>
-                    </div>
-                    <span class="crm-aprov-val" id="aprov-val-recebidos">35</span>
+                <!-- Avançaram -->
+                <div class="crm-aprov-row">
+                  <span class="crm-aprov-lbl">Avançaram</span>
+                  <div class="crm-aprov-bar-track">
+                    <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-avancaram" style="width: 34.3%;"></div>
                   </div>
-                  <!-- Avançaram -->
-                  <div class="crm-aprov-row">
-                    <span class="crm-aprov-lbl">Avançaram</span>
-                    <div class="crm-aprov-bar-track">
-                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-avancaram" style="width: 34.3%;"></div>
-                    </div>
-                    <span class="crm-aprov-val" id="aprov-val-avancaram">12 - 34,3%</span>
+                  <span class="crm-aprov-val" id="aprov-val-avancaram">12 - 34,3%</span>
+                </div>
+                <!-- Em negociação -->
+                <div class="crm-aprov-row">
+                  <span class="crm-aprov-lbl">Em negociação</span>
+                  <div class="crm-aprov-bar-track">
+                    <div class="crm-aprov-bar-fill crm-aprov-bar-fill--amber" id="aprov-bar-negociacao" style="width: 8.6%;"></div>
                   </div>
-                  <!-- Em negociação -->
-                  <div class="crm-aprov-row">
-                    <span class="crm-aprov-lbl">Em negociação</span>
-                    <div class="crm-aprov-bar-track">
-                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--amber" id="aprov-bar-negociacao" style="width: 8.6%;"></div>
-                    </div>
-                    <span class="crm-aprov-val" id="aprov-val-negociacao">3 - 8,6%</span>
+                  <span class="crm-aprov-val" id="aprov-val-negociacao">3 - 8,6%</span>
+                </div>
+                <!-- Ganhos -->
+                <div class="crm-aprov-row">
+                  <span class="crm-aprov-lbl">Ganhos</span>
+                  <div class="crm-aprov-bar-track">
+                    <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-ganhos" style="width: 0%;"></div>
                   </div>
-                  <!-- Ganhos -->
-                  <div class="crm-aprov-row">
-                    <span class="crm-aprov-lbl">Ganhos</span>
-                    <div class="crm-aprov-bar-track">
-                      <div class="crm-aprov-bar-fill crm-aprov-bar-fill--green" id="aprov-bar-ganhos" style="width: 0%;"></div>
-                    </div>
-                    <span class="crm-aprov-val" id="aprov-val-ganhos">0</span>
-                  </div>
+                  <span class="crm-aprov-val" id="aprov-val-ganhos">0</span>
                 </div>
               </div>
             </div>
@@ -1302,6 +1248,7 @@
           <select id="analytics-vendedor-select"><option value="todos">Todos</option></select>
           <span id="analytics-vendedor-locked-badge"></span>
           <select id="analytics-regiao-select"><option value="todas">Todas</option></select>
+          <table id="tabela-qualidade-origem"><tbody id="tbody-qualidade-origem"></tbody></table>
         </div>
 
         <!-- ==============================================================
