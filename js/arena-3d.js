@@ -386,10 +386,10 @@
       oculos: 'nenhum',
       cracha: false
     },
-    // Print 4: Fernanda — Blusa Azul Royal (#2563EB) + Colar Prateado, Cabelo Loiro Dourado Longo Liso c/ Raiz Esfumada, Lábios Rosados
+    // Print 4: Fernanda — Blusa Rosa (#EC4899) + Colar Prateado, Cabelo Loiro Dourado Longo Liso c/ Raiz Esfumada, Lábios Rosados
     fernanda: {
       id: 'fernanda',
-      uniforme: 'blusa-royal',
+      uniforme: 'blusa-rosa',
       peleHex: 0xe6b896,
       cabeloEstilo: 'liso-comprido',
       cabeloHex: 0xd6b254,
@@ -437,8 +437,8 @@
         norm.uniforme = 'moletom-creme';
       } else if (u.includes('jaqueta') || u.includes('preta') || u.includes('casaco')) {
         norm.uniforme = 'jaqueta-preta';
-      } else if (u.includes('blusa') || u.includes('royal') || u.includes('regata')) {
-        norm.uniforme = 'blusa-royal';
+      } else if (u.includes('blusa') || u.includes('rosa') || u.includes('royal') || u.includes('regata')) {
+        norm.uniforme = 'blusa-rosa';
       } else if (u.includes('sky') || u.includes('cyan') || u.includes('ceu') || u.includes('céu')) {
         norm.uniforme = 'polo-sky';
       } else if (u.includes('social') || u.includes('blazer') || u.includes('branca') || u.includes('gravata')) {
@@ -454,8 +454,8 @@
         norm.uniforme = 'moletom-creme';
       } else if (tipo.includes('jaqueta') || tipo.includes('preta')) {
         norm.uniforme = 'jaqueta-preta';
-      } else if (tipo.includes('blusa') || tipo.includes('royal')) {
-        norm.uniforme = 'blusa-royal';
+      } else if (tipo.includes('blusa') || tipo.includes('rosa') || tipo.includes('royal')) {
+        norm.uniforme = 'blusa-rosa';
       } else if (tipo.includes('cyan') || tipo.includes('sky')) {
         norm.uniforme = 'polo-sky';
       } else if (tipo.includes('social') || tipo.includes('blazer') || tipo.includes('branca')) {
@@ -641,7 +641,7 @@
         color: infoManga.cor,
         roughness: infoManga.roughness || 0.55
       });
-      const armPosX = (cfg.id === 'fernanda' || cfg.uniforme === 'blusa-royal' || cfg.id === 'caio') ? 0.39 : 0.42;
+      const armPosX = (cfg.id === 'fernanda' || cfg.uniforme === 'blusa-rosa' || cfg.uniforme === 'blusa-royal' || cfg.id === 'caio') ? 0.39 : 0.42;
       const armLeft = this._criarBracoArticulado(matManga, matPele, true, infoManga, T);
       armLeft.position.set(-armPosX, 1.52, 0);
       const armRight = this._criarBracoArticulado(matManga, matPele, false, infoManga, T);
@@ -682,7 +682,7 @@
 
     _adicionarPernas: function (bodyGroup, cfg, T) {
       const isDaniel = cfg.id === 'daniel' || cfg.uniforme === 'moletom-creme';
-      const isFernanda = cfg.id === 'fernanda' || cfg.uniforme === 'blusa-royal';
+      const isFernanda = cfg.id === 'fernanda' || cfg.uniforme === 'blusa-rosa' || cfg.uniforme === 'blusa-royal';
       const corCalca = isDaniel ? 0x1e293b : (isFernanda ? 0x0f172a : 0x0a1829);
       const matCalca = new T.MeshStandardMaterial({ color: corCalca, roughness: 0.45 });
       const matSapato = new T.MeshStandardMaterial({
@@ -843,28 +843,28 @@
         // Logo Isapel branco no peito esquerdo (exatamente como na foto 3)
         this._adicionarLogoIsapelPeito(torsoGroup, 0.14, 1.38, 0.335, 0xffffff, T);
 
-      } else if (tipo === 'blusa-royal') {
+      } else if (tipo === 'blusa-rosa' || tipo === 'blusa-royal') {
         // ====================================================================
-        // PRINT 4: FERNANDA — Blusa Azul Royal (#2563EB) + Colar Prateado
+        // PRINT 4: FERNANDA — Camisa / Blusa Rosa (#EC4899) + Colar Prateado
         // ====================================================================
-        const corRoyal = 0x2563eb;
-        infoManga = { cor: corRoyal, mangaLonga: false, semManga: true, roughness: 0.38 };
+        const corRosa = 0xec4899;
+        infoManga = { cor: corRosa, mangaLonga: false, semManga: true, roughness: 0.38 };
 
-        const matRoyal = new T.MeshStandardMaterial({ color: corRoyal, roughness: 0.38 });
+        const matRosa = new T.MeshStandardMaterial({ color: corRosa, roughness: 0.38 });
         const matPrata = new T.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.85, roughness: 0.2 });
 
-        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.32, 0.30, 0.68, 18), matRoyal);
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.32, 0.30, 0.68, 18), matRosa);
         torsoMesh.position.y = 1.21;
         torsoGroup.add(torsoMesh);
 
-        // Colo feminino em tom de pele acima do decote da blusa azul royal
+        // Colo feminino em tom de pele acima do decote da blusa rosa
         const coloMesh = new T.Mesh(new T.CylinderGeometry(0.23, 0.30, 0.12, 16), matPele);
         coloMesh.position.y = 1.58;
         torsoGroup.add(coloMesh);
 
-        // Alças da blusa azul royal sobre os ombros
+        // Alças da blusa rosa sobre os ombros
         [-0.20, 0.20].forEach(posX => {
-          const alca = new T.Mesh(new T.BoxGeometry(0.075, 0.13, 0.28), matRoyal);
+          const alca = new T.Mesh(new T.BoxGeometry(0.075, 0.13, 0.28), matRosa);
           alca.position.set(posX, 1.58, 0);
           torsoGroup.add(alca);
         });

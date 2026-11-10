@@ -585,9 +585,9 @@
     },
     fernanda: {
       uniforme: {
-        tipo: 'blusa-royal',
-        corPrimaria: '#2563EB',
-        corGola: '#2563EB',
+        tipo: 'blusa-rosa',
+        corPrimaria: '#EC4899',
+        corGola: '#EC4899',
         tipoInferior: 'calca_social',
         corInferior: '#0A1829',
         temCracha: false
