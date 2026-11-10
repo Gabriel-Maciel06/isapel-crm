@@ -33,6 +33,8 @@
     audioContext: null,
     avatarPreviewEngine: null,
     vendedorCustomizandoId: 'maciel',
+    leadsArenaGlobal: null,
+    carregandoArenaGlobal: false,
     analytics: {
       periodo: '03/11/2026',
       dataInicio: null,
@@ -1006,11 +1008,12 @@
       renderizarKanban();
       showToast(`Visualização filtrada para: ${select.options[select.selectedIndex].text}`, 'info', 2000);
 
-      // Se nuvem estiver ativa e for diretoria, sincroniza dados filtrados
+      // Se nuvem estiver ativa e for diretoria, sincroniza todos os leads na memória (o filtro de vendedor atua sobre a view)
       if (window.IsapelSync && sessao && sessao.perfil === 'diretoria') {
-        const leads = await window.IsapelSync.carregarLeadsNuvem(AppState.vendedorAtivo);
+        const leads = await window.IsapelSync.carregarLeadsNuvem('todos');
         if (leads && Array.isArray(leads) && window.IsapelCRM) {
           window.IsapelCRM.definirLeads(leads);
+          AppState.leadsArenaGlobal = leads;
           renderizarKanban();
           sincronizarArena3D();
           renderizarAnalytics();
@@ -1030,21 +1033,51 @@
   // ==========================================================================
   // 11. ARENA 3D - SINCRONIZAÇÃO E CONTROLES
   // ==========================================================================
+  function obterLeadsConsolidadasArena() {
+    const locais = obterTodosOsLeads();
+    if (!Array.isArray(AppState.leadsArenaGlobal) || AppState.leadsArenaGlobal.length === 0) {
+      return locais;
+    }
+    const mapa = new Map();
+    AppState.leadsArenaGlobal.forEach(l => {
+      if (l && l.id) mapa.set(String(l.id), l);
+    });
+    // Sobrepõe alterações locais (ex: leads recém-movidos ou cadastrados pelo vendedor logado)
+    locais.forEach(l => {
+      if (l && l.id) mapa.set(String(l.id), l);
+    });
+    return Array.from(mapa.values());
+  }
+
   function sincronizarArena3D() {
-    const todos = obterTodosOsLeads();
+    // Dispara busca assíncrona global para a Arena 3D se ainda não carregada (garante comparação entre todos os 5 vendedores)
+    if (!AppState.leadsArenaGlobal && !AppState.carregandoArenaGlobal && window.IsapelSync && typeof window.IsapelSync.carregarLeadsArenaNuvem === 'function') {
+      AppState.carregandoArenaGlobal = true;
+      window.IsapelSync.carregarLeadsArenaNuvem().then(leadsArena => {
+        AppState.carregandoArenaGlobal = false;
+        if (Array.isArray(leadsArena) && leadsArena.length > 0) {
+          AppState.leadsArenaGlobal = leadsArena;
+          sincronizarArena3D();
+        }
+      }).catch(() => {
+        AppState.carregandoArenaGlobal = false;
+      });
+    }
+
+    const todos = obterLeadsConsolidadasArena();
     let metricas = null;
 
     if (window.IsapelCRM && typeof window.IsapelCRM.calcularMetricasArena === 'function') {
       metricas = window.IsapelCRM.calcularMetricasArena('todos', todos);
     } else {
-      metricas = calcularMetricasArenaFallback();
+      metricas = calcularMetricasArenaFallback(todos);
     }
 
     if (!metricas) return;
 
     const rankingArray = Array.isArray(metricas) ? metricas : Object.values(metricas);
 
-    // Se o Three.js da Arena3D estiver ativo, atualiza com os dados reais
+    // Se o Three.js da Arena3D estiver ativo, atualiza com os dados reais de todos os 5 vendedores
     if (window.Arena3D && typeof window.Arena3D.atualizar === 'function') {
       window.Arena3D.atualizar(rankingArray);
     }
@@ -1070,28 +1103,47 @@
     atualizarPilar(2, rankingArray[1]);
     atualizarPilar(3, rankingArray[2]);
 
-    // Atualiza as barras de progresso laterais
-    rankingArray.forEach(p => {
+    const maxXP = Math.max(100, ...rankingArray.map(item => Number(item.pontuacaoGeral) || 0));
+    const rankingListContainer = document.querySelector('.crm-ranking-list');
+
+    // Atualiza as barras de progresso laterais e ordena os itens conforme colocação
+    rankingArray.forEach((p, idx) => {
       const id = p.vendedorId;
+      const rowEl = document.getElementById(`ranking-row-${id}`);
       const valEl = document.getElementById(`ranking-val-${id}`);
       const barEl = document.getElementById(`ranking-bar-${id}`);
+      const nameEl = rowEl ? rowEl.querySelector('.crm-ranking-item__name') : null;
+      const nomesMap = { maciel: 'Gabriel Maciel', fernanda: 'Fernanda', caio: 'Caio', albert: 'Albert', daniel: 'Daniel' };
+
+      if (nameEl) {
+        const nomeBase = p.vendedor?.nome || nomesMap[id] || id;
+        nameEl.textContent = `${idx + 1}º ${nomeBase}`;
+      }
       if (valEl) {
         valEl.textContent = p.volumeTotalFaturado > 0 
-          ? formatarMoeda(p.volumeTotalFaturado) 
+          ? `${formatarMoeda(p.volumeTotalFaturado)} • ${p.pontuacaoGeral || 0} XP`
           : `${p.totalCadastrados || 0} leads (${p.pontuacaoGeral || 0} XP)`;
       }
       if (barEl) {
         const metasMap = { maciel: 60000, fernanda: 45000, caio: 35000, albert: 45000, daniel: 45000 };
         const meta = metasMap[id] || 40000;
         const faturado = p.volumeTotalFaturado || 0;
-        const pct = Math.min(100, Math.max(5, Math.round((faturado / meta) * 100)));
+        let pct = 5;
+        if (faturado > 0) {
+          pct = Math.min(100, Math.max(8, Math.round((faturado / meta) * 100)));
+        } else {
+          pct = Math.min(100, Math.max(8, Math.round(((p.pontuacaoGeral || 0) / maxXP) * 100)));
+        }
         barEl.style.width = `${pct}%`;
+      }
+      if (rowEl && rankingListContainer) {
+        rankingListContainer.appendChild(rowEl);
       }
     });
   }
 
-  function calcularMetricasArenaFallback() {
-    const todos = obterTodosOsLeads();
+  function calcularMetricasArenaFallback(leadsCustom) {
+    const todos = Array.isArray(leadsCustom) ? leadsCustom : obterTodosOsLeads();
     const res = {
       maciel: { id: 'maciel', nome: 'Gabriel Maciel', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 },
       fernanda: { id: 'fernanda', nome: 'Fernanda', valorTotal: 0, fardosTotal: 0, fechados: 0, negociando: 0 },
@@ -3580,15 +3632,31 @@
         }
       });
 
-      // Auto-polling para sincronizar alterações feitas por outros vendedores (Maciel, Fernanda, Caio)
+      // Placar Global da Arena 3D (compara os 5 vendedores em tempo real mesmo em sessão de vendedor individual)
+      if (typeof window.IsapelSync.carregarLeadsArenaNuvem === 'function') {
+        window.IsapelSync.carregarLeadsArenaNuvem().then(leadsArena => {
+          if (Array.isArray(leadsArena) && leadsArena.length > 0) {
+            AppState.leadsArenaGlobal = leadsArena;
+            sincronizarArena3D();
+          }
+        });
+      }
+
+      // Auto-polling para sincronizar alterações feitas por outros vendedores (Maciel, Fernanda, Caio, Albert, Daniel)
       setInterval(async () => {
         const novos = await window.IsapelSync.carregarLeadsNuvem('todos');
         if (novos && Array.isArray(novos) && window.IsapelCRM) {
           window.IsapelCRM.definirLeads(novos);
           renderizarKanban();
-          sincronizarArena3D();
           renderizarAnalytics();
         }
+        if (typeof window.IsapelSync.carregarLeadsArenaNuvem === 'function') {
+          const novosArena = await window.IsapelSync.carregarLeadsArenaNuvem();
+          if (Array.isArray(novosArena) && novosArena.length > 0) {
+            AppState.leadsArenaGlobal = novosArena;
+          }
+        }
+        sincronizarArena3D();
       }, 15000);
     }
 

@@ -66,7 +66,7 @@
   };
 
   // ==========================================================================
-  // DADOS INICIAIS DA EQUIPE COMERCIAL ISAPEL
+  // DADOS INICIAIS DA EQUIPE COMERCIAL ISAPEL (OS 5 CONSULTORES)
   // ==========================================================================
   const DADOS_INICIAIS = [
     {
@@ -74,7 +74,7 @@
       nome: 'Gabriel Maciel',
       nomeCurto: 'Gabriel Maciel',
       cargo: 'Comercial',
-      corPrimaria: '#003360',
+      corPrimaria: '#6BA4E8',
       corAcento: '#E3A52B',
       avatarIcone: 'GM',
       descricao: 'Gabriel Maciel',
@@ -93,8 +93,8 @@
       nome: 'Fernanda',
       nomeCurto: 'Fernanda',
       cargo: 'Comercial',
-      corPrimaria: '#38BDF8',
-      corAcento: '#003360',
+      corPrimaria: '#2563EB',
+      corAcento: '#38BDF8',
       avatarIcone: 'FE',
       descricao: 'Fernanda',
       metricas: {
@@ -112,7 +112,7 @@
       nome: 'Caio',
       nomeCurto: 'Caio',
       cargo: 'Comercial',
-      corPrimaria: '#0284C7',
+      corPrimaria: '#0F2547',
       corAcento: '#38BDF8',
       avatarIcone: 'CA',
       descricao: 'Caio',
@@ -125,28 +125,68 @@
         valorTotal: 0,
         pontos: 0
       }
+    },
+    {
+      id: 'albert',
+      nome: 'Albert',
+      nomeCurto: 'Albert',
+      cargo: 'Comercial',
+      corPrimaria: '#18181B',
+      corAcento: '#38BDF8',
+      avatarIcone: 'AL',
+      descricao: 'Albert',
+      metricas: {
+        contatos: 0,
+        novosLeads: 0,
+        emNegociacao: 0,
+        fechados: 0,
+        taxaConversao: 0,
+        valorTotal: 0,
+        pontos: 0
+      }
+    },
+    {
+      id: 'daniel',
+      nome: 'Daniel',
+      nomeCurto: 'Daniel',
+      cargo: 'Comercial',
+      corPrimaria: '#EFE6DD',
+      corAcento: '#059669',
+      avatarIcone: 'DA',
+      descricao: 'Daniel',
+      metricas: {
+        contatos: 0,
+        novosLeads: 0,
+        emNegociacao: 0,
+        fechados: 0,
+        taxaConversao: 0,
+        valorTotal: 0,
+        pontos: 0
+      }
     }
   ];
 
-  // Posições geométricas dos degraus do pódio
+  // Posições geométricas dos 5 degraus da Arena (1º ao 5º Lugar)
   const PODIUM_SLOTS = {
-    1: { x: 0, y: 2.2, z: 0, height: 2.2, radius: 1.55, cor: CORES.biaPaperGold, label: '1º LUGAR' },
-    2: { x: -3.1, y: 1.45, z: 0.4, height: 1.45, radius: 1.4, cor: CORES.prata, label: '2º LUGAR' },
-    3: { x: 3.1, y: 0.85, z: 0.4, height: 0.85, radius: 1.4, cor: CORES.bronze, label: '3º LUGAR' }
+    1: { x: 0, y: 2.2, z: 0, height: 2.2, radius: 1.45, cor: CORES.biaPaperGold, label: '1º LUGAR' },
+    2: { x: -2.85, y: 1.48, z: 0.35, height: 1.48, radius: 1.28, cor: CORES.prata, label: '2º LUGAR' },
+    3: { x: 2.85, y: 0.92, z: 0.35, height: 0.92, radius: 1.28, cor: CORES.bronze, label: '3º LUGAR' },
+    4: { x: -5.35, y: 0.48, z: 0.85, height: 0.48, radius: 1.15, cor: CORES.isapelBlue, label: '4º LUGAR' },
+    5: { x: 5.35, y: 0.48, z: 0.85, height: 0.48, radius: 1.15, cor: CORES.isapelNavy, label: '5º LUGAR' }
   };
 
   /**
-   * Obtém as coordenadas do pódio ou piso da arena para qualquer colocação (1º a 4º+)
+   * Obtém as coordenadas do pódio ou piso da arena para qualquer colocação (1º a 5º+)
    */
   function obterSlotPodio(rank) {
     if (PODIUM_SLOTS[rank]) return PODIUM_SLOTS[rank];
     const lateral = (rank % 2 === 0 ? -1 : 1);
-    const idx = Math.floor((rank - 4) / 2);
+    const idx = Math.floor((rank - 6) / 2);
     return {
-      x: lateral * (4.8 + idx * 1.5),
-      y: 0.18,
-      z: 1.0 + idx * 1.2,
-      height: 0.18,
+      x: lateral * (7.2 + idx * 1.5),
+      y: 0.22,
+      z: 1.2 + idx * 1.0,
+      height: 0.22,
       radius: 1.0,
       cor: CORES.isapelNavy,
       label: `${rank}º LUGAR`
@@ -185,11 +225,11 @@
     prevMouseX: 0,
     prevMouseY: 0,
     targetTheta: 0,
-    targetPhi: 0.28,
+    targetPhi: 0.26,
     theta: 0,
-    phi: 0.28,
-    radius: 12.8,
-    targetRadius: 12.8
+    phi: 0.26,
+    radius: 14.5,
+    targetRadius: 14.5
   };
 
   // Raycaster para interações de clique/hover nos personagens
@@ -310,65 +350,71 @@
   }
 
   const VENDEDORES_DEFAULT_AVATARS = {
+    // Print 1: Gabriel Maciel — Polo Azul Claro Isapel (#5A98E0), Cabelo Cacheado Curto Escuro, Bigode Cheio, Sem Óculos
     maciel: {
       id: 'maciel',
-      uniforme: 'camisa-social',
-      peleHex: 0xe6b994,
-      cabeloEstilo: 'cacheado-curto',
-      cabeloHex: 0x1a1514,
-      barbaEstilo: 'com-bigode',
-      barbaHex: 0x161211,
-      oculos: 'nenhum',
-      cracha: true
-    },
-    fernanda: {
-      id: 'fernanda',
       uniforme: 'polo-sky',
-      peleHex: 0xf9d3b4,
-      cabeloEstilo: 'liso-comprido',
-      cabeloHex: 0xf7cf46,
-      barbaEstilo: 'sem-barba',
-      barbaHex: 0x161211,
+      peleHex: 0xd49b72,
+      cabeloEstilo: 'cacheado-curto',
+      cabeloHex: 0x1b130f,
+      barbaEstilo: 'com-bigode',
+      barbaHex: 0x14100e,
       oculos: 'nenhum',
-      cracha: true
+      cracha: false
     },
+    // Print 2: Daniel (Mateus) — Moletom Creme/Off-White com Capuz e Cordões, Cabelo Cacheado Volumoso no Topo, Bigode + Mosca + Cavanhaque
+    daniel: {
+      id: 'daniel',
+      uniforme: 'moletom-creme',
+      peleHex: 0xc68a62,
+      cabeloEstilo: 'cacheado-volumoso',
+      cabeloHex: 0x16110f,
+      barbaEstilo: 'cavanhaque',
+      barbaHex: 0x14100e,
+      oculos: 'nenhum',
+      cracha: false
+    },
+    // Print 3: Caio — Camisa Azul Marinho Isapel (#0F2547) c/ Logo Branco, Cabelo Cacheado Curto Jovem, Cavanhaque Fino na Ponta do Queixo
     caio: {
       id: 'caio',
       uniforme: 'polo-navy',
-      peleHex: 0xdfa980,
-      cabeloEstilo: 'cacheado-volumoso',
-      cabeloHex: 0x1f1917,
-      barbaEstilo: 'cavanhaque',
-      barbaHex: 0x161211,
+      peleHex: 0xcf966e,
+      cabeloEstilo: 'cacheado-jovem',
+      cabeloHex: 0x18120f,
+      barbaEstilo: 'cavanhaque-fino',
+      barbaHex: 0x18120f,
       oculos: 'nenhum',
-      cracha: true
+      cracha: false
     },
-    albert: {
-      id: 'albert',
-      uniforme: 'polo-navy',
-      peleHex: 0xe6b994,
-      cabeloEstilo: 'curto-executivo',
-      cabeloHex: 0x1a1514,
+    // Print 4: Fernanda — Blusa Azul Royal (#2563EB) + Colar Prateado, Cabelo Loiro Dourado Longo Liso c/ Raiz Esfumada, Lábios Rosados
+    fernanda: {
+      id: 'fernanda',
+      uniforme: 'blusa-royal',
+      peleHex: 0xe6b896,
+      cabeloEstilo: 'liso-comprido',
+      cabeloHex: 0xd6b254,
       barbaEstilo: 'sem-barba',
       barbaHex: 0x161211,
       oculos: 'nenhum',
-      cracha: true
+      cracha: false
     },
-    daniel: {
-      id: 'daniel',
-      uniforme: 'camisa-social',
-      peleHex: 0xdfa980,
-      cabeloEstilo: 'curto-executivo',
-      cabeloHex: 0x1a1514,
-      barbaEstilo: 'com-bigode',
-      barbaHex: 0x161211,
-      oculos: 'nenhum',
-      cracha: true
+    // Print 5: Albert — Jaqueta Preta Aberta sobre Camiseta Azul Marinho Isapel, Cabelo Buzz Curto, Barba Cheia + Sorriso Aberto, Óculos Metálico Prateado
+    albert: {
+      id: 'albert',
+      uniforme: 'jaqueta-preta',
+      peleHex: 0xa86b42,
+      cabeloEstilo: 'raspado-buzz',
+      cabeloHex: 0x121010,
+      barbaEstilo: 'barba-cheia',
+      barbaHex: 0x121010,
+      oculos: 'executivo-prata',
+      cracha: false
     }
   };
 
   function normalizarConfigAvatar(raw, fallbackId) {
-    const vid = fallbackId || (raw && (raw.id || raw.vendedorId)) || 'custom';
+    let vid = String(fallbackId || (raw && (raw.id || raw.vendedorId)) || 'custom').trim().toLowerCase();
+    if (vid === 'mateus') vid = 'daniel';
     const def = VENDEDORES_DEFAULT_AVATARS[vid] || {
       id: vid,
       uniforme: 'polo-sky',
@@ -378,7 +424,7 @@
       barbaEstilo: 'sem-barba',
       barbaHex: 0x161211,
       oculos: 'nenhum',
-      cracha: true
+      cracha: false
     };
 
     const norm = { ...def, id: vid };
@@ -387,21 +433,37 @@
     // 1. Uniforme
     if (typeof raw.uniforme === 'string') {
       const u = raw.uniforme.toLowerCase();
-      if (u.includes('sky') || u.includes('cyan') || u.includes('ceu') || u.includes('céu')) {
+      if (u.includes('moletom') || u.includes('creme') || u.includes('hoodie')) {
+        norm.uniforme = 'moletom-creme';
+      } else if (u.includes('jaqueta') || u.includes('preta') || u.includes('casaco')) {
+        norm.uniforme = 'jaqueta-preta';
+      } else if (u.includes('blusa') || u.includes('royal') || u.includes('regata')) {
+        norm.uniforme = 'blusa-royal';
+      } else if (u.includes('sky') || u.includes('cyan') || u.includes('ceu') || u.includes('céu')) {
         norm.uniforme = 'polo-sky';
       } else if (u.includes('social') || u.includes('blazer') || u.includes('branca') || u.includes('gravata')) {
         norm.uniforme = 'camisa-social';
-      } else {
+      } else if (u.includes('navy') || u.includes('marinho')) {
         norm.uniforme = 'polo-navy';
+      } else {
+        norm.uniforme = def.uniforme;
       }
     } else if (raw.uniforme && typeof raw.uniforme === 'object') {
       const tipo = (raw.uniforme.tipo || '').toLowerCase();
-      if (tipo.includes('cyan') || tipo.includes('sky')) {
+      if (tipo.includes('moletom') || tipo.includes('creme') || tipo.includes('hoodie')) {
+        norm.uniforme = 'moletom-creme';
+      } else if (tipo.includes('jaqueta') || tipo.includes('preta')) {
+        norm.uniforme = 'jaqueta-preta';
+      } else if (tipo.includes('blusa') || tipo.includes('royal')) {
+        norm.uniforme = 'blusa-royal';
+      } else if (tipo.includes('cyan') || tipo.includes('sky')) {
         norm.uniforme = 'polo-sky';
       } else if (tipo.includes('social') || tipo.includes('blazer') || tipo.includes('branca')) {
         norm.uniforme = 'camisa-social';
-      } else {
+      } else if (tipo.includes('navy') || tipo.includes('marinho')) {
         norm.uniforme = 'polo-navy';
+      } else {
+        norm.uniforme = def.uniforme;
       }
       if (raw.uniforme.temCracha !== undefined) {
         norm.cracha = Boolean(raw.uniforme.temCracha);
@@ -420,7 +482,8 @@
       norm.cabeloEstilo = String(raw.cabeloEstilo);
     } else if (raw.cabelo && (raw.cabelo.estilo || raw.cabelo.tipo)) {
       const est = (raw.cabelo.estilo || raw.cabelo.tipo).toLowerCase();
-      if (est.includes('longo') || est.includes('feminino') || est.includes('franja')) norm.cabeloEstilo = 'liso-comprido';
+      if (est.includes('longo') || est.includes('feminino') || est.includes('franja') || est.includes('liso')) norm.cabeloEstilo = 'liso-comprido';
+      else if (est.includes('jovem')) norm.cabeloEstilo = 'cacheado-jovem';
       else if (est.includes('volumoso') || est.includes('afro')) norm.cabeloEstilo = 'cacheado-volumoso';
       else if (est.includes('curto') && est.includes('social')) norm.cabeloEstilo = 'curto-executivo';
       else if (est.includes('curto') || est.includes('cacheado')) norm.cabeloEstilo = 'cacheado-curto';
@@ -441,6 +504,7 @@
     } else if (raw.barba && (raw.barba.tipo || raw.barba.estilo)) {
       const b = (raw.barba.tipo || raw.barba.estilo).toLowerCase();
       if (b.includes('bigode')) norm.barbaEstilo = 'com-bigode';
+      else if (b.includes('fino')) norm.barbaEstilo = 'cavanhaque-fino';
       else if (b.includes('cavanhaque')) norm.barbaEstilo = 'cavanhaque';
       else if (b.includes('cheia') || b.includes('barba')) norm.barbaEstilo = 'barba-cheia';
       else norm.barbaEstilo = 'sem-barba';
@@ -457,8 +521,10 @@
       norm.oculos = String(raw.oculos);
     } else if (raw.acessorios && raw.acessorios.oculos) {
       const oc = String(raw.acessorios.oculos).toLowerCase();
-      if (oc.includes('redondo')) norm.oculos = 'redondo-moderno';
-      else if (oc.includes('retangular') || oc.includes('executivo')) norm.oculos = 'executivo-dourado';
+      if (oc.includes('prata') || oc.includes('metal')) norm.oculos = 'executivo-prata';
+      else if (oc.includes('redondo')) norm.oculos = 'redondo-moderno';
+      else if (oc.includes('dourado')) norm.oculos = 'executivo-dourado';
+      else if (oc.includes('retangular') || oc.includes('executivo') || oc.includes('preto')) norm.oculos = 'executivo-preto';
       else if (oc !== 'nenhum') norm.oculos = oc;
       else norm.oculos = 'nenhum';
     }
@@ -506,8 +572,13 @@
 
   // ==========================================================================
   // CONSTRUTOR MODULAR PARAMÉTRICO DE AVATARES 3D (AVATARBUILDER)
+  // Modelagem de Alta Fidelidade Baseada nas Fotos Oficiais dos 5 Consultores
   // ==========================================================================
   const AvatarBuilder = {
+    obterPresetsPadrao: function () {
+      return JSON.parse(JSON.stringify(VENDEDORES_DEFAULT_AVATARS));
+    },
+
     construirAvatar: function (config, THREE_LIB) {
       const T = THREE_LIB || THREE;
       if (!T) {
@@ -523,8 +594,8 @@
       bodyGroup.name = 'body_pivot';
       root.add(bodyGroup);
 
-      // Sombra de contato circular no piso
-      const shadowGeo = new T.CircleGeometry(0.55, 24);
+      // Sombra de contato circular suave no piso
+      const shadowGeo = new T.CircleGeometry(0.56, 24);
       const shadowMat = new T.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.35 });
       const shadowMesh = new T.Mesh(shadowGeo, shadowMat);
       shadowMesh.rotation.x = -Math.PI / 2;
@@ -533,20 +604,23 @@
 
       // Materiais reativos principais
       const matPele = new T.MeshStandardMaterial({
-        color: parseColor(cfg.peleHex, 0xe6b994),
-        roughness: 0.5
+        color: parseColor(cfg.peleHex, 0xd8a37e),
+        roughness: 0.65,
+        metalness: 0.0
       });
       matPele.userData = { tipo: 'pele' };
 
       const matCabelo = new T.MeshStandardMaterial({
-        color: parseColor(cfg.cabeloHex, 0x1a1514),
-        roughness: 0.7
+        color: parseColor(cfg.cabeloHex, 0x1e1612),
+        roughness: cfg.cabeloEstilo === 'liso-comprido' ? 0.55 : 0.78,
+        metalness: 0.0
       });
       matCabelo.userData = { tipo: 'cabelo' };
 
       const matBarba = new T.MeshStandardMaterial({
         color: parseColor(cfg.barbaHex, 0x161211),
-        roughness: 0.65
+        roughness: 0.75,
+        metalness: 0.0
       });
       matBarba.userData = { tipo: 'barba' };
 
@@ -559,32 +633,36 @@
       // 1. Pernas e Calçados
       this._adicionarPernas(bodyGroup, cfg, T);
 
-      // 2. Torso e Uniforme (Polo Navy, Polo Sky ou Camisa Social com Gravata)
-      const corManga = this._adicionarTorsoUniforme(bodyGroup, cfg, matOuro, T);
+      // 2. Torso e Uniforme personalizado por consultor
+      const infoManga = this._adicionarTorsoUniforme(bodyGroup, cfg, matPele, matOuro, T);
 
-      // 3. Braços Articulados
-      const matManga = new T.MeshStandardMaterial({ color: corManga, roughness: 0.45 });
-      const armLeft = this._criarBracoArticulado(matManga, matPele, true, T);
-      armLeft.position.set(-0.47, 1.54, 0);
-      const armRight = this._criarBracoArticulado(matManga, matPele, false, T);
-      armRight.position.set(0.47, 1.54, 0);
+      // 3. Braços Articulados (com manga longa para jaqueta/moletom ou curta para polo/blusa)
+      const matManga = new T.MeshStandardMaterial({
+        color: infoManga.cor,
+        roughness: infoManga.roughness || 0.55
+      });
+      const armPosX = (cfg.id === 'fernanda' || cfg.uniforme === 'blusa-royal' || cfg.id === 'caio') ? 0.39 : 0.42;
+      const armLeft = this._criarBracoArticulado(matManga, matPele, true, infoManga, T);
+      armLeft.position.set(-armPosX, 1.52, 0);
+      const armRight = this._criarBracoArticulado(matManga, matPele, false, infoManga, T);
+      armRight.position.set(armPosX, 1.52, 0);
       bodyGroup.add(armLeft, armRight);
 
-      // 4. Pescoço
-      const pescGeo = new T.CylinderGeometry(0.125, 0.138, 0.18, 10);
+      // 4. Pescoço anatômico
+      const pescGeo = new T.CylinderGeometry(0.122, 0.136, 0.20, 14);
       const pescMesh = new T.Mesh(pescGeo, matPele);
-      pescMesh.position.y = 1.70;
+      pescMesh.position.y = 1.69;
       bodyGroup.add(pescMesh);
 
-      // 5. Cabeça e Feições
+      // 5. Cabeça e Feições Esculpidas (Nariz 3D, Orelhas, Olhos em Camadas, Sobrancelhas, Boca)
       const headGroup = new T.Group();
       headGroup.name = 'head_group';
       headGroup.position.set(0, 2.0, 0);
       bodyGroup.add(headGroup);
 
-      this._adicionarRosto(headGroup, matPele, matCabelo, T);
-      this._adicionarCabelo(headGroup, cfg.cabeloEstilo, matCabelo, T);
-      this._adicionarBarba(headGroup, cfg.barbaEstilo, matBarba, T);
+      this._adicionarRosto(headGroup, cfg, matPele, matCabelo, T);
+      this._adicionarCabelo(headGroup, cfg, matCabelo, T);
+      this._adicionarBarba(headGroup, cfg, matBarba, T);
       this._adicionarAcessorios(headGroup, cfg, matOuro, T);
 
       root.userData = {
@@ -603,88 +681,279 @@
     },
 
     _adicionarPernas: function (bodyGroup, cfg, T) {
-      const matCalca = new T.MeshStandardMaterial({ color: 0x0a1829, roughness: 0.4 });
-      const matSapato = new T.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.25 });
+      const isDaniel = cfg.id === 'daniel' || cfg.uniforme === 'moletom-creme';
+      const isFernanda = cfg.id === 'fernanda' || cfg.uniforme === 'blusa-royal';
+      const corCalca = isDaniel ? 0x1e293b : (isFernanda ? 0x0f172a : 0x0a1829);
+      const matCalca = new T.MeshStandardMaterial({ color: corCalca, roughness: 0.45 });
+      const matSapato = new T.MeshStandardMaterial({
+        color: (cfg.id === 'caio' || isDaniel) ? 0x1e293b : 0x0f172a,
+        roughness: 0.28
+      });
+      const matSola = new T.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.4 });
 
-      const pernaGeo = new T.CylinderGeometry(0.115, 0.095, 0.88, 10);
+      const pernaGeo = new T.CylinderGeometry(0.115, 0.095, 0.88, 12);
       const pernaEsq = new T.Mesh(pernaGeo, matCalca);
-      pernaEsq.position.set(-0.16, 0.46, 0);
+      pernaEsq.position.set(-0.155, 0.46, 0);
       const pernaDir = pernaEsq.clone();
-      pernaDir.position.x = 0.16;
+      pernaDir.position.x = 0.155;
       bodyGroup.add(pernaEsq, pernaDir);
 
-      const sapatoGeo = new T.BoxGeometry(0.18, 0.11, 0.32);
+      const sapatoGeo = new T.BoxGeometry(0.175, 0.10, 0.31);
       const sapatoEsq = new T.Mesh(sapatoGeo, matSapato);
-      sapatoEsq.position.set(-0.16, 0.055, 0.06);
+      sapatoEsq.position.set(-0.155, 0.055, 0.055);
       const sapatoDir = sapatoEsq.clone();
-      sapatoDir.position.x = 0.16;
+      sapatoDir.position.x = 0.155;
       bodyGroup.add(sapatoEsq, sapatoDir);
+
+      // Sola branca esportiva para Caio e Daniel
+      if (cfg.id === 'caio' || isDaniel) {
+        const solaGeo = new T.BoxGeometry(0.18, 0.025, 0.32);
+        const solaEsq = new T.Mesh(solaGeo, matSola);
+        solaEsq.position.set(-0.155, 0.015, 0.055);
+        const solaDir = solaEsq.clone();
+        solaDir.position.x = 0.155;
+        bodyGroup.add(solaEsq, solaDir);
+      }
     },
 
-    _adicionarTorsoUniforme: function (bodyGroup, cfg, matOuro, T) {
+    _adicionarLogoIsapelPeito: function (parent, posX, posY, posZ, corTextoHex, T) {
+      const logoGroup = new T.Group();
+      logoGroup.name = 'logo_isapel_peito';
+      logoGroup.position.set(posX, posY, posZ);
+
+      const matBranco = new T.MeshBasicMaterial({ color: 0xffffff });
+      const matTexto = new T.MeshBasicMaterial({ color: corTextoHex });
+
+      // Ícone das 2 bobinas de papel Isapel
+      const rolo1 = new T.Mesh(new T.BoxGeometry(0.036, 0.014, 0.01), matBranco);
+      rolo1.position.set(-0.045, 0.012, 0);
+      const rolo2 = new T.Mesh(new T.BoxGeometry(0.036, 0.014, 0.01), matBranco);
+      rolo2.position.set(-0.045, -0.008, 0);
+
+      // Letras estilizadas "isapel" ao lado do ícone
+      const barraTexto = new T.Mesh(new T.BoxGeometry(0.085, 0.022, 0.008), matTexto);
+      barraTexto.position.set(0.018, -0.002, 0);
+
+      logoGroup.add(rolo1, rolo2, barraTexto);
+      parent.add(logoGroup);
+    },
+
+    _adicionarTorsoUniforme: function (bodyGroup, cfg, matPele, matOuro, T) {
       const tipo = cfg.uniforme || 'polo-navy';
       const torsoGroup = new T.Group();
       torsoGroup.name = 'torso_uniforme';
 
-      let corManga = 0x003360;
+      let infoManga = { cor: 0x0f2547, mangaLonga: false, semManga: false, roughness: 0.45 };
 
-      if (tipo === 'polo-navy') {
-        corManga = 0x003360;
-        const matPolo = new T.MeshStandardMaterial({ color: 0x003360, roughness: 0.45 });
-        const matAcento = new T.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.4 });
+      if (tipo === 'polo-sky') {
+        // ====================================================================
+        // PRINT 1: GABRIEL MACIEL — Camisa Polo Azul Claro Isapel (#6BA4E8)
+        // com gola polo azul claro, 2 botões brancos e logo Isapel no peito
+        // ====================================================================
+        const corSky = 0x6ba4e8;
+        const corSkyDark = 0x528fd9;
+        infoManga = { cor: corSky, mangaLonga: false, semManga: false, roughness: 0.42 };
 
-        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.35, 0.35, 0.74, 16), matPolo);
+        const matPolo = new T.MeshStandardMaterial({ color: corSky, roughness: 0.42 });
+        const matGola = new T.MeshStandardMaterial({ color: corSkyDark, roughness: 0.38 });
+        const matBotao = new T.MeshBasicMaterial({ color: 0xffffff });
+
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.355, 0.34, 0.75, 18), matPolo);
         torsoMesh.position.y = 1.25;
         torsoGroup.add(torsoMesh);
 
-        // Gola polo em Torus
-        const gola = new T.Mesh(new T.TorusGeometry(0.24, 0.045, 8, 16), matAcento);
+        // Colarinho Polo dobrado
+        const gola = new T.Mesh(new T.TorusGeometry(0.215, 0.042, 10, 20, Math.PI * 1.65), matGola);
         gola.rotation.x = Math.PI / 2;
-        gola.position.set(0, 1.60, 0);
+        gola.rotation.z = Math.PI * 0.68;
+        gola.position.set(0, 1.61, 0);
         torsoGroup.add(gola);
 
-        // Peitilho com botões
-        const peitilho = new T.Mesh(new T.BoxGeometry(0.08, 0.22, 0.02), matAcento);
-        peitilho.position.set(0, 1.44, 0.35);
-        const b1 = new T.Mesh(new T.SphereGeometry(0.015, 6, 6), new T.MeshBasicMaterial({ color: 0xffffff }));
-        b1.position.set(0, 1.50, 0.365);
+        // Peitilho com os 2 botões brancos da foto
+        const peitilho = new T.Mesh(new T.BoxGeometry(0.065, 0.21, 0.02), matGola);
+        peitilho.position.set(0, 1.47, 0.348);
+        const b1 = new T.Mesh(new T.CylinderGeometry(0.014, 0.014, 0.012, 10), matBotao);
+        b1.rotation.x = Math.PI / 2;
+        b1.position.set(0, 1.52, 0.36);
         const b2 = b1.clone();
-        b2.position.y = 1.40;
+        b2.position.y = 1.43;
         torsoGroup.add(peitilho, b1, b2);
 
-      } else if (tipo === 'polo-sky') {
-        corManga = 0x0284c7;
-        const matPolo = new T.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.40 });
-        const matAcento = new T.MeshStandardMaterial({ color: 0x003360, roughness: 0.4 });
+        // Logo Isapel no lado esquerdo do peito (azul marinho + ícone branco)
+        this._adicionarLogoIsapelPeito(torsoGroup, 0.145, 1.41, 0.345, 0x0a2540, T);
 
-        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.35, 0.35, 0.74, 16), matPolo);
+      } else if (tipo === 'moletom-creme') {
+        // ====================================================================
+        // PRINT 2: DANIEL (MATEUS) — Moletom Creme/Off-White (#EFE6DD)
+        // com Capuz 3D volumoso ao redor do pescoço, ilhoses e cordões
+        // ====================================================================
+        const corCreme = 0xdecfc1;
+        const corCordao = 0xbda793;
+        infoManga = { cor: corCreme, mangaLonga: true, semManga: false, roughness: 0.72 };
+
+        const matMoletom = new T.MeshStandardMaterial({ color: corCreme, roughness: 0.72 });
+        const matCapuz = new T.MeshStandardMaterial({ color: 0xcab8a7, roughness: 0.74 });
+        const matIlhos = new T.MeshStandardMaterial({ color: 0x334155, metalness: 0.7, roughness: 0.3 });
+        const matCordao = new T.MeshStandardMaterial({ color: corCordao, roughness: 0.72 });
+
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.375, 0.355, 0.76, 18), matMoletom);
         torsoMesh.position.y = 1.25;
         torsoGroup.add(torsoMesh);
 
-        // Gola contrastante navy
-        const gola = new T.Mesh(new T.TorusGeometry(0.24, 0.045, 8, 16), matAcento);
+        // Barra canelada inferior do moletom
+        const barra = new T.Mesh(new T.CylinderGeometry(0.358, 0.352, 0.08, 18), matCapuz);
+        barra.position.y = 0.90;
+        torsoGroup.add(barra);
+
+        // Capuz 3D dobrado ao redor dos ombros/pescoço (como na foto 2)
+        const capuzAnel = new T.Mesh(new T.TorusGeometry(0.255, 0.075, 12, 24), matCapuz);
+        capuzAnel.rotation.x = Math.PI / 2 - 0.12;
+        capuzAnel.position.set(0, 1.61, -0.02);
+        torsoGroup.add(capuzAnel);
+
+        // Ilhoses metálicos escuros + Cordões bege caindo no peito
+        [-0.085, 0.085].forEach(posX => {
+          const ilhos = new T.Mesh(new T.TorusGeometry(0.020, 0.006, 8, 12), matIlhos);
+          ilhos.position.set(posX, 1.54, 0.365);
+          const cordao = new T.Mesh(new T.CylinderGeometry(0.014, 0.014, 0.24, 8), matCordao);
+          cordao.position.set(posX, 1.42, 0.372);
+          cordao.rotation.z = posX < 0 ? 0.05 : -0.05;
+          torsoGroup.add(ilhos, cordao);
+        });
+
+      } else if (tipo === 'polo-navy') {
+        // ====================================================================
+        // PRINT 3: CAIO — Camisa Azul Marinho Profundo Isapel (#0F2547)
+        // com gola careca/polo marinho e logo Isapel branco no peito
+        // ====================================================================
+        const corNavy = 0x0f2547;
+        infoManga = { cor: corNavy, mangaLonga: false, semManga: false, roughness: 0.45 };
+
+        const matNavy = new T.MeshStandardMaterial({ color: corNavy, roughness: 0.45 });
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.345, 0.33, 0.75, 18), matNavy);
+        torsoMesh.position.y = 1.25;
+        torsoGroup.add(torsoMesh);
+
+        // Gola redonda canelada azul marinho
+        const gola = new T.Mesh(new T.TorusGeometry(0.205, 0.035, 10, 20), matNavy);
         gola.rotation.x = Math.PI / 2;
-        gola.position.set(0, 1.60, 0);
+        gola.position.set(0, 1.61, 0);
         torsoGroup.add(gola);
 
-        // Peitilho navy
-        const peitilho = new T.Mesh(new T.BoxGeometry(0.08, 0.22, 0.02), matAcento);
-        peitilho.position.set(0, 1.44, 0.35);
-        const b1 = new T.Mesh(new T.SphereGeometry(0.015, 6, 6), new T.MeshBasicMaterial({ color: 0xffffff }));
-        b1.position.set(0, 1.50, 0.365);
-        const b2 = b1.clone();
-        b2.position.y = 1.40;
-        torsoGroup.add(peitilho, b1, b2);
+        // Logo Isapel branco no peito esquerdo (exatamente como na foto 3)
+        this._adicionarLogoIsapelPeito(torsoGroup, 0.14, 1.38, 0.335, 0xffffff, T);
+
+      } else if (tipo === 'blusa-royal') {
+        // ====================================================================
+        // PRINT 4: FERNANDA — Blusa Azul Royal (#2563EB) + Colar Prateado
+        // ====================================================================
+        const corRoyal = 0x2563eb;
+        infoManga = { cor: corRoyal, mangaLonga: false, semManga: true, roughness: 0.38 };
+
+        const matRoyal = new T.MeshStandardMaterial({ color: corRoyal, roughness: 0.38 });
+        const matPrata = new T.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.85, roughness: 0.2 });
+
+        const torsoMesh = new T.Mesh(new T.CylinderGeometry(0.32, 0.30, 0.68, 18), matRoyal);
+        torsoMesh.position.y = 1.21;
+        torsoGroup.add(torsoMesh);
+
+        // Colo feminino em tom de pele acima do decote da blusa azul royal
+        const coloMesh = new T.Mesh(new T.CylinderGeometry(0.23, 0.30, 0.12, 16), matPele);
+        coloMesh.position.y = 1.58;
+        torsoGroup.add(coloMesh);
+
+        // Alças da blusa azul royal sobre os ombros
+        [-0.20, 0.20].forEach(posX => {
+          const alca = new T.Mesh(new T.BoxGeometry(0.075, 0.13, 0.28), matRoyal);
+          alca.position.set(posX, 1.58, 0);
+          torsoGroup.add(alca);
+        });
+
+        // Colar delicado prateado com pequeno pingente (visível na foto 4)
+        const colar = new T.Mesh(new T.TorusGeometry(0.165, 0.008, 8, 24, Math.PI), matPrata);
+        colar.rotation.x = Math.PI / 2 + 0.35;
+        colar.rotation.z = Math.PI;
+        colar.position.set(0, 1.60, 0.08);
+        const pingente = new T.Mesh(new T.SphereGeometry(0.016, 8, 8), matPrata);
+        pingente.position.set(0, 1.54, 0.245);
+        torsoGroup.add(colar, pingente);
+
+      } else if (tipo === 'jaqueta-preta') {
+        // ====================================================================
+        // PRINT 5: ALBERT — Jaqueta Preta Aberta de Gola Alta (#18181B)
+        // sobre Camiseta Azul Marinho Isapel (#14284B) com Logo Branco no Peito
+        // ====================================================================
+        const corJaqueta = 0x18181b;
+        const corCamiseta = 0x14284b;
+        infoManga = { cor: corJaqueta, mangaLonga: true, semManga: false, roughness: 0.42 };
+
+        const matJaqueta = new T.MeshStandardMaterial({ color: corJaqueta, roughness: 0.42 });
+        const matCamiseta = new T.MeshStandardMaterial({ color: corCamiseta, roughness: 0.48 });
+        const matBotao = new T.MeshStandardMaterial({ color: 0x27272a, metalness: 0.6, roughness: 0.3 });
+        const matAlca = new T.MeshStandardMaterial({ color: 0xd6c7b2, roughness: 0.55 });
+
+        // Camiseta interna Azul Marinho Isapel
+        const camisetaMesh = new T.Mesh(new T.CylinderGeometry(0.35, 0.34, 0.75, 18), matCamiseta);
+        camisetaMesh.position.y = 1.25;
+        torsoGroup.add(camisetaMesh);
+
+        // Gola redonda da camiseta azul marinho
+        const golaCamiseta = new T.Mesh(new T.TorusGeometry(0.20, 0.028, 8, 18), matCamiseta);
+        golaCamiseta.rotation.x = Math.PI / 2;
+        golaCamiseta.position.set(0, 1.61, 0);
+        torsoGroup.add(golaCamiseta);
+
+        // Logo Isapel branco na camiseta interna (lado esquerdo do peito, visível pela abertura da jaqueta)
+        this._adicionarLogoIsapelPeito(torsoGroup, 0.105, 1.35, 0.348, 0xffffff, T);
+
+        // Painéis laterais e traseiro da Jaqueta Preta Aberta na frente
+        const jaquetaCasco = new T.Mesh(
+          new T.CylinderGeometry(0.378, 0.368, 0.77, 18, 1, false, Math.PI * 0.20, Math.PI * 1.60),
+          matJaqueta
+        );
+        jaquetaCasco.position.y = 1.25;
+        torsoGroup.add(jaquetaCasco);
+
+        // Lapelas frontais estruturadas da jaqueta preta + botões laterais
+        const lapelaEsq = new T.Mesh(new T.BoxGeometry(0.12, 0.76, 0.045), matJaqueta);
+        lapelaEsq.position.set(-0.20, 1.25, 0.325);
+        lapelaEsq.rotation.y = -0.22;
+        const lapelaDir = new T.Mesh(new T.BoxGeometry(0.12, 0.76, 0.045), matJaqueta);
+        lapelaDir.position.set(0.20, 1.25, 0.325);
+        lapelaDir.rotation.y = 0.22;
+        torsoGroup.add(lapelaEsq, lapelaDir);
+
+        // Botões escuros na lapela direita da jaqueta (como na foto 5)
+        [1.36, 1.18].forEach(posY => {
+          const btn = new T.Mesh(new T.CylinderGeometry(0.022, 0.022, 0.015, 10), matBotao);
+          btn.rotation.x = Math.PI / 2;
+          btn.position.set(-0.21, posY, 0.352);
+          torsoGroup.add(btn);
+        });
+
+        // Gola alta estruturada da jaqueta preta
+        const golaAlta = new T.Mesh(
+          new T.CylinderGeometry(0.255, 0.245, 0.14, 16, 1, true, Math.PI * 0.22, Math.PI * 1.56),
+          matJaqueta
+        );
+        golaAlta.position.y = 1.64;
+        torsoGroup.add(golaAlta);
+
+        // Detalhe das alças bege nos ombros (como na foto 5)
+        [-0.27, 0.27].forEach(posX => {
+          const alca = new T.Mesh(new T.BoxGeometry(0.025, 0.42, 0.03), matAlca);
+          alca.position.set(posX, 1.40, 0.31);
+          torsoGroup.add(alca);
+        });
 
       } else {
         // Camisa social branca executiva com gravata dourada Bia Paper (#E3A52B)
-        corManga = 0xf8fafc;
+        infoManga = { cor: 0xf8fafc, mangaLonga: false, semManga: false, roughness: 0.30 };
         const matCamisa = new T.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.30 });
         const torsoMesh = new T.Mesh(new T.BoxGeometry(0.70, 0.76, 0.40), matCamisa);
         torsoMesh.position.y = 1.28;
         torsoGroup.add(torsoMesh);
 
-        // Colarinho pontudo
         const colEsq = new T.Mesh(new T.BoxGeometry(0.14, 0.06, 0.03), matCamisa);
         colEsq.position.set(-0.08, 1.63, 0.205);
         colEsq.rotation.z = -0.35;
@@ -693,12 +962,10 @@
         colDir.rotation.z = 0.35;
         torsoGroup.add(colEsq, colDir);
 
-        // Carcela de botões central
         const carcela = new T.Mesh(new T.BoxGeometry(0.04, 0.70, 0.015), new T.MeshBasicMaterial({ color: 0xffffff }));
         carcela.position.set(0, 1.28, 0.208);
         torsoGroup.add(carcela);
 
-        // Gravata dourada Bia Paper
         const gravata = new T.Mesh(new T.BoxGeometry(0.065, 0.38, 0.025), matOuro);
         gravata.position.set(0, 1.42, 0.218);
         const noGravata = new T.Mesh(new T.ConeGeometry(0.045, 0.06, 4), matOuro);
@@ -706,111 +973,207 @@
         torsoGroup.add(gravata, noGravata);
       }
 
-      // Crachá Isapel com lanyard navy e presilha dourada
-      if (cfg.cracha !== false) {
+      // Crachá Isapel opcional (se habilitado no customizador)
+      if (cfg.cracha === true) {
         this._adicionarCrachaIsapel(torsoGroup, matOuro, T);
       }
 
       bodyGroup.add(torsoGroup);
-      return corManga;
+      return infoManga;
     },
 
     _adicionarCrachaIsapel: function (parent, matOuro, T) {
       const crachaGroup = new T.Group();
       crachaGroup.name = 'cracha_isapel';
 
-      // Fita no pescoço
       const fita = new T.Mesh(new T.BoxGeometry(0.05, 0.24, 0.015), new T.MeshStandardMaterial({ color: 0x003360 }));
-      fita.position.set(0.14, 1.42, 0.34);
+      fita.position.set(0.14, 1.42, 0.35);
 
-      // Cartão branco com topo azul Isapel
       const card = new T.Mesh(new T.BoxGeometry(0.13, 0.17, 0.02), new T.MeshBasicMaterial({ color: 0xffffff }));
-      card.position.set(0.14, 1.24, 0.35);
+      card.position.set(0.14, 1.24, 0.36);
 
       const cardHeader = new T.Mesh(new T.BoxGeometry(0.13, 0.04, 0.022), new T.MeshBasicMaterial({ color: 0x0284c7 }));
-      cardHeader.position.set(0.14, 1.30, 0.352);
+      cardHeader.position.set(0.14, 1.30, 0.362);
 
       const clip = new T.Mesh(new T.BoxGeometry(0.03, 0.025, 0.025), matOuro);
-      clip.position.set(0.14, 1.33, 0.354);
+      clip.position.set(0.14, 1.33, 0.364);
 
       crachaGroup.add(fita, card, cardHeader, clip);
       parent.add(crachaGroup);
     },
 
-    _criarBracoArticulado: function (matManga, matPele, isLeft, T) {
+    _criarBracoArticulado: function (matManga, matPele, isLeft, infoManga, T) {
       const shoulderPivot = new T.Group();
       shoulderPivot.name = isLeft ? 'shoulder_left' : 'shoulder_right';
 
-      const mangaGeo = new T.CylinderGeometry(0.12, 0.1, 0.42, 10);
-      const mangaMesh = new T.Mesh(mangaGeo, matManga);
-      mangaMesh.position.y = -0.2;
+      const semManga = infoManga && infoManga.semManga;
+      const mangaLonga = infoManga && infoManga.mangaLonga;
+
+      const matSuperior = semManga ? matPele : matManga;
+      const matInferior = mangaLonga ? matManga : matPele;
+
+      const mangaGeo = new T.CylinderGeometry(0.115, 0.098, 0.40, 12);
+      const mangaMesh = new T.Mesh(mangaGeo, matSuperior);
+      mangaMesh.position.y = -0.19;
       shoulderPivot.add(mangaMesh);
 
-      const antebracoGeo = new T.CylinderGeometry(0.09, 0.08, 0.35, 10);
-      const antebracoMesh = new T.Mesh(antebracoGeo, matPele);
-      antebracoMesh.position.y = -0.52;
+      const antebracoGeo = new T.CylinderGeometry(0.092, 0.078, 0.35, 12);
+      const antebracoMesh = new T.Mesh(antebracoGeo, matInferior);
+      antebracoMesh.position.y = -0.51;
       shoulderPivot.add(antebracoMesh);
 
-      const maoGeo = new T.SphereGeometry(0.085, 10, 10);
-      maoGeo.scale(1, 1.2, 0.9);
+      const maoGeo = new T.SphereGeometry(0.082, 12, 12);
+      maoGeo.scale(1, 1.18, 0.88);
       const maoMesh = new T.Mesh(maoGeo, matPele);
-      maoMesh.position.y = -0.72;
+      maoMesh.position.y = -0.71;
       shoulderPivot.add(maoMesh);
 
       return shoulderPivot;
     },
 
-    _adicionarRosto: function (headGroup, matPele, matCabelo, T) {
-      // Cabeça esférica proporcional
-      const faceGeo = new T.SphereGeometry(0.36, 20, 20);
-      faceGeo.scale(1, 1.05, 0.98);
+    _adicionarRosto: function (headGroup, cfg, matPele, matCabelo, T) {
+      const isFernanda = cfg.id === 'fernanda' || cfg.cabeloEstilo === 'liso-comprido';
+      const isCaio = cfg.id === 'caio' || cfg.cabeloEstilo === 'cacheado-jovem';
+      const isAlbert = cfg.id === 'albert' || cfg.barbaEstilo === 'barba-cheia';
+
+      // 1. Formato anatômico da cabeça (mais delicado para Fernanda, mais esguio para Caio)
+      const faceGeo = new T.SphereGeometry(0.355, 24, 24);
+      if (isFernanda) {
+        faceGeo.scale(0.95, 1.06, 0.95);
+      } else if (isCaio) {
+        faceGeo.scale(0.94, 1.07, 0.96);
+      } else {
+        faceGeo.scale(1.0, 1.05, 0.98);
+      }
       const faceMesh = new T.Mesh(faceGeo, matPele);
       headGroup.add(faceMesh);
 
-      // Olhos focados e expressivos
-      const matOlhos = new T.MeshBasicMaterial({ color: 0x0f172a });
+      // 2. Orelhas 3D esculpidas nas laterais
+      const orelhaGeo = new T.SphereGeometry(0.068, 12, 12);
+      orelhaGeo.scale(0.45, 1.15, 0.75);
+      const posXOr = isFernanda || isCaio ? 0.335 : 0.355;
+      const orelhaEsq = new T.Mesh(orelhaGeo, matPele);
+      orelhaEsq.position.set(-posXOr, 0.0, -0.02);
+      const orelhaDir = orelhaEsq.clone();
+      orelhaDir.position.x = posXOr;
+      headGroup.add(orelhaEsq, orelhaDir);
+
+      // 3. Nariz 3D esculpido (ponte nasal + ponta arredondada)
+      const narizPonte = new T.Mesh(new T.CylinderGeometry(0.024, 0.036, 0.11, 10), matPele);
+      narizPonte.position.set(0, 0.02, 0.345);
+      narizPonte.rotation.x = -0.18;
+      const narizPonta = new T.Mesh(new T.SphereGeometry(0.042, 12, 12), matPele);
+      narizPonta.scale.set(1.08, 0.85, 0.95);
+      narizPonta.position.set(0, -0.022, 0.365);
+      headGroup.add(narizPonte, narizPonta);
+
+      // 4. Olhos em Camadas (Esclera branca + Íris castanha + Pupila + Duplo Brilho)
+      const matEsclera = new T.MeshBasicMaterial({ color: 0xf8fafc });
+      const matIris = new T.MeshBasicMaterial({ color: 0x3b2314 });
+      const matPupila = new T.MeshBasicMaterial({ color: 0x090d16 });
       const matBrilho = new T.MeshBasicMaterial({ color: 0xffffff });
-      const olhoGeo = new T.SphereGeometry(0.045, 12, 12);
 
-      const olhoEsq = new T.Mesh(olhoGeo, matOlhos);
-      olhoEsq.position.set(-0.13, 0.06, 0.33);
-      const olhoDir = olhoEsq.clone();
-      olhoDir.position.x = 0.13;
+      [-1, 1].forEach(dir => {
+        const ox = dir * 0.125;
+        const escr = new T.Mesh(new T.SphereGeometry(0.052, 14, 14), matEsclera);
+        escr.scale.set(1.12, 0.88, 0.65);
+        escr.position.set(ox, 0.062, 0.318);
 
-      const brilhoGeo = new T.SphereGeometry(0.015, 8, 8);
-      const brilhoEsq = new T.Mesh(brilhoGeo, matBrilho);
-      brilhoEsq.position.set(-0.11, 0.08, 0.365);
-      const brilhoDir = brilhoEsq.clone();
-      brilhoDir.position.x = 0.15;
+        const iris = new T.Mesh(new T.SphereGeometry(0.034, 12, 12), matIris);
+        iris.scale.set(1.0, 1.0, 0.55);
+        iris.position.set(ox, 0.062, 0.340);
 
-      // Sobrancelhas
-      const sobrancGeo = new T.BoxGeometry(0.11, 0.025, 0.03);
-      const sobrancEsq = new T.Mesh(sobrancGeo, matCabelo);
-      sobrancEsq.position.set(-0.13, 0.13, 0.34);
-      sobrancEsq.rotation.z = 0.06;
+        const pupila = new T.Mesh(new T.SphereGeometry(0.021, 10, 10), matPupila);
+        pupila.scale.set(1.0, 1.0, 0.55);
+        pupila.position.set(ox, 0.062, 0.350);
+
+        const brilho = new T.Mesh(new T.SphereGeometry(0.011, 8, 8), matBrilho);
+        brilho.position.set(ox + 0.014, 0.075, 0.362);
+
+        headGroup.add(escr, iris, pupila, brilho);
+
+        // Cílios delineados para Fernanda
+        if (isFernanda) {
+          const cilios = new T.Mesh(
+            new T.BoxGeometry(0.115, 0.014, 0.02),
+            new T.MeshBasicMaterial({ color: 0x1e1612 })
+          );
+          cilios.position.set(ox, 0.098, 0.342);
+          cilios.rotation.z = dir * -0.08;
+          headGroup.add(cilios);
+        }
+      });
+
+      // 5. Sobrancelhas expressivas (mais escuras para loiros como na foto 4 da Fernanda)
+      const corSobrancelha = isFernanda ? 0x5c4328 : parseColor(cfg.cabeloHex, 0x1a1514);
+      const matSobrancelha = new T.MeshStandardMaterial({ color: corSobrancelha, roughness: 0.6 });
+      const espessuraSobr = (cfg.id === 'maciel' || cfg.id === 'daniel') ? 0.032 : 0.024;
+      const sobrancGeo = new T.BoxGeometry(0.118, espessuraSobr, 0.032);
+
+      const sobrancEsq = new T.Mesh(sobrancGeo, matSobrancelha);
+      sobrancEsq.position.set(-0.125, 0.138, 0.335);
+      sobrancEsq.rotation.z = isFernanda ? 0.10 : 0.05;
       const sobrancDir = sobrancEsq.clone();
-      sobrancDir.position.x = 0.13;
-      sobrancDir.rotation.z = -0.06;
+      sobrancDir.position.x = 0.125;
+      sobrancDir.rotation.z = isFernanda ? -0.10 : -0.05;
+      headGroup.add(sobrancEsq, sobrancDir);
 
-      // Sorriso corporativo
-      const bocaGeo = new T.BoxGeometry(0.09, 0.02, 0.02);
-      const bocaMesh = new T.Mesh(bocaGeo, new T.MeshBasicMaterial({ color: 0x7f1d1d }));
-      bocaMesh.position.set(0, -0.13, 0.34);
+      // 6. Boca / Sorriso personalizado conforme cada foto
+      if (isFernanda) {
+        // Fernanda (Print 4): Lábios rosados/malva desenhados + blush suave
+        const matLabio = new T.MeshStandardMaterial({ color: 0xd96b78, roughness: 0.35 });
+        const labioSup = new T.Mesh(new T.BoxGeometry(0.105, 0.022, 0.028), matLabio);
+        labioSup.position.set(0, -0.115, 0.338);
+        const labioInf = new T.Mesh(new T.BoxGeometry(0.095, 0.026, 0.030), matLabio);
+        labioInf.position.set(0, -0.136, 0.338);
+        headGroup.add(labioSup, labioInf);
 
-      headGroup.add(olhoEsq, olhoDir, brilhoEsq, brilhoDir, sobrancEsq, sobrancDir, bocaMesh);
+        const bochechaGeo = new T.CircleGeometry(0.055, 12);
+        const bochechaMat = new T.MeshBasicMaterial({ color: 0xf43f5e, transparent: true, opacity: 0.22 });
+        const bEsq = new T.Mesh(bochechaGeo, bochechaMat);
+        bEsq.position.set(-0.20, -0.03, 0.31);
+        bEsq.rotation.y = -0.35;
+        const bDir = bEsq.clone();
+        bDir.position.x = 0.20;
+        bDir.rotation.y = 0.35;
+        headGroup.add(bEsq, bDir);
+      } else if (isAlbert) {
+        // Albert (Print 5): Sorriso largo alegre com dentes brancos visíveis
+        const matFundoBoca = new T.MeshBasicMaterial({ color: 0x450a0a });
+        const matDentes = new T.MeshBasicMaterial({ color: 0xffffff });
+        const fundoBoca = new T.Mesh(new T.BoxGeometry(0.155, 0.052, 0.025), matFundoBoca);
+        fundoBoca.position.set(0, -0.118, 0.338);
+        const dentes = new T.Mesh(new T.BoxGeometry(0.138, 0.032, 0.028), matDentes);
+        dentes.position.set(0, -0.115, 0.344);
+        headGroup.add(fundoBoca, dentes);
+      } else if (isCaio) {
+        // Caio (Print 3): Sorriso jovem simpático com leve linha de dentes
+        const matLabioCaio = new T.MeshBasicMaterial({ color: 0x9f4242 });
+        const matDentes = new T.MeshBasicMaterial({ color: 0xffffff });
+        const boca = new T.Mesh(new T.BoxGeometry(0.105, 0.028, 0.022), matLabioCaio);
+        boca.position.set(0, -0.122, 0.338);
+        const dentes = new T.Mesh(new T.BoxGeometry(0.082, 0.014, 0.025), matDentes);
+        dentes.position.set(0, -0.118, 0.342);
+        headGroup.add(boca, dentes);
+      } else {
+        // Maciel (Print 1) & Daniel (Print 2): Sorriso confiante sob o bigode
+        const matLabio = new T.MeshBasicMaterial({ color: 0xa34848 });
+        const bocaMesh = new T.Mesh(new T.BoxGeometry(0.105, 0.022, 0.024), matLabio);
+        bocaMesh.position.set(0, -0.120, 0.342);
+        headGroup.add(bocaMesh);
+      }
     },
 
-    _adicionarCabelo: function (headGroup, estilo, matCabelo, T) {
+    _adicionarCabelo: function (headGroup, cfg, matCabelo, T) {
       const cabeloExistente = headGroup.getObjectByName('cabelo_group');
       if (cabeloExistente) headGroup.remove(cabeloExistente);
 
       const cabeloGroup = new T.Group();
       cabeloGroup.name = 'cabelo_group';
 
-      const est = (estilo || 'cacheado-curto').toLowerCase();
+      const est = (cfg.cabeloEstilo || 'cacheado-curto').toLowerCase();
 
       if (est.includes('curto-executivo') || est.includes('curto_social')) {
-        // Curto executivo com risca lateral e volume elegante
         const topo = new T.Mesh(new T.SphereGeometry(0.375, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.55), matCabelo);
         topo.position.set(0, 0.02, -0.02);
         const franja = new T.Mesh(new T.BoxGeometry(0.32, 0.08, 0.14), matCabelo);
@@ -819,91 +1182,161 @@
         cabeloGroup.add(topo, franja);
 
       } else if (est.includes('cacheado-curto')) {
-        // Cachos canônicos texturizados do Gabriel Maciel (16 esferas)
+        // ====================================================================
+        // PRINT 1: GABRIEL MACIEL — Cabelo Cacheado Curto/Médio Castanho Escuro
+        // com volume lateral e cachinhos soltos na testa (sem cobrir os olhos)
+        // ====================================================================
+        const baseCalota = new T.Mesh(new T.SphereGeometry(0.362, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.45), matCabelo);
+        baseCalota.position.set(0, 0.04, -0.02);
+        cabeloGroup.add(baseCalota);
+
         const cachosMaciel = [
-          [0, 0.3, 0.0, 0.16],
-          [-0.14, 0.28, 0.06, 0.14],
-          [0.14, 0.28, 0.06, 0.14],
-          [-0.18, 0.24, -0.1, 0.15],
-          [0.18, 0.24, -0.1, 0.15],
-          [0, 0.26, -0.16, 0.16],
-          [-0.1, 0.24, 0.2, 0.12],
-          [0.1, 0.24, 0.2, 0.12],
-          [0, 0.25, 0.22, 0.13],
-          [-0.26, 0.14, 0.05, 0.13],
-          [0.26, 0.14, 0.05, 0.13],
-          [-0.27, 0.06, -0.1, 0.14],
-          [0.27, 0.06, -0.1, 0.14],
-          [0, 0.12, -0.25, 0.15],
-          [-0.12, 0.08, -0.22, 0.14],
-          [0.12, 0.08, -0.22, 0.14]
+          [0, 0.32, 0.02, 0.135],
+          [-0.14, 0.30, 0.06, 0.125],
+          [0.14, 0.30, 0.06, 0.125],
+          [-0.22, 0.25, 0.02, 0.125],
+          [0.22, 0.25, 0.02, 0.125],
+          [-0.18, 0.26, -0.12, 0.135],
+          [0.18, 0.26, -0.12, 0.135],
+          [0, 0.28, -0.16, 0.145],
+          // Cachos frontais e mechas na testa (como na foto 1)
+          [-0.08, 0.26, 0.21, 0.095],
+          [0.09, 0.26, 0.21, 0.095],
+          [-0.01, 0.24, 0.26, 0.068],
+          [-0.17, 0.24, 0.18, 0.092],
+          [0.18, 0.24, 0.18, 0.092],
+          // Laterais cacheadas
+          [-0.31, 0.15, 0.05, 0.11],
+          [0.31, 0.15, 0.05, 0.11],
+          [-0.32, 0.07, -0.08, 0.115],
+          [0.32, 0.07, -0.08, 0.115],
+          [0, 0.13, -0.25, 0.145],
+          [-0.14, 0.09, -0.22, 0.125],
+          [0.14, 0.09, -0.22, 0.125]
         ];
         cachosMaciel.forEach(([cx, cy, cz, cr]) => {
-          const c = new T.Mesh(new T.SphereGeometry(cr, 8, 8), matCabelo);
+          const c = new T.Mesh(new T.SphereGeometry(cr, 10, 10), matCabelo);
           c.position.set(cx, cy, cz);
           cabeloGroup.add(c);
         });
 
       } else if (est.includes('cacheado-volumoso')) {
-        // Cachos volumosos e dinâmicos do Caio (22 esferas com projeção)
+        // ====================================================================
+        // PRINT 2: DANIEL (MATEUS) — Cachos Escuros Volumosos no Topo da Cabeça
+        // ====================================================================
+        const baseCalota = new T.Mesh(new T.SphereGeometry(0.362, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.44), matCabelo);
+        baseCalota.position.set(0, 0.05, -0.02);
+        cabeloGroup.add(baseCalota);
+
+        const cachosDaniel = [
+          [0, 0.37, 0.02, 0.165],
+          [-0.16, 0.36, 0.07, 0.145],
+          [0.16, 0.36, 0.07, 0.145],
+          [-0.24, 0.30, 0.0, 0.14],
+          [0.24, 0.30, 0.0, 0.14],
+          [-0.20, 0.33, -0.12, 0.155],
+          [0.20, 0.33, -0.12, 0.155],
+          [0, 0.35, -0.16, 0.165],
+          [-0.10, 0.40, -0.04, 0.135],
+          [0.10, 0.40, -0.04, 0.135],
+          // Frente cacheada alta
+          [-0.13, 0.29, 0.21, 0.105],
+          [0.13, 0.29, 0.21, 0.105],
+          [0, 0.30, 0.22, 0.11],
+          [-0.23, 0.26, 0.15, 0.105],
+          [0.23, 0.26, 0.15, 0.105],
+          // Laterais equilibradas
+          [-0.32, 0.16, 0.04, 0.115],
+          [0.32, 0.16, 0.04, 0.115],
+          [-0.31, 0.08, -0.10, 0.12],
+          [0.31, 0.08, -0.10, 0.12],
+          [0, 0.16, -0.26, 0.155]
+        ];
+        cachosDaniel.forEach(([cx, cy, cz, cr]) => {
+          const c = new T.Mesh(new T.SphereGeometry(cr, 10, 10), matCabelo);
+          c.position.set(cx, cy, cz);
+          cabeloGroup.add(c);
+        });
+
+      } else if (est.includes('cacheado-jovem')) {
+        // ====================================================================
+        // PRINT 3: CAIO — Cabelo Cacheado Curto Jovem no Topo com Laterais Baixas
+        // ====================================================================
+        const baseCalota = new T.Mesh(new T.SphereGeometry(0.348, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.42), matCabelo);
+        baseCalota.position.set(0, 0.05, -0.01);
+        cabeloGroup.add(baseCalota);
+
         const cachosCaio = [
-          [0, 0.36, 0.0, 0.22],
-          [-0.18, 0.34, 0.08, 0.19],
-          [0.18, 0.34, 0.08, 0.19],
-          [-0.22, 0.30, -0.12, 0.2],
-          [0.22, 0.30, -0.12, 0.2],
-          [0, 0.32, -0.18, 0.21],
-          [-0.12, 0.28, 0.24, 0.16],
-          [0.12, 0.28, 0.24, 0.16],
-          [0, 0.30, 0.26, 0.17],
-          [-0.32, 0.18, 0.06, 0.17],
-          [0.32, 0.18, 0.06, 0.17],
-          [-0.33, 0.08, -0.12, 0.18],
-          [0.33, 0.08, -0.12, 0.18],
-          [0, 0.16, -0.30, 0.20],
-          [-0.16, 0.12, -0.26, 0.18],
-          [0.16, 0.12, -0.26, 0.18],
-          [-0.24, 0.22, 0.18, 0.15],
-          [0.24, 0.22, 0.18, 0.15],
-          [0, 0.40, 0.08, 0.16],
-          [-0.14, 0.38, -0.06, 0.16],
-          [0.14, 0.38, -0.06, 0.16],
-          [0, 0.20, 0.30, 0.14]
+          [0, 0.34, 0.03, 0.13],
+          [-0.12, 0.33, 0.07, 0.12],
+          [0.12, 0.33, 0.07, 0.12],
+          [-0.18, 0.29, -0.02, 0.115],
+          [0.18, 0.29, -0.02, 0.115],
+          [0, 0.32, -0.10, 0.13],
+          [-0.14, 0.30, -0.12, 0.12],
+          [0.14, 0.30, -0.12, 0.12],
+          // Franja cacheada curta no topo da testa (como na foto 3)
+          [-0.09, 0.28, 0.19, 0.092],
+          [0.09, 0.28, 0.19, 0.092],
+          [0, 0.29, 0.21, 0.095],
+          [-0.18, 0.25, 0.14, 0.088],
+          [0.18, 0.25, 0.14, 0.088],
+          // Laterais mais baixas (fade jovem)
+          [-0.27, 0.17, 0.04, 0.09],
+          [0.27, 0.17, 0.04, 0.09],
+          [0, 0.17, -0.23, 0.125]
         ];
         cachosCaio.forEach(([cx, cy, cz, cr]) => {
-          const c = new T.Mesh(new T.SphereGeometry(cr, 8, 8), matCabelo);
+          const c = new T.Mesh(new T.SphereGeometry(cr, 10, 10), matCabelo);
           c.position.set(cx, cy, cz);
           cabeloGroup.add(c);
         });
 
       } else if (est.includes('liso-comprido') || est.includes('longo_feminino')) {
-        // Cabelo longo estilizado de Fernanda (franja frontal + mechas sobre os ombros)
-        const calota = new T.Mesh(new T.SphereGeometry(0.385, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.58), matCabelo);
-        calota.position.set(0, 0.02, -0.02);
+        // ====================================================================
+        // PRINT 4: FERNANDA — Cabelo Loiro Dourado Longo Liso (#D6B254)
+        // com raiz esfumada, repartido ao meio e mechas longas sobre os ombros e peito
+        // ====================================================================
+        const matRaiz = new T.MeshStandardMaterial({ color: 0x8f7032, roughness: 0.68 });
 
-        // Franja lateral
-        const franja = new T.Mesh(new T.BoxGeometry(0.34, 0.09, 0.12), matCabelo);
-        franja.position.set(-0.06, 0.26, 0.28);
-        franja.rotation.z = 0.2;
+        // Calota superior lisa elegante
+        const calota = new T.Mesh(new T.SphereGeometry(0.366, 24, 20, 0, Math.PI * 2, 0, Math.PI * 0.46), matCabelo);
+        calota.scale.set(0.97, 1.05, 0.97);
+        calota.position.set(0, 0.04, -0.015);
 
-        // Mechas longas frontais descendo pelos ombros (esquerda e direita)
-        const mechaGeo = new T.CylinderGeometry(0.09, 0.07, 0.70, 8);
-        const mechaEsq = new T.Mesh(mechaGeo, matCabelo);
-        mechaEsq.position.set(-0.26, -0.16, 0.12);
-        mechaEsq.rotation.z = -0.08;
-        const mechaDir = mechaEsq.clone();
-        mechaDir.position.x = 0.26;
-        mechaDir.rotation.z = 0.08;
+        // Raiz esfumada sutil na risca central do cabelo
+        const raizTopo = new T.Mesh(new T.BoxGeometry(0.055, 0.018, 0.22), matRaiz);
+        raizTopo.position.set(-0.01, 0.375, 0.06);
 
-        // Cortina traseira longa
-        const costas = new T.Mesh(new T.BoxGeometry(0.46, 0.62, 0.14), matCabelo);
-        costas.position.set(0, -0.12, -0.22);
+        // Mechas longas lisas contínuas descendo suavemente pelos lados do rosto até o peito
+        const mechaLongaGeo = new T.CylinderGeometry(0.052, 0.082, 0.88, 16);
+        mechaLongaGeo.scale(0.85, 1.0, 0.70);
+        const mechaEsq = new T.Mesh(mechaLongaGeo, matCabelo);
+        mechaEsq.position.set(-0.265, -0.24, 0.12);
+        mechaEsq.rotation.z = -0.05;
+        mechaEsq.rotation.x = 0.06;
 
-        cabeloGroup.add(calota, franja, mechaEsq, mechaDir, costas);
+        const mechaDir = new T.Mesh(mechaLongaGeo, matCabelo);
+        mechaDir.position.set(0.265, -0.24, 0.12);
+        mechaDir.rotation.z = 0.05;
+        mechaDir.rotation.x = 0.06;
+
+        // Topo arredondado conectando as mechas à calota sem quina visível
+        const topoMechaGeo = new T.SphereGeometry(0.058, 12, 12);
+        topoMechaGeo.scale(0.85, 1.2, 0.75);
+        const topoMechaEsq = new T.Mesh(topoMechaGeo, matCabelo);
+        topoMechaEsq.position.set(-0.245, 0.18, 0.095);
+        const topoMechaDir = new T.Mesh(topoMechaGeo, matCabelo);
+        topoMechaDir.position.set(0.245, 0.18, 0.095);
+
+        // Cabelo longo liso nas costas e atrás dos ombros
+        const costas = new T.Mesh(new T.BoxGeometry(0.58, 0.96, 0.20), matCabelo);
+        costas.position.set(0, -0.24, -0.18);
+
+        cabeloGroup.add(calota, raizTopo, topoMechaEsq, topoMechaDir, mechaEsq, mechaDir, costas);
 
       } else if (est.includes('ondulado-medio')) {
-        // Chanel ondulado médio moderno
-        const calota = new T.Mesh(new T.SphereGeometry(0.38, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.65), matCabelo);
+        const calota = new T.Mesh(new T.SphereGeometry(0.38, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.55), matCabelo);
         calota.position.set(0, 0.02, -0.02);
         const ondas = [
           [-0.26, -0.04, 0.08, 0.13],
@@ -920,20 +1353,27 @@
         cabeloGroup.add(calota);
 
       } else {
-        // Raspado / Buzz Cut Militar
-        const buzz = new T.Mesh(new T.SphereGeometry(0.368, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.52), matCabelo);
-        buzz.position.set(0, 0.01, -0.01);
-        cabeloGroup.add(buzz);
+        // ====================================================================
+        // PRINT 5: ALBERT — Corte Curto / Buzz Fade Escuro Alinhado
+        // ====================================================================
+        const buzz = new T.Mesh(new T.SphereGeometry(0.362, 20, 20, 0, Math.PI * 2, 0, Math.PI * 0.42), matCabelo);
+        buzz.scale.set(0.99, 1.03, 0.98);
+        buzz.position.set(0, 0.04, -0.02);
+
+        const topoTextura = new T.Mesh(new T.CylinderGeometry(0.23, 0.30, 0.08, 16), matCabelo);
+        topoTextura.position.set(0, 0.33, 0.0);
+
+        cabeloGroup.add(buzz, topoTextura);
       }
 
       headGroup.add(cabeloGroup);
     },
 
-    _adicionarBarba: function (headGroup, estilo, matBarba, T) {
+    _adicionarBarba: function (headGroup, cfg, matBarba, T) {
       const barbaExistente = headGroup.getObjectByName('barba_group') || headGroup.getObjectByName('bigode_maciel');
       if (barbaExistente) headGroup.remove(barbaExistente);
 
-      const est = (estilo || 'sem-barba').toLowerCase();
+      const est = (cfg.barbaEstilo || 'sem-barba').toLowerCase();
       if (est === 'sem-barba' || est === 'nenhum') return;
 
       const barbaGroup = new T.Group();
@@ -941,55 +1381,97 @@
 
       if (est.includes('bigode')) {
         // ====================================================================
-        // O BIGODE NÍTIDO E CARACTERÍSTICO DE GABRIEL MACIEL (Canônico 3D)
+        // PRINT 1: GABRIEL MACIEL — Bigode Cheio e Marcante 3D (Chevron)
         // ====================================================================
-        const bigodeLadoGeo = new T.BoxGeometry(0.12, 0.045, 0.06);
+        const bigodeLadoGeo = new T.BoxGeometry(0.125, 0.048, 0.062);
         const bEsq = new T.Mesh(bigodeLadoGeo, matBarba);
-        bEsq.position.set(-0.065, -0.07, 0.355);
-        bEsq.rotation.z = -0.15;
+        bEsq.position.set(-0.064, -0.072, 0.352);
+        bEsq.rotation.z = -0.16;
 
-        const pontaGeo = new T.ConeGeometry(0.025, 0.06, 6);
+        const pontaGeo = new T.ConeGeometry(0.026, 0.058, 8);
         const pEsq = new T.Mesh(pontaGeo, matBarba);
-        pEsq.position.set(-0.135, -0.085, 0.35);
-        pEsq.rotation.z = Math.PI / 2 + 0.3;
+        pEsq.position.set(-0.135, -0.088, 0.345);
+        pEsq.rotation.z = Math.PI / 2 + 0.32;
 
         const bDir = bEsq.clone();
-        bDir.position.x = 0.065;
-        bDir.rotation.z = 0.15;
+        bDir.position.x = 0.064;
+        bDir.rotation.z = 0.16;
 
         const pDir = pEsq.clone();
         pDir.position.x = 0.135;
-        pDir.rotation.z = -(Math.PI / 2 + 0.3);
+        pDir.rotation.z = -(Math.PI / 2 + 0.32);
 
-        const centro = new T.Mesh(new T.BoxGeometry(0.04, 0.04, 0.05), matBarba);
-        centro.position.set(0, -0.062, 0.36);
+        const centro = new T.Mesh(new T.BoxGeometry(0.045, 0.042, 0.055), matBarba);
+        centro.position.set(0, -0.064, 0.358);
 
         barbaGroup.add(bEsq, bDir, pEsq, pDir, centro);
 
+      } else if (est.includes('cavanhaque-fino')) {
+        // ====================================================================
+        // PRINT 3: CAIO — Cavanhaque Fino Discreto na Ponta do Queixo
+        // ====================================================================
+        const queixoFino = new T.Mesh(new T.SphereGeometry(0.068, 12, 12), matBarba);
+        queixoFino.scale.set(1.25, 0.55, 0.58);
+        queixoFino.position.set(0, -0.328, 0.238);
+        barbaGroup.add(queixoFino);
+
       } else if (est.includes('cavanhaque')) {
-        // Cavanhaque moderno: bigode superior fino + queixo estruturado
-        const bigode = new T.Mesh(new T.BoxGeometry(0.18, 0.04, 0.05), matBarba);
-        bigode.position.set(0, -0.068, 0.355);
+        // ====================================================================
+        // PRINT 2: DANIEL (MATEUS) — Bigode Cheio + Mosca + Cavanhaque no Queixo
+        // ====================================================================
+        const bEsq = new T.Mesh(new T.BoxGeometry(0.118, 0.044, 0.058), matBarba);
+        bEsq.position.set(-0.058, -0.072, 0.352);
+        bEsq.rotation.z = -0.15;
+        const bDir = bEsq.clone();
+        bDir.position.x = 0.058;
+        bDir.rotation.z = 0.15;
+        const bCentro = new T.Mesh(new T.BoxGeometry(0.04, 0.04, 0.054), matBarba);
+        bCentro.position.set(0, -0.066, 0.356);
 
-        const queixo = new T.Mesh(new T.BoxGeometry(0.12, 0.14, 0.06), matBarba);
-        queixo.position.set(0, -0.22, 0.32);
+        // Mosca (soul patch) logo abaixo do lábio inferior
+        const mosca = new T.Mesh(new T.BoxGeometry(0.042, 0.042, 0.045), matBarba);
+        mosca.position.set(0, -0.165, 0.338);
 
-        barbaGroup.add(bigode, queixo);
+        // Cavanhaque denso arredondado no queixo
+        const queixo = new T.Mesh(new T.SphereGeometry(0.10, 14, 14), matBarba);
+        queixo.scale.set(1.32, 0.82, 0.68);
+        queixo.position.set(0, -0.285, 0.275);
+
+        barbaGroup.add(bEsq, bDir, bCentro, mosca, queixo);
 
       } else if (est.includes('barba-cheia') || est.includes('barba_cheia')) {
-        // Barba cheia corporativa contornando a mandíbula e queixo
-        const bigode = new T.Mesh(new T.BoxGeometry(0.22, 0.045, 0.06), matBarba);
-        bigode.position.set(0, -0.065, 0.355);
+        // ====================================================================
+        // PRINT 5: ALBERT — Barba Cheia Curta Alinhada Emoldurando o Sorriso
+        // ====================================================================
+        const bEsq = new T.Mesh(new T.BoxGeometry(0.105, 0.035, 0.050), matBarba);
+        bEsq.position.set(-0.052, -0.068, 0.350);
+        bEsq.rotation.z = -0.14;
+        const bDir = bEsq.clone();
+        bDir.position.x = 0.052;
+        bDir.rotation.z = 0.14;
+        const bCentro = new T.Mesh(new T.BoxGeometry(0.038, 0.032, 0.048), matBarba);
+        bCentro.position.set(0, -0.062, 0.354);
 
-        const queixo = new T.Mesh(new T.BoxGeometry(0.24, 0.16, 0.10), matBarba);
-        queixo.position.set(0, -0.22, 0.31);
+        // Barba curta rente ao queixo e mandíbula (como na foto 5 do Albert)
+        const queixo = new T.Mesh(new T.SphereGeometry(0.142, 16, 16), matBarba);
+        queixo.scale.set(1.65, 0.65, 0.82);
+        queixo.position.set(0, -0.265, 0.232);
 
-        const latEsq = new T.Mesh(new T.BoxGeometry(0.08, 0.22, 0.28), matBarba);
-        latEsq.position.set(-0.31, -0.10, 0.10);
-        const latDir = latEsq.clone();
-        latDir.position.x = 0.31;
+        // Costeletas finas rentes ao rosto conectando até o queixo
+        const costEsq = new T.Mesh(new T.BoxGeometry(0.036, 0.23, 0.085), matBarba);
+        costEsq.position.set(-0.322, -0.09, 0.10);
+        costEsq.rotation.z = 0.22;
+        const costDir = costEsq.clone();
+        costDir.position.x = 0.322;
+        costDir.rotation.z = -0.22;
 
-        barbaGroup.add(bigode, queixo, latEsq, latDir);
+        // Conectores laterais do bigode à barba ao redor do sorriso
+        const conectorEsq = new T.Mesh(new T.BoxGeometry(0.036, 0.115, 0.046), matBarba);
+        conectorEsq.position.set(-0.095, -0.125, 0.336);
+        const conectorDir = conectorEsq.clone();
+        conectorDir.position.x = 0.095;
+
+        barbaGroup.add(bEsq, bDir, bCentro, queixo, costEsq, costDir, conectorEsq, conectorDir);
       }
 
       headGroup.add(barbaGroup);
@@ -1005,39 +1487,65 @@
       const oculosGroup = new T.Group();
       oculosGroup.name = 'oculos_group';
 
-      if (oc.includes('executivo-dourado') || oc.includes('executivo-preto')) {
+      if (oc.includes('executivo-prata') || oc.includes('executivo-dourado') || oc.includes('executivo-preto')) {
+        // ====================================================================
+        // PRINT 5: ALBERT — Óculos Retangular Metálico Prateado c/ Lente Antirreflexo
+        // ====================================================================
         const isGold = oc.includes('dourado');
-        const matArmacao = isGold 
-          ? matOuro 
-          : new T.MeshStandardMaterial({ color: 0x111827, roughness: 0.35 });
+        const isSilver = oc.includes('prata');
+        const matArmacao = isGold
+          ? matOuro
+          : (isSilver
+            ? new T.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.85, roughness: 0.2 })
+            : new T.MeshStandardMaterial({ color: 0x111827, roughness: 0.35 }));
 
-        // Lentes e armação retangular fina executiva
-        const aroEsq = new T.Mesh(new T.BoxGeometry(0.14, 0.08, 0.02), matArmacao);
-        aroEsq.position.set(-0.13, 0.06, 0.355);
-        const aroDir = aroEsq.clone();
-        aroDir.position.x = 0.13;
+        const matLente = new T.MeshBasicMaterial({
+          color: 0x818cf8,
+          transparent: true,
+          opacity: 0.20
+        });
 
-        const ponte = new T.Mesh(new T.BoxGeometry(0.08, 0.015, 0.02), matArmacao);
-        ponte.position.set(0, 0.06, 0.355);
+        [-1, 1].forEach(dir => {
+          const cx = dir * 0.128;
+          // Lente translúcida com reflexo azulado sutil (permite ver os olhos perfeitamente)
+          const lente = new T.Mesh(new T.BoxGeometry(0.132, 0.076, 0.006), matLente);
+          lente.position.set(cx, 0.062, 0.358);
 
-        // Hastes até a orelha
-        const hasteEsq = new T.Mesh(new T.BoxGeometry(0.015, 0.015, 0.28), matArmacao);
-        hasteEsq.position.set(-0.20, 0.06, 0.22);
+          // Aros finos superior, inferior e laterais da armação retangular
+          const aroSup = new T.Mesh(new T.BoxGeometry(0.142, 0.012, 0.016), matArmacao);
+          aroSup.position.set(cx, 0.102, 0.360);
+          const aroInf = new T.Mesh(new T.BoxGeometry(0.142, 0.010, 0.016), matArmacao);
+          aroInf.position.set(cx, 0.022, 0.360);
+          const aroExt = new T.Mesh(new T.BoxGeometry(0.012, 0.088, 0.016), matArmacao);
+          aroExt.position.set(cx + dir * 0.068, 0.062, 0.360);
+          const aroInt = new T.Mesh(new T.BoxGeometry(0.010, 0.088, 0.016), matArmacao);
+          aroInt.position.set(cx - dir * 0.066, 0.062, 0.360);
+
+          oculosGroup.add(lente, aroSup, aroInf, aroExt, aroInt);
+        });
+
+        // Ponte central metálica
+        const ponte = new T.Mesh(new T.BoxGeometry(0.056, 0.014, 0.018), matArmacao);
+        ponte.position.set(0, 0.072, 0.362);
+
+        // Hastes laterais até as orelhas
+        const hasteEsq = new T.Mesh(new T.BoxGeometry(0.014, 0.014, 0.32), matArmacao);
+        hasteEsq.position.set(-0.205, 0.068, 0.20);
         const hasteDir = hasteEsq.clone();
-        hasteDir.position.x = 0.20;
+        hasteDir.position.x = 0.205;
 
-        oculosGroup.add(aroEsq, aroDir, ponte, hasteEsq, hasteDir);
+        oculosGroup.add(ponte, hasteEsq, hasteDir);
 
       } else if (oc.includes('redondo')) {
         const matArmacao = new T.MeshStandardMaterial({ color: 0x2b1e16, roughness: 0.3 });
 
         const aroEsq = new T.Mesh(new T.TorusGeometry(0.055, 0.01, 8, 16), matArmacao);
-        aroEsq.position.set(-0.13, 0.06, 0.355);
+        aroEsq.position.set(-0.128, 0.062, 0.358);
         const aroDir = aroEsq.clone();
-        aroDir.position.x = 0.13;
+        aroDir.position.x = 0.128;
 
-        const ponte = new T.Mesh(new T.BoxGeometry(0.08, 0.015, 0.02), matArmacao);
-        ponte.position.set(0, 0.06, 0.355);
+        const ponte = new T.Mesh(new T.BoxGeometry(0.065, 0.014, 0.018), matArmacao);
+        ponte.position.set(0, 0.065, 0.358);
 
         oculosGroup.add(aroEsq, aroDir, ponte);
       }
@@ -1078,17 +1586,17 @@
       this.scene.background = null;
 
       this.camera = new T.PerspectiveCamera(34, w / h, 0.1, 50);
-      this.camera.position.set(0, 1.7, 4.6);
-      this.camera.lookAt(0, 1.45, 0);
+      this.camera.position.set(0, 1.55, 4.1);
+      this.camera.lookAt(0, 1.38, 0);
 
-      // Iluminação de estúdio profissional
-      const amb = new T.AmbientLight(0xdbeafe, 0.75);
-      const key = new T.DirectionalLight(0xffffff, 1.15);
-      key.position.set(3.5, 6, 4.5);
+      // Iluminação de estúdio profissional balanceada (sem estourar tons claros)
+      const amb = new T.AmbientLight(0xdbeafe, 0.58);
+      const key = new T.DirectionalLight(0xffffff, 0.78);
+      key.position.set(3.5, 5.5, 4.5);
       key.castShadow = true;
-      const fill = new T.DirectionalLight(0x38bdf8, 0.65);
+      const fill = new T.DirectionalLight(0x38bdf8, 0.42);
       fill.position.set(-4, 3, 3);
-      const rim = new T.DirectionalLight(0xffffff, 0.85);
+      const rim = new T.DirectionalLight(0xffffff, 0.55);
       rim.position.set(0, 4.5, -4);
       this.scene.add(amb, key, fill, rim);
 
@@ -1885,7 +2393,7 @@
     scene.add(podiumGroup);
 
     // 1. Grande Plataforma Circular da Arena (Piso corporativo espelhado Isapel)
-    const arenaPisoGeo = new THREE.CylinderGeometry(6.8, 7.2, 0.35, 48);
+    const arenaPisoGeo = new THREE.CylinderGeometry(7.6, 8.0, 0.35, 48);
     const arenaPisoMat = new THREE.MeshStandardMaterial({
       color: CORES.pisoGrid,
       roughness: 0.25,
@@ -1897,7 +2405,7 @@
     podiumGroup.add(arenaPiso);
 
     // Anel externo iluminado Azul Claro Isapel (#38BDF8)
-    const ringGeo = new THREE.TorusGeometry(6.6, 0.08, 12, 64);
+    const ringGeo = new THREE.TorusGeometry(7.4, 0.08, 12, 64);
     const ringMat = new THREE.MeshBasicMaterial({ color: CORES.isapelCyan });
     const ringMesh = new THREE.Mesh(ringGeo, ringMat);
     ringMesh.rotation.x = Math.PI / 2;
@@ -1905,14 +2413,14 @@
     podiumGroup.add(ringMesh);
 
     // Anel interno Dourado Bia Paper (#E3A52B)
-    const ringGoldGeo = new THREE.TorusGeometry(5.2, 0.06, 12, 64);
+    const ringGoldGeo = new THREE.TorusGeometry(6.0, 0.06, 12, 64);
     const ringGoldMat = new THREE.MeshBasicMaterial({ color: CORES.biaPaperGoldGlow });
     const ringGoldMesh = new THREE.Mesh(ringGoldGeo, ringGoldMat);
     ringGoldMesh.rotation.x = Math.PI / 2;
     ringGoldMesh.position.y = 0.015;
     podiumGroup.add(ringGoldMesh);
 
-    // 2. Os 3 Pilares do Pódio (1º Ouro, 2º Prata, 3º Bronze)
+    // 2. Os 5 Pilares do Pódio (1º Ouro, 2º Prata, 3º Bronze, 4º e 5º Azul Isapel)
     Object.keys(PODIUM_SLOTS).forEach(rankStr => {
       const slot = PODIUM_SLOTS[rankStr];
       const pilarGroup = new THREE.Group();
@@ -1933,11 +2441,23 @@
           roughness: 0.28,
           metalness: 0.82
         });
-      } else {
+      } else if (rankStr === '3') {
         pilarMat = new THREE.MeshStandardMaterial({
           color: CORES.bronze,
           roughness: 0.32,
           metalness: 0.78
+        });
+      } else if (rankStr === '4') {
+        pilarMat = new THREE.MeshStandardMaterial({
+          color: CORES.isapelBlue,
+          roughness: 0.35,
+          metalness: 0.72
+        });
+      } else {
+        pilarMat = new THREE.MeshStandardMaterial({
+          color: CORES.isapelNavy,
+          roughness: 0.38,
+          metalness: 0.68
         });
       }
 
@@ -1949,15 +2469,18 @@
       // Friso superior brilhante metálico
       const frisoGeo = new THREE.TorusGeometry(slot.radius, 0.05, 8, 32);
       const frisoMat = new THREE.MeshBasicMaterial({
-        color: rankStr === '1' ? CORES.biaPaperGoldGlow : (rankStr === '2' ? 0xffffff : 0xf59e0b)
+        color: rankStr === '1'
+          ? CORES.biaPaperGoldGlow
+          : (rankStr === '2' ? 0xffffff : (rankStr === '3' ? 0xf59e0b : CORES.isapelCyan))
       });
       const frisoMesh = new THREE.Mesh(frisoGeo, frisoMat);
       frisoMesh.rotation.x = Math.PI / 2;
       frisoMesh.position.y = slot.height;
       pilarGroup.add(frisoMesh);
 
-      // Placa frontal com o número (1, 2 ou 3) em relevo
-      const placaGeo = new THREE.BoxGeometry(0.7, 0.7, 0.06);
+      // Placa frontal com o número (1 a 5) em relevo
+      const placaH = Math.min(0.66, slot.height * 0.78);
+      const placaGeo = new THREE.BoxGeometry(0.64, placaH, 0.06);
       const placaMat = new THREE.MeshStandardMaterial({
         color: 0x07111e,
         roughness: 0.3,
@@ -1968,25 +2491,51 @@
       pilarGroup.add(placaMesh);
 
       // Número tridimensional esculpido
-      const numGeo = new THREE.BoxGeometry(0.12, 0.42, 0.08);
-      const numMesh = new THREE.Mesh(numGeo, frisoMat);
-      numMesh.position.set(0, slot.height * 0.5, slot.radius * 1.05);
-      pilarGroup.add(numMesh);
+      const numScale = slot.height < 0.9 ? 0.75 : 1.0;
+      const cy = slot.height * 0.5;
+      const cz = slot.radius * 1.05;
 
-      if (rankStr === '2') {
-        const h1 = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.08), frisoMat);
-        h1.position.set(0, slot.height * 0.5 + 0.16, slot.radius * 1.05);
-        const h2 = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.08), frisoMat);
-        h2.position.set(0, slot.height * 0.5 - 0.16, slot.radius * 1.05);
-        pilarGroup.add(h1, h2);
-      } else if (rankStr === '3') {
-        const b1 = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.09, 0.08), frisoMat);
-        b1.position.set(0.04, slot.height * 0.5 + 0.16, slot.radius * 1.05);
-        const b2 = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.09, 0.08), frisoMat);
-        b2.position.set(0.04, slot.height * 0.5, slot.radius * 1.05);
-        const b3 = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.09, 0.08), frisoMat);
-        b3.position.set(0.04, slot.height * 0.5 - 0.16, slot.radius * 1.05);
-        pilarGroup.add(b1, b2, b3);
+      if (rankStr === '1' || rankStr === '2' || rankStr === '3') {
+        const numGeo = new THREE.BoxGeometry(0.11 * numScale, 0.38 * numScale, 0.08);
+        const numMesh = new THREE.Mesh(numGeo, frisoMat);
+        numMesh.position.set(0, cy, cz);
+        pilarGroup.add(numMesh);
+
+        if (rankStr === '2') {
+          const h1 = new THREE.Mesh(new THREE.BoxGeometry(0.28 * numScale, 0.09 * numScale, 0.08), frisoMat);
+          h1.position.set(0, cy + 0.14 * numScale, cz);
+          const h2 = new THREE.Mesh(new THREE.BoxGeometry(0.28 * numScale, 0.09 * numScale, 0.08), frisoMat);
+          h2.position.set(0, cy - 0.14 * numScale, cz);
+          pilarGroup.add(h1, h2);
+        } else if (rankStr === '3') {
+          const b1 = new THREE.Mesh(new THREE.BoxGeometry(0.24 * numScale, 0.08 * numScale, 0.08), frisoMat);
+          b1.position.set(0.03, cy + 0.14 * numScale, cz);
+          const b2 = new THREE.Mesh(new THREE.BoxGeometry(0.24 * numScale, 0.08 * numScale, 0.08), frisoMat);
+          b2.position.set(0.03, cy, cz);
+          const b3 = new THREE.Mesh(new THREE.BoxGeometry(0.24 * numScale, 0.08 * numScale, 0.08), frisoMat);
+          b3.position.set(0.03, cy - 0.14 * numScale, cz);
+          pilarGroup.add(b1, b2, b3);
+        }
+      } else if (rankStr === '4') {
+        const vRight = new THREE.Mesh(new THREE.BoxGeometry(0.09 * numScale, 0.36 * numScale, 0.08), frisoMat);
+        vRight.position.set(0.08 * numScale, cy, cz);
+        const vLeft = new THREE.Mesh(new THREE.BoxGeometry(0.09 * numScale, 0.20 * numScale, 0.08), frisoMat);
+        vLeft.position.set(-0.08 * numScale, cy + 0.08 * numScale, cz);
+        const hMid = new THREE.Mesh(new THREE.BoxGeometry(0.25 * numScale, 0.08 * numScale, 0.08), frisoMat);
+        hMid.position.set(0, cy, cz);
+        pilarGroup.add(vRight, vLeft, hMid);
+      } else if (rankStr === '5') {
+        const hTop = new THREE.Mesh(new THREE.BoxGeometry(0.24 * numScale, 0.07 * numScale, 0.08), frisoMat);
+        hTop.position.set(0, cy + 0.13 * numScale, cz);
+        const hMid = new THREE.Mesh(new THREE.BoxGeometry(0.24 * numScale, 0.07 * numScale, 0.08), frisoMat);
+        hMid.position.set(0, cy, cz);
+        const hBot = new THREE.Mesh(new THREE.BoxGeometry(0.24 * numScale, 0.07 * numScale, 0.08), frisoMat);
+        hBot.position.set(0, cy - 0.13 * numScale, cz);
+        const vTopL = new THREE.Mesh(new THREE.BoxGeometry(0.08 * numScale, 0.14 * numScale, 0.08), frisoMat);
+        vTopL.position.set(-0.08 * numScale, cy + 0.065 * numScale, cz);
+        const vBotR = new THREE.Mesh(new THREE.BoxGeometry(0.08 * numScale, 0.14 * numScale, 0.08), frisoMat);
+        vBotR.position.set(0.08 * numScale, cy - 0.065 * numScale, cz);
+        pilarGroup.add(hTop, hMid, hBot, vTopL, vBotR);
       }
 
       podiumGroup.add(pilarGroup);
@@ -2192,11 +2741,11 @@
   // ==========================================================================
   function configurarIluminacao() {
     // 1. Luz Ambiente Suave Azulada
-    const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.65);
+    const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.58);
     scene.add(ambientLight);
 
     // 2. Luz Principal Direcional (Key Light)
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 0.85);
     keyLight.position.set(6, 12, 8);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 1024;
@@ -2205,17 +2754,17 @@
     scene.add(keyLight);
 
     // 3. Luz de Preenchimento Azul Claro Isapel (Fill Light)
-    const fillLight = new THREE.DirectionalLight(CORES.isapelCyan, 0.55);
+    const fillLight = new THREE.DirectionalLight(CORES.isapelCyan, 0.45);
     fillLight.position.set(-8, 6, 6);
     scene.add(fillLight);
 
     // 4. Luz de Recorte (Rim Light Traseira)
-    const rimLight = new THREE.DirectionalLight(0xffffff, 0.65);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.55);
     rimLight.position.set(0, 8, -10);
     scene.add(rimLight);
 
     // 5. Spotlight Dourado Focado no 1º Colocado
-    winnerSpotlight = new THREE.PointLight(CORES.biaPaperGoldGlow, 1.8, 14);
+    winnerSpotlight = new THREE.PointLight(CORES.biaPaperGoldGlow, 1.35, 14);
     winnerSpotlight.position.set(0, 6.2, 0.5);
     scene.add(winnerSpotlight);
   }
@@ -2323,15 +2872,30 @@
     if (metricasVendedores) {
       if (Array.isArray(metricasVendedores)) {
         metricasVendedores.forEach(novoItem => {
-          const targetId = (novoItem.vendedorId || novoItem.id || novoItem.nome || '').toString().toLowerCase();
-          const existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
+          let targetId = (novoItem.vendedorId || novoItem.id || novoItem.nome || '').toString().toLowerCase().trim();
+          if (targetId === 'mateus') targetId = 'daniel';
+          let existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
+          if (!existente && targetId) {
+            const padrao = DADOS_INICIAIS.find(d => d.id === targetId);
+            existente = padrao ? JSON.parse(JSON.stringify(padrao)) : {
+              id: targetId,
+              nome: novoItem.nome || (targetId.charAt(0).toUpperCase() + targetId.slice(1)),
+              nomeCurto: novoItem.nome || (targetId.charAt(0).toUpperCase() + targetId.slice(1)),
+              cargo: 'Consultor B2B',
+              corTema: '#0284C7',
+              avatarIcone: '🧑🏽‍💼',
+              metricas: normalizarMetricas(novoItem.metricas || novoItem)
+            };
+            vendedoresData.push(existente);
+          }
           if (existente) {
             existente.metricas = normalizarMetricas(novoItem.metricas || novoItem);
           }
         });
       } else if (typeof metricasVendedores === 'object') {
         Object.keys(metricasVendedores).forEach(key => {
-          const targetId = key.toLowerCase();
+          let targetId = key.toLowerCase().trim();
+          if (targetId === 'mateus') targetId = 'daniel';
           const existente = vendedoresData.find(v => v.id === targetId || v.nomeCurto.toLowerCase() === targetId || v.nome.toLowerCase() === targetId);
           if (existente) {
             existente.metricas = normalizarMetricas(metricasVendedores[key]);
@@ -2457,23 +3021,23 @@
         }
         .arena3d-action-box {
           position: absolute;
-          bottom: 16px;
+          top: 56px;
           right: 16px;
           display: flex;
-          gap: 10px;
+          gap: 8px;
           z-index: 10;
           pointer-events: auto;
         }
         .arena3d-btn-celebrate {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           background: linear-gradient(135deg, #e3a52b 0%, #b45309 100%);
           color: #ffffff;
           border: none;
-          padding: 10px 18px;
-          border-radius: 12px;
-          font-size: 12px;
+          padding: 7px 14px;
+          border-radius: 9999px;
+          font-size: 11px;
           font-weight: 700;
           cursor: pointer;
           box-shadow: 0 4px 14px rgba(227, 165, 43, 0.35);
@@ -2490,9 +3054,9 @@
           background: rgba(6, 17, 30, 0.8);
           border: 1px solid rgba(255, 255, 255, 0.15);
           color: #94a3b8;
-          border-radius: 12px;
-          padding: 8px 12px;
-          font-size: 12px;
+          border-radius: 9999px;
+          padding: 6px 12px;
+          font-size: 11px;
           cursor: pointer;
           transition: all 0.2s ease;
         }
@@ -2502,19 +3066,22 @@
         }
         .arena3d-hud-podium {
           position: absolute;
-          bottom: 16px;
-          left: 16px;
+          bottom: 14px;
+          left: 14px;
+          right: 14px;
           display: flex;
-          gap: 10px;
+          gap: 8px;
           z-index: 10;
           pointer-events: none;
+          flex-wrap: nowrap;
         }
         .arena3d-card-vendedor {
-          background: rgba(6, 17, 30, 0.82);
+          background: rgba(6, 17, 30, 0.85);
           backdrop-filter: blur(14px);
-          border-radius: 14px;
-          padding: 10px 14px;
-          min-width: 170px;
+          border-radius: 12px;
+          padding: 8px 11px;
+          min-width: 118px;
+          flex: 1 1 0;
           border: 1px solid rgba(255, 255, 255, 0.08);
           transition: all 0.25s ease;
           pointer-events: auto;
@@ -2526,9 +3093,9 @@
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
         .arena3d-card-vendedor.rank-1 {
-          border-color: rgba(227, 165, 43, 0.6);
-          background: linear-gradient(180deg, rgba(227, 165, 43, 0.12) 0%, rgba(6, 17, 30, 0.9) 100%);
-          box-shadow: 0 4px 18px rgba(227, 165, 43, 0.2);
+          border-color: rgba(227, 165, 43, 0.65);
+          background: linear-gradient(180deg, rgba(227, 165, 43, 0.14) 0%, rgba(6, 17, 30, 0.92) 100%);
+          box-shadow: 0 4px 18px rgba(227, 165, 43, 0.22);
         }
         .arena3d-card-vendedor.rank-2 {
           border-color: rgba(203, 213, 225, 0.4);
@@ -2536,33 +3103,44 @@
         .arena3d-card-vendedor.rank-3 {
           border-color: rgba(205, 127, 50, 0.4);
         }
+        .arena3d-card-vendedor.rank-4,
+        .arena3d-card-vendedor.rank-5 {
+          border-color: rgba(56, 189, 248, 0.25);
+        }
         .arena3d-card-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
+          gap: 4px;
         }
         .arena3d-card-rank-tag {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 800;
-          padding: 2px 6px;
-          border-radius: 6px;
-          letter-spacing: 0.03em;
+          padding: 2px 5px;
+          border-radius: 5px;
+          letter-spacing: 0.02em;
+          white-space: nowrap;
         }
         .rank-1 .arena3d-card-rank-tag { background: #e3a52b; color: #000; }
         .rank-2 .arena3d-card-rank-tag { background: #94a3b8; color: #000; }
         .rank-3 .arena3d-card-rank-tag { background: #b45309; color: #fff; }
+        .rank-4 .arena3d-card-rank-tag,
+        .rank-5 .arena3d-card-rank-tag { background: rgba(2, 132, 199, 0.35); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
         .arena3d-card-name {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 700;
           color: #ffffff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .arena3d-card-metrics {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 4px 8px;
-          margin-top: 6px;
-          font-size: 11px;
+          gap: 3px 6px;
+          margin-top: 4px;
+          font-size: 10.5px;
           color: #94a3b8;
         }
         .arena3d-card-metrics strong {
@@ -2573,7 +3151,7 @@
           height: 4px;
           background: rgba(255, 255, 255, 0.1);
           border-radius: 2px;
-          margin-top: 8px;
+          margin-top: 6px;
           overflow: hidden;
         }
         .arena3d-xp-bar-fill {
@@ -2584,6 +3162,8 @@
         .rank-1 .arena3d-xp-bar-fill { background: linear-gradient(90deg, #e3a52b, #fef08a); }
         .rank-2 .arena3d-xp-bar-fill { background: linear-gradient(90deg, #0284c7, #38bdf8); }
         .rank-3 .arena3d-xp-bar-fill { background: linear-gradient(90deg, #003360, #0284c7); }
+        .rank-4 .arena3d-xp-bar-fill,
+        .rank-5 .arena3d-xp-bar-fill { background: linear-gradient(90deg, #0f172a, #38bdf8); }
         .arena3d-hint {
           position: absolute;
           top: 62px;
@@ -2677,8 +3257,8 @@
     if (btnResetCam) {
       btnResetCam.addEventListener('click', () => {
         cameraControl.targetTheta = 0;
-        cameraControl.targetPhi = 0.28;
-        cameraControl.targetRadius = 12.8;
+        cameraControl.targetPhi = 0.26;
+        cameraControl.targetRadius = 14.5;
         playPopChime();
       });
     }
@@ -3133,23 +3713,27 @@
     scene.background = null; // Fundo transparente com CSS gradiente atrás
 
     camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 5.0, 12.8);
+    camera.position.set(0, 5.2, 14.5);
 
     // 6. Iluminação e Cenário
     configurarIluminacao();
     criarCenario3D();
 
-    // 7. Modelagem Tridimensional dos 3 Personagens
+    // 7. Modelagem Tridimensional dos 5 Personagens (Maciel, Fernanda, Caio, Albert e Daniel)
     const materiais = criarMateriaisPersonagens();
     const meshFernanda = criarModeloFernanda(materiais);
     const meshCaio = criarModeloCaio(materiais);
     const meshMaciel = criarModeloMaciel(materiais);
+    const meshAlbert = AvatarBuilder.construirAvatar(obterConfigAvatarSalva('albert'), THREE);
+    const meshDaniel = AvatarBuilder.construirAvatar(obterConfigAvatarSalva('daniel'), THREE);
 
     characterMeshes.fernanda = meshFernanda;
     characterMeshes.caio = meshCaio;
     characterMeshes.maciel = meshMaciel;
+    characterMeshes.albert = meshAlbert;
+    characterMeshes.daniel = meshDaniel;
 
-    scene.add(meshFernanda, meshCaio, meshMaciel);
+    scene.add(meshFernanda, meshCaio, meshMaciel, meshAlbert, meshDaniel);
 
     // 8. Eventos de Janela e Interação
     window.addEventListener('resize', onWindowResize);
@@ -3277,8 +3861,8 @@
     },
     resetarCamera: function () {
       cameraControl.targetTheta = 0;
-      cameraControl.targetPhi = 0.28;
-      cameraControl.targetRadius = 12.8;
+      cameraControl.targetPhi = 0.26;
+      cameraControl.targetRadius = 14.5;
     }
   };
 });

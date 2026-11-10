@@ -114,6 +114,8 @@
     if (!vendedorNome) {
       if (lead.vendedorId === 'fernanda') vendedorNome = 'Fernanda';
       else if (lead.vendedorId === 'caio') vendedorNome = 'Caio';
+      else if (lead.vendedorId === 'albert') vendedorNome = 'Albert';
+      else if (lead.vendedorId === 'daniel') vendedorNome = 'Daniel';
       else vendedorNome = 'Gabriel Maciel';
     }
 
@@ -184,6 +186,29 @@
       console.warn('⚠️ [Isapel Sync] Falha ao sincronizar com Supabase, operando via Backup Local:', err.message);
       statusConexao.supabaseAtivo = false;
       notificarStatus();
+      return null;
+    }
+  }
+
+  // 1.1 Puxar Todos os Leads da Nuvem para Placar Global da Arena 3D (Comparação entre todos os 5 vendedores)
+  async function carregarLeadsArenaNuvem() {
+    try {
+      const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?select=*&order=data_atualizacao.desc`;
+      const res = await fetch(endpoint, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.anonKey,
+          'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`Falha HTTP ${res.status}`);
+      }
+
+      const rows = await res.json();
+      if (!Array.isArray(rows)) return null;
+      return rows.map(mapearParaApp);
+    } catch (err) {
       return null;
     }
   }
@@ -461,81 +486,168 @@
   const PERFIS_AVATAR_PADRAO = {
     maciel: {
       uniforme: {
-        tipo: 'blazer_executivo_navy',
-        corPrimaria: '#003360',
-        corGola: '#FFFFFF',
+        tipo: 'polo-sky',
+        corPrimaria: '#5A98E0',
+        corGola: '#5A98E0',
         tipoInferior: 'calca_social',
         corInferior: '#0A1829',
-        temCracha: true
+        temCracha: false
       },
       cabelo: {
-        estilo: 'cacheado_curto',
-        cor: '#1A1514'
+        estilo: 'cacheado-curto',
+        cor: '#1B130F'
       },
       barba: {
-        tipo: 'bigode_maciel',
-        cor: '#161211'
+        tipo: 'com-bigode',
+        cor: '#14100E'
       },
       pele: {
-        tom: '#E6B994'
-      },
-      acessorios: {
-        oculos: 'nenhum',
-        corArmacao: '#111827',
-        gravata: 'gravata_dourada'
-      }
-    },
-    fernanda: {
-      uniforme: {
-        tipo: 'polo_isapel_cyan',
-        corPrimaria: '#0284C7',
-        corGola: '#FFFFFF',
-        tipoInferior: 'calca_social',
-        corInferior: '#0A1829',
-        temCracha: true
-      },
-      cabelo: {
-        estilo: 'longo_feminino',
-        cor: '#F7CF46'
-      },
-      barba: {
-        tipo: 'nenhum',
-        cor: '#161211'
-      },
-      pele: {
-        tom: '#F9D3B4'
+        tom: '#D49B72'
       },
       acessorios: {
         oculos: 'nenhum',
         corArmacao: '#111827',
         gravata: 'nenhum'
-      }
+      },
+      cabeloEstilo: 'cacheado-curto',
+      cabeloHex: '#1B130F',
+      barbaEstilo: 'com-bigode',
+      barbaHex: '#14100E',
+      peleHex: '#D49B72',
+      oculos: 'nenhum',
+      cracha: false
     },
-    caio: {
+    daniel: {
       uniforme: {
-        tipo: 'polo_isapel_navy',
-        corPrimaria: '#003360',
-        corGola: '#FFFFFF',
+        tipo: 'moletom-creme',
+        corPrimaria: '#DECFC1',
+        corGola: '#DECFC1',
         tipoInferior: 'calca_social',
-        corInferior: '#0A1829',
-        temCracha: true
+        corInferior: '#1E293B',
+        temCracha: false
       },
       cabelo: {
-        estilo: 'cacheado_volumoso',
-        cor: '#1A1514'
+        estilo: 'cacheado-volumoso',
+        cor: '#16110F'
       },
       barba: {
         tipo: 'cavanhaque',
+        cor: '#14100E'
+      },
+      pele: {
+        tom: '#C68A62'
+      },
+      acessorios: {
+        oculos: 'nenhum',
+        corArmacao: '#111827',
+        gravata: 'nenhum'
+      },
+      cabeloEstilo: 'cacheado-volumoso',
+      cabeloHex: '#16110F',
+      barbaEstilo: 'cavanhaque',
+      barbaHex: '#14100E',
+      peleHex: '#C68A62',
+      oculos: 'nenhum',
+      cracha: false
+    },
+    caio: {
+      uniforme: {
+        tipo: 'polo-navy',
+        corPrimaria: '#0F2547',
+        corGola: '#0F2547',
+        tipoInferior: 'calca_social',
+        corInferior: '#0A1829',
+        temCracha: false
+      },
+      cabelo: {
+        estilo: 'cacheado-jovem',
+        cor: '#18120F'
+      },
+      barba: {
+        tipo: 'cavanhaque-fino',
+        cor: '#18120F'
+      },
+      pele: {
+        tom: '#CF966E'
+      },
+      acessorios: {
+        oculos: 'nenhum',
+        corArmacao: '#111827',
+        gravata: 'nenhum'
+      },
+      cabeloEstilo: 'cacheado-jovem',
+      cabeloHex: '#18120F',
+      barbaEstilo: 'cavanhaque-fino',
+      barbaHex: '#18120F',
+      peleHex: '#CF966E',
+      oculos: 'nenhum',
+      cracha: false
+    },
+    fernanda: {
+      uniforme: {
+        tipo: 'blusa-royal',
+        corPrimaria: '#2563EB',
+        corGola: '#2563EB',
+        tipoInferior: 'calca_social',
+        corInferior: '#0A1829',
+        temCracha: false
+      },
+      cabelo: {
+        estilo: 'liso-comprido',
+        cor: '#D6B254'
+      },
+      barba: {
+        tipo: 'sem-barba',
         cor: '#161211'
       },
       pele: {
-        tom: '#DFA980'
+        tom: '#E6B896'
       },
       acessorios: {
-        oculos: 'oculos_redondo',
+        oculos: 'nenhum',
         corArmacao: '#111827',
         gravata: 'nenhum'
-      }
+      },
+      cabeloEstilo: 'liso-comprido',
+      cabeloHex: '#D6B254',
+      barbaEstilo: 'sem-barba',
+      barbaHex: '#161211',
+      peleHex: '#E6B896',
+      oculos: 'nenhum',
+      cracha: false
+    },
+    albert: {
+      uniforme: {
+        tipo: 'jaqueta-preta',
+        corPrimaria: '#18181B',
+        corGola: '#14284B',
+        tipoInferior: 'calca_social',
+        corInferior: '#0F172A',
+        temCracha: false
+      },
+      cabelo: {
+        estilo: 'raspado-buzz',
+        cor: '#121010'
+      },
+      barba: {
+        tipo: 'barba-cheia',
+        cor: '#121010'
+      },
+      pele: {
+        tom: '#A86B42'
+      },
+      acessorios: {
+        oculos: 'executivo-prata',
+        corArmacao: '#CBD5E1',
+        gravata: 'nenhum'
+      },
+      cabeloEstilo: 'raspado-buzz',
+      cabeloHex: '#121010',
+      barbaEstilo: 'barba-cheia',
+      barbaHex: '#121010',
+      peleHex: '#A86B42',
+      oculos: 'executivo-prata',
+      cracha: false
     }
   };
 
@@ -666,11 +778,15 @@
 
     return {
       vendedorId: vid,
-      uniforme: { ...padraoBase.uniforme, ...(perfilStorage.uniforme || {}) },
-      cabelo: { ...padraoBase.cabelo, ...(perfilStorage.cabelo || {}) },
-      barba: { ...padraoBase.barba, ...(perfilStorage.barba || {}) },
-      pele: { ...padraoBase.pele, ...(perfilStorage.pele || {}) },
-      acessorios: { ...padraoBase.acessorios, ...(perfilStorage.acessorios || {}) },
+      ...padraoBase,
+      ...perfilStorage,
+      uniforme: (typeof perfilStorage.uniforme === 'string')
+        ? perfilStorage.uniforme
+        : { ...(padraoBase.uniforme || {}), ...(perfilStorage.uniforme || {}) },
+      cabelo: { ...(padraoBase.cabelo || {}), ...(perfilStorage.cabelo || {}) },
+      barba: { ...(padraoBase.barba || {}), ...(perfilStorage.barba || {}) },
+      pele: { ...(padraoBase.pele || {}), ...(perfilStorage.pele || {}) },
+      acessorios: { ...(padraoBase.acessorios || {}), ...(perfilStorage.acessorios || {}) },
       atualizadoEm: perfilStorage.atualizadoEm || new Date().toISOString()
     };
   }
@@ -715,6 +831,7 @@
   return {
     config: SUPABASE_CONFIG,
     carregarLeadsNuvem,
+    carregarLeadsArenaNuvem,
     salvarLeadNuvem,
     removerLeadNuvem,
     gerarArquivoBackupRede,

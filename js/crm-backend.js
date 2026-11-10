@@ -1516,6 +1516,14 @@
   const STORAGE_KEY_LEADS = 'isapel_crm_leads_v1';
   const STORAGE_KEY_NOTAS = 'isapel_crm_notas_diarias_v1';
 
+  const DEMO_LEAD_IDS = new Set([
+    'lead-maciel-01', 'lead-maciel-02', 'lead-maciel-03',
+    'lead-fernanda-01', 'lead-fernanda-02', 'lead-fernanda-03', 'lead-fernanda-04',
+    'lead-caio-01', 'lead-caio-02', 'lead-caio-03',
+    'lead-albert-01', 'lead-albert-02',
+    'lead-daniel-01', 'lead-daniel-02'
+  ]);
+
   let memoriaLeads = null;
   let memoriaNotas = [];
 
@@ -1542,25 +1550,28 @@
         if (dados !== null) {
           const parsed = JSON.parse(dados);
           if (Array.isArray(parsed)) {
-            // Garante migração transparente de tipoCliente se ausente
-            memoriaLeads = parsed.map(lead => {
-              if (lead.tipoCliente === undefined) {
-                const inicial = LEADS_INICIAIS.find(li => li.id === lead.id);
-                lead.tipoCliente = inicial ? inicial.tipoCliente : '';
-              }
-              return lead;
-            });
+            // Remove eventuais leads fictícios/demo antigos do navegador e preserva apenas clientes reais
+            memoriaLeads = parsed
+              .filter(lead => lead && !DEMO_LEAD_IDS.has(String(lead.id)))
+              .map(lead => {
+                if (lead.tipoCliente === undefined) {
+                  lead.tipoCliente = '';
+                }
+                return lead;
+              });
             return memoriaLeads;
           }
         }
       } catch (err) {
         console.warn('Erro ao ler leads do localStorage:', err);
       }
+      // No navegador, inicia vazio aguardando os clientes reais do Supabase (sem clientes demo fictícios)
+      memoriaLeads = [];
+      return memoriaLeads;
     }
 
-    // Inicializa com leads demonstrativos apenas na primeira execução limpa
+    // Ambiente de testes unitários Node.js (sem window.localStorage): usa massa de teste inicial
     memoriaLeads = LEADS_INICIAIS.map(lead => enriquecerLeadComDDD(lead));
-    salvarLeads(memoriaLeads);
     return memoriaLeads;
   }
 
@@ -1591,7 +1602,7 @@
     const leadsLocais = carregarLeadsArmazenados();
     const mapaLocais = new Map();
     leadsLocais.forEach(l => {
-      if (l && l.id) {
+      if (l && l.id && !DEMO_LEAD_IDS.has(String(l.id))) {
         mapaLocais.set(String(l.id), { ...l });
       }
     });

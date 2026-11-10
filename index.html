@@ -1824,8 +1824,11 @@
             </label>
             <!-- Select dropdown para compatibilidade de testes -->
             <select id="avatar-uniforme-select" name="uniforme" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
-              <option value="polo-navy">Camisa Polo Azul Marinho (#003360)</option>
-              <option value="polo-sky">Camisa Polo Azul Céu (#0284C7)</option>
+              <option value="polo-navy">Camisa Polo Azul Marinho (#003360 - Caio)</option>
+              <option value="polo-sky">Camisa Polo Azul Céu (#6BA4E8 - Maciel)</option>
+              <option value="moletom-creme">Moletom Creme c/ Capuz (#EFE6DD - Daniel)</option>
+              <option value="blusa-royal">Blusa Royal Blue Feminina (#2563EB - Fernanda)</option>
+              <option value="jaqueta-preta">Jaqueta Preta Executiva + Camisa Isapel (Albert)</option>
               <option value="camisa-social">Camisa Social Branca com Crachá Isapel (#FFFFFF)</option>
             </select>
             <!-- Swatch Buttons interativos com data-uniforme -->
@@ -1837,11 +1840,32 @@
                   <small>#003360 Oficial</small>
                 </div>
               </button>
-              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="polo-sky" title="Polo Azul Céu (#0284C7)">
-                <span class="uniforme-color-dot" style="background: #0284C7;"></span>
+              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="polo-sky" title="Polo Azul Céu (#6BA4E8)">
+                <span class="uniforme-color-dot" style="background: #6BA4E8;"></span>
                 <div class="uniforme-meta">
-                  <strong>Azul Céu</strong>
-                  <small>#0284C7 Destaque</small>
+                  <strong>Polo Azul Céu</strong>
+                  <small>Maciel Oficial</small>
+                </div>
+              </button>
+              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="moletom-creme" title="Moletom Creme c/ Capuz">
+                <span class="uniforme-color-dot" style="background: #EFE6DD; border: 1px solid #CBD5E1;"></span>
+                <div class="uniforme-meta">
+                  <strong>Moletom Creme</strong>
+                  <small>Daniel / Mateus</small>
+                </div>
+              </button>
+              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="blusa-royal" title="Blusa Royal Blue">
+                <span class="uniforme-color-dot" style="background: #2563EB;"></span>
+                <div class="uniforme-meta">
+                  <strong>Blusa Royal Blue</strong>
+                  <small>Fernanda + Colar</small>
+                </div>
+              </button>
+              <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="jaqueta-preta" title="Jaqueta Preta sobre Camisa Isapel">
+                <span class="uniforme-color-dot" style="background: #18181B;"></span>
+                <div class="uniforme-meta">
+                  <strong>Jaqueta Preta</strong>
+                  <small>Albert Executivo</small>
                 </div>
               </button>
               <button type="button" class="crm-uniforme-swatch-btn uniforme-swatch" data-uniforme="camisa-social" title="Camisa Social Branca com Crachá Isapel">
@@ -1861,11 +1885,12 @@
             </label>
             <select id="avatar-cabelo-estilo" name="cabelo" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
               <option value="cacheado-curto">Cacheado Curto (Estilo Gabriel Maciel)</option>
-              <option value="liso-comprido">Longo c/ Franja e Ombros (Estilo Fernanda)</option>
-              <option value="cacheado-volumoso">Cachos Volumosos (Estilo Caio)</option>
+              <option value="liso-comprido">Longo Loiro Liso c/ Ombros (Estilo Fernanda)</option>
+              <option value="cacheado-volumoso">Cachos Volumosos no Topo (Estilo Daniel)</option>
+              <option value="cacheado-jovem">Cacheado Jovem c/ Laterais Baixas (Estilo Caio)</option>
+              <option value="raspado-buzz">Raspado / Fade Curto (Estilo Albert)</option>
               <option value="curto-executivo">Curto Executivo (Penteado com risca)</option>
               <option value="ondulado-medio">Ondulado Médio / Bob Cut</option>
-              <option value="raspado-buzz">Raspado / Buzz Cut Militar</option>
             </select>
             <div class="crm-swatch-row" id="avatar-cabelo-cores">
               <button type="button" class="crm-color-swatch cabelo-option is-active" data-cor-cabelo="#1A1514" data-cabelo-cor="#1A1514" style="background: #1A1514;" title="Preto Intenso"></button>
@@ -1886,9 +1911,10 @@
             </label>
             <select id="avatar-barba-estilo" name="barba" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
               <option value="com-bigode">Com Bigode Marcante 3D (Canônico Gabriel Maciel)</option>
-              <option value="sem-barba">Sem Barba (Rosto Limpo)</option>
-              <option value="cavanhaque">Cavanhaque Executivo</option>
-              <option value="barba-cheia">Barba Cheia Alinhada Corporativa</option>
+              <option value="cavanhaque">Bigode + Cavanhaque no Queixo (Estilo Daniel)</option>
+              <option value="cavanhaque-fino">Cavanhaque Fino na Ponta do Queixo (Estilo Caio)</option>
+              <option value="barba-cheia">Barba Cheia + Sorriso (Estilo Albert)</option>
+              <option value="sem-barba">Sem Barba (Rosto Limpo - Fernanda)</option>
             </select>
             <div class="crm-swatch-row" id="avatar-barba-cores">
               <button type="button" class="crm-color-swatch barba-option is-active" data-cor-barba="#161211" style="background: #161211;" title="Preto Barba"></button>
@@ -1907,7 +1933,8 @@
               <option value="#FDDFCA">Porcelana Claro (#FDDFCA)</option>
               <option value="#F9D3B4">Bege Claro - Fernanda (#F9D3B4)</option>
               <option value="#E6B994">Moreno Suave - Maciel (#E6B994)</option>
-              <option value="#DFA980">Moreno Quente - Caio (#DFA980)</option>
+              <option value="#DFA980">Moreno Quente - Caio / Daniel (#DFA980)</option>
+              <option value="#C68658">Moreno Bronze - Albert (#C68658)</option>
               <option value="#BD855A">Bronze Dourado (#BD855A)</option>
               <option value="#8D5524">Castanho Nobre (#8D5524)</option>
               <option value="#513524">Ébano Profundo (#513524)</option>
@@ -1917,7 +1944,8 @@
               <button type="button" class="crm-color-swatch pele-swatch" data-pele="#FDDFCA" data-tom-pele="#FDDFCA" style="background: #FDDFCA;" title="Porcelana Claro"></button>
               <button type="button" class="crm-color-swatch pele-swatch" data-pele="#F9D3B4" data-tom-pele="#F9D3B4" style="background: #F9D3B4;" title="Bege Claro (Fernanda)"></button>
               <button type="button" class="crm-color-swatch pele-swatch is-active" data-pele="#E6B994" data-tom-pele="#E6B994" style="background: #E6B994;" title="Moreno Suave (Maciel)"></button>
-              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#DFA980" data-tom-pele="#DFA980" style="background: #DFA980;" title="Moreno Quente (Caio)"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#DFA980" data-tom-pele="#DFA980" style="background: #DFA980;" title="Moreno Quente (Caio/Daniel)"></button>
+              <button type="button" class="crm-color-swatch pele-swatch" data-pele="#C68658" data-tom-pele="#C68658" style="background: #C68658;" title="Moreno Bronze (Albert)"></button>
               <button type="button" class="crm-color-swatch pele-swatch" data-pele="#BD855A" data-tom-pele="#BD855A" style="background: #BD855A;" title="Bronze Dourado"></button>
               <button type="button" class="crm-color-swatch pele-swatch" data-pele="#8D5524" data-tom-pele="#8D5524" style="background: #8D5524;" title="Castanho Nobre"></button>
               <button type="button" class="crm-color-swatch pele-swatch" data-pele="#513524" data-tom-pele="#513524" style="background: #513524;" title="Ébano Profundo"></button>
@@ -1932,6 +1960,7 @@
             </label>
             <select id="avatar-acessorio-oculos" name="oculos" class="crm-input crm-select" style="margin-bottom: 0.75rem;">
               <option value="nenhum">Sem Óculos</option>
+              <option value="executivo-prata">Óculos Retangular Prata Metálico (Estilo Albert)</option>
               <option value="executivo-dourado">Óculos Retangular Dourado Bia Paper</option>
               <option value="executivo-preto">Óculos Retangular Preto Fosco</option>
               <option value="redondo-moderno">Óculos Redondo Moderno</option>
