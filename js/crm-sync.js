@@ -104,6 +104,7 @@
       observacoes: row.observacoes || '',
       historico: Array.isArray(row.historico) ? row.historico : (typeof row.historico === 'string' ? JSON.parse(row.historico) : []),
       dataCadastro: row.data_cadastro,
+      dataCriacao: row.data_cadastro,
       dataAtualizacao: row.data_atualizacao
     };
   }
@@ -119,7 +120,7 @@
       else vendedorNome = 'Gabriel Maciel';
     }
 
-    return {
+    const payload = {
       id: lead.id,
       nome: lead.nome,
       telefone: lead.telefone,
@@ -137,6 +138,13 @@
       historico: lead.historico || [],
       data_atualizacao: new Date().toISOString()
     };
+
+    const dataCadastroVal = lead.dataContatoInicial || lead.dataCadastro || lead.dataCriacao || lead.data_cadastro;
+    if (dataCadastroVal) {
+      payload.data_cadastro = dataCadastroVal;
+    }
+
+    return payload;
   }
 
   // 1. Puxar Leads da Nuvem (Supabase com RBAC e Isolamento de Dados)

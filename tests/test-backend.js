@@ -278,6 +278,48 @@ test('Geração e integridade do Markdown e CSV', () => {
   assert(csv.startsWith('\uFEFF'), 'CSV deve conter BOM UTF-8 para compatibilidade perfeita com Excel');
 });
 
+test('Cálculo de dias desde o contato inicial do lead (calendário, fuso, faixas e fallback)', () => {
+  const ref = new Date(2026, 10, 11, 8, 30, 0); // 11/11/2026 08:30 local
+
+  // 0 dias (hoje)
+  const resHoje = CRM.calcularDiasContatoInicial({ estagio: 'novo', dataCadastro: '2026-11-11' }, ref);
+  assert.strictEqual(resHoje.dias, 0);
+  assert.strictEqual(resHoje.textoCurto, '1º contato: Hoje');
+  assert.strictEqual(resHoje.faixa, 'fresh');
+  assert.strictEqual(resHoje.dataBr, '11/11/2026');
+
+  // 1 dia (ontem, mesmo sendo < 24h corridas deve contar 1 dia de calendário)
+  const ontemTarde = new Date(2026, 10, 10, 19, 45, 0).toISOString();
+  const resOntem = CRM.calcularDiasContatoInicial({ estagio: 'qualificacao', dataCadastro: ontemTarde }, ref);
+  assert.strictEqual(resOntem.dias, 1);
+  assert.strictEqual(resOntem.textoCurto, '1º contato: há 1 dia');
+  assert.strictEqual(resOntem.faixa, 'fresh');
+
+  // 4 dias (faixa warm)
+  const resWarm = CRM.calcularDiasContatoInicial({ estagio: 'proposta', dataCadastro: '2026-11-07' }, ref);
+  assert.strictEqual(resWarm.dias, 4);
+  assert.strictEqual(resWarm.textoCurto, '1º contato: há 4 dias');
+  assert.strictEqual(resWarm.faixa, 'warm');
+
+  // 8 dias ativo (faixa alert)
+  const resAlert = CRM.calcularDiasContatoInicial({ estagio: 'negociacao', data_cadastro: '2026-11-03T11:21:23.745Z' }, ref);
+  assert.strictEqual(resAlert.dias, 8);
+  assert.strictEqual(resAlert.textoCurto, '1º contato: há 8 dias');
+  assert.strictEqual(resAlert.faixa, 'alert');
+
+  // 8 dias fechado/perdido (faixa neutral)
+  const resFechado = CRM.calcularDiasContatoInicial({ estagio: 'fechado', dataCadastro: '2026-11-03' }, ref);
+  assert.strictEqual(resFechado.dias, 8);
+  assert.strictEqual(resFechado.faixa, 'neutral');
+
+  // Fallback para histórico quando não há campos de data no topo
+  const resHist = CRM.calcularDiasContatoInicial({
+    estagio: 'novo',
+    historico: [{ tipo: 'cadastro', data: '2026-11-09T14:00:00.000Z' }]
+  }, ref);
+  assert.strictEqual(resHist.dias, 2);
+});
+
 // ----------------------------------------------------------------------------
 // RESUMO DOS TESTES
 // ----------------------------------------------------------------------------

@@ -1652,6 +1652,13 @@
           : mesclado.valorProposta;
         mesclado.dataUltimoContato = leadLocal.dataUltimoContato || mesclado.dataUltimoContato;
         mesclado.dataAtualizacao = leadLocal.dataAtualizacao || leadLocal.data_atualizacao || new Date().toISOString();
+        if (leadLocal.dataContatoInicial || leadLocal.dataCadastro || leadLocal.dataCriacao) {
+          mesclado.dataCadastro = leadLocal.dataCadastro || leadLocal.dataCriacao || mesclado.dataCadastro;
+          mesclado.dataCriacao = leadLocal.dataCriacao || leadLocal.dataCadastro || mesclado.dataCriacao;
+          if (leadLocal.dataContatoInicial) {
+            mesclado.dataContatoInicial = leadLocal.dataContatoInicial;
+          }
+        }
         if (leadLocal.tipoCliente) {
           mesclado.tipoCliente = leadLocal.tipoCliente;
         }
@@ -1743,7 +1750,8 @@
       prazoPagamento: dados.prazoPagamento || 'Boleto 28 DDL',
       amostraEnviada: Boolean(dados.amostraEnviada),
       amostraDetalhe: dados.amostraDetalhe || '',
-      dataCriacao: agora,
+      dataCriacao: dados.dataContatoInicial || agora,
+      dataCadastro: dados.dataContatoInicial || agora,
       dataAtualizacao: agora,
       _tsLocal: Date.now(),
       dataUltimoContato: dados.observacoes ? agora : null,
@@ -2404,7 +2412,7 @@
       `"${(l.volumeMensal || '').replace(/"/g, '""')}"`,
       (l.valorProposta || 0).toFixed(2).replace('.', ','),
       l.amostraEnviada ? 'Sim' : 'Nao',
-      l.dataCriacao || '',
+      l.dataCriacao || l.dataCadastro || '',
       l.dataUltimoContato || ''
     ]);
 
@@ -2462,6 +2470,136 @@
   }
 
   /**
+   * Converte string/Date de forma segura para Date respeitando YYYY-MM-DD em fuso local.
+   */
+  function parsearDataLocal(valor) {
+    if (!valor) return null;
+    if (valor instanceof Date) {
+      return isNaN(valor.getTime()) ? null : new Date(valor.getTime());
+    }
+    const str = String(valor).trim();
+    if (!str) return null;
+
+    // Evita deslocamento de -1 dia em UTC-3 quando vem apenas YYYY-MM-DD
+    const matchYmd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str);
+    if (matchYmd) {
+      return new Date(Number(matchYmd[1]), Number(matchYmd[2]) - 1, Number(matchYmd[3]), 12, 0, 0);
+    }
+
+    const parsed = new Date(str);
+    return isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  /**
+   * Obtém a data do contato inicial do lead (cadastro, criação ou 1º registro no histórico).
+   */
+  function obterDataContatoInicial(lead) {
+    if (!lead || typeof lead !== 'object') return null;
+
+    const candidatos = [
+      lead.dataContatoInicial,
+      lead.dataCadastro,
+      lead.data_cadastro,
+      lead.dataCriacao,
+      lead.criadoEm,
+      lead.created_at
+    ];
+
+    for (const c of candidatos) {
+      const d = parsearDataLocal(c);
+      if (d) return d;
+    }
+
+    const hist = Array.isArray(lead.historico)
+      ? lead.historico
+      : (Array.isArray(lead.historicoContatos) ? lead.historicoContatos : []);
+
+    if (hist.length > 0) {
+      const entryCadastro = hist.find(h => h && h.tipo === 'cadastro' && h.data);
+      if (entryCadastro) {
+        const dCad = parsearDataLocal(entryCadastro.data);
+        if (dCad) return dCad;
+      }
+
+      let menorData = null;
+      hist.forEach(h => {
+        if (!h || !h.data) return;
+        const dh = parsearDataLocal(h.data);
+        if (dh && (!menorData || dh.getTime() < menorData.getTime())) {
+          menorData = dh;
+        }
+      });
+      if (menorData) return menorData;
+    }
+
+    return parsearDataLocal(lead.dataAtualizacao || lead.data_atualizacao);
+  }
+
+  /**
+   * Calcula quantos dias corridos se passaram desde o contato inicial do lead.
+   */
+  function calcularDiasContatoInicial(lead, dataReferencia) {
+    const dataInicial = obterDataContatoInicial(lead);
+    if (!dataInicial) {
+      return {
+        dias: null,
+        dataInicial: null,
+        dataBr: '',
+        dataIso: '',
+        textoCurto: '1º contato: sem data',
+        textoDetalhado: 'Data de contato inicial não informada',
+        textoCompleto: 'Data do contato inicial não registrada',
+        faixa: 'neutral'
+      };
+    }
+
+    const ref = dataReferencia ? (parsearDataLocal(dataReferencia) || new Date()) : new Date();
+    const initMidnight = new Date(dataInicial.getFullYear(), dataInicial.getMonth(), dataInicial.getDate());
+    const refMidnight = new Date(ref.getFullYear(), ref.getMonth(), ref.getDate());
+    const diffDias = Math.max(0, Math.round((refMidnight.getTime() - initMidnight.getTime()) / 86400000));
+
+    const dia = String(dataInicial.getDate()).padStart(2, '0');
+    const mes = String(dataInicial.getMonth() + 1).padStart(2, '0');
+    const ano = dataInicial.getFullYear();
+    const dataBr = `${dia}/${mes}/${ano}`;
+    const dataIso = `${ano}-${mes}-${dia}`;
+
+    let textoCurto = '';
+    let textoDetalhado = '';
+    if (diffDias === 0) {
+      textoCurto = '1º contato: Hoje';
+      textoDetalhado = 'Hoje (0 dias)';
+    } else if (diffDias === 1) {
+      textoCurto = '1º contato: há 1 dia';
+      textoDetalhado = 'Há 1 dia';
+    } else {
+      textoCurto = `1º contato: há ${diffDias} dias`;
+      textoDetalhado = `Há ${diffDias} dias`;
+    }
+
+    const estagio = lead && lead.estagio ? String(lead.estagio).toLowerCase() : '';
+    let faixa = 'fresh';
+    if (estagio === 'fechado' || estagio === 'perdido') {
+      faixa = 'neutral';
+    } else if (diffDias >= 7) {
+      faixa = 'alert';
+    } else if (diffDias >= 3) {
+      faixa = 'warm';
+    }
+
+    return {
+      dias: diffDias,
+      dataInicial: dataInicial,
+      dataBr: dataBr,
+      dataIso: dataIso,
+      textoCurto: textoCurto,
+      textoDetalhado: textoDetalhado,
+      textoCompleto: `Contato inicial em ${dataBr} (${textoDetalhado.toLowerCase()})`,
+      faixa: faixa
+    };
+  }
+
+  /**
    * Restaura os dados para o seed demonstrativo original
    */
   function restaurarDadosOriginais() {
@@ -2507,6 +2645,10 @@
 
     // Arena de Competição
     calcularMetricasArena: calcularMetricasArena,
+
+    // Contato Inicial e Aging dos Leads
+    obterDataContatoInicial: obterDataContatoInicial,
+    calcularDiasContatoInicial: calcularDiasContatoInicial,
 
     // Fechamento Diário & Plano Tático Comercial
     gerarFechamentoDiario: gerarFechamentoDiario,

@@ -13,10 +13,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Estilos Temáticos da Isapel Papéis -->
-  <link rel="stylesheet" href="css/crm-theme.css?v=20261110v3">
+  <link rel="stylesheet" href="css/crm-theme.css?v=20261111v1">
 
   <!-- Módulo de Autenticação e Guarda de Rota Imediata (Anti-FOUC) -->
-  <script src="js/crm-auth.js?v=20261110v3"></script>
+  <script src="js/crm-auth.js?v=20261111v1"></script>
   <script>
     if (!window.IsapelAuth || !window.IsapelAuth.estaAutenticado()) {
       window.location.replace('login.html');
@@ -484,6 +484,32 @@
             <option value="consumidor_final">🛒 Consumidor Final</option>
             <option value="outro">📦 Outro</option>
           </select>
+          <label for="kanban-dias-contato-filter" class="sr-only">Filtrar por dias do contato inicial</label>
+          <select
+            id="kanban-dias-contato-filter"
+            class="crm-quick-bar__input"
+            style="height: 32px; font-size: 0.8rem; padding: 0 0.5rem; width: auto; background-color: #FFFFFF; font-weight: 600; color: #334155; cursor: pointer;"
+            aria-label="Filtrar por dias desde o contato inicial"
+            title="Filtrar por quantos dias fazem do contato inicial"
+          >
+            <option value="todos">⏱️ Todos os Dias (1º Contato)</option>
+            <option value="0">🟢 Hoje (0 dias)</option>
+            <option value="1">🟢 Ontem (1 dia)</option>
+            <option value="0-2">🟢 0 a 2 dias</option>
+            <option value="3-6">🟡 3 a 6 dias</option>
+            <option value="7+">🔴 7+ dias</option>
+            <option value="exato">🔎 Número exato de dias...</option>
+          </select>
+          <input
+            type="number"
+            id="kanban-dias-exato-input"
+            class="crm-quick-bar__input"
+            min="0"
+            max="3650"
+            placeholder="Dias (ex: 5)"
+            style="display: none; width: 105px; height: 32px; font-size: 0.8rem; padding: 0 0.5rem;"
+            aria-label="Digite o número exato de dias desde o contato inicial"
+          >
           <span style="font-size: 0.78rem; color: var(--text-muted);" id="kanban-filter-status">Exibindo todos os leads</span>
         </div>
         <div style="display: flex; align-items: center; gap: 1rem;">
@@ -1580,7 +1606,10 @@
       <div class="crm-modal__body">
         <div>
           <h4 id="modal-notas-lead-nome" style="font-size: 1.1rem; font-weight: 700; color: var(--isapel-navy);">Cliente</h4>
-          <span id="modal-notas-lead-phone" style="font-size: 0.8rem; color: var(--text-muted);">Telefone</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem;">
+            <span id="modal-notas-lead-phone" style="font-size: 0.8rem; color: var(--text-muted);">Telefone</span>
+            <span id="modal-notas-lead-contato-inicial" class="crm-card__days-badge crm-card__days-badge--neutral" style="display: none;"></span>
+          </div>
         </div>
 
         <!-- Tags Rápidas de Conversa -->
@@ -1652,9 +1681,18 @@
             <input type="tel" id="edit-lead-telefone" class="crm-quick-bar__input" required>
           </div>
 
-          <div>
-            <label for="edit-lead-valor" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Valor Negociado (R$)</label>
-            <input type="number" id="edit-lead-valor" class="crm-quick-bar__input" step="50" min="0">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div>
+              <label for="edit-lead-valor" style="font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 0.2rem;">Valor Negociado (R$)</label>
+              <input type="number" id="edit-lead-valor" class="crm-quick-bar__input" step="50" min="0">
+            </div>
+            <div>
+              <label for="edit-lead-data-contato-inicial" style="font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 0.35rem; margin-bottom: 0.2rem;">
+                <span>Contato Inicial</span>
+                <span id="edit-lead-dias-contato-preview" class="crm-card__days-badge crm-card__days-badge--neutral" style="font-size: 0.68rem; padding: 0.08rem 0.4rem;"></span>
+              </label>
+              <input type="date" id="edit-lead-data-contato-inicial" class="crm-quick-bar__input">
+            </div>
           </div>
 
           <div>
@@ -1948,16 +1986,16 @@
   </script>
 
   <!-- Base de Regras de Negócio e Dados -->
-  <script src="js/crm-backend.js?v=20261110v3"></script>
+  <script src="js/crm-backend.js?v=20261111v1"></script>
 
   <!-- Sincronizador Híbrido Supabase & Backup de Rede -->
-  <script src="js/crm-sync.js?v=20261110v3"></script>
+  <script src="js/crm-sync.js?v=20261111v1"></script>
 
   <!-- Motor Analítico e Métricas de Vendas -->
-  <script src="js/crm-analytics.js?v=20261110v3"></script>
+  <script src="js/crm-analytics.js?v=20261111v1"></script>
 
   <!-- Módulo 3D da Arena de Vendedores -->
-  <script src="js/arena-3d.js?v=20261110v3"></script>
+  <script src="js/arena-3d.js?v=20261111v1"></script>
 
   <!-- Captura e Exportação Visual de Relatórios em Imagem (html2canvas) -->
   <script src="js/html2canvas.min.js"></script>
@@ -1969,7 +2007,7 @@
   </script>
 
   <!-- Aplicação Principal -->
-  <script src="js/crm-app.js?v=20261110v3"></script>
+  <script src="js/crm-app.js?v=20261111v2"></script>
 
 </body>
 </html>

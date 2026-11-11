@@ -27,6 +27,8 @@
     abaAtiva: 'tab-funil',
     buscaTermo: '',
     tipoClienteFiltro: 'todos', // 'todos' | 'distribuidor' | 'licitacao' | 'consumidor_final' | 'outro'
+    diasContatoFiltro: 'todos', // 'todos' | '0' | '1' | '0-2' | '3-6' | '7+' | 'exato'
+    diasContatoExato: null,
     leadEmEdicaoId: null,
     leadEmNotasId: null,
     ultimoFechamentoGerado: null,
@@ -365,6 +367,7 @@
       tipoCliente: '',
       valorProposta: 0,
       dataCriacao: agora,
+      dataCadastro: agora,
       dataAtualizacao: agora,
       _tsLocal: Date.now(),
       dataUltimoContato: agora,
@@ -410,6 +413,23 @@
           return false;
         }
       }
+      // Filtro de dias desde o contato inicial
+      if (AppState.diasContatoFiltro && AppState.diasContatoFiltro !== 'todos') {
+        const infoContato = obterInfoContatoInicial(lead);
+        const dias = infoContato.dias;
+        if (dias === null) return false;
+        if (AppState.diasContatoFiltro === '0' && dias !== 0) return false;
+        if (AppState.diasContatoFiltro === '1' && dias !== 1) return false;
+        if (AppState.diasContatoFiltro === '0-2' && (dias < 0 || dias > 2)) return false;
+        if (AppState.diasContatoFiltro === '3-6' && (dias < 3 || dias > 6)) return false;
+        if (AppState.diasContatoFiltro === '7+' && dias < 7) return false;
+        if (AppState.diasContatoFiltro === 'exato') {
+          const exato = AppState.diasContatoExato;
+          if (exato !== null && exato !== '' && !isNaN(Number(exato)) && dias !== Number(exato)) {
+            return false;
+          }
+        }
+      }
       // Filtro de busca
       if (termo) {
         const nomeMatch = (lead.nome || '').toLowerCase().includes(termo);
@@ -425,7 +445,12 @@
     // Atualiza status do filtro na barra superior
     const statusFiltro = document.getElementById('kanban-filter-status');
     if (statusFiltro) {
-      if (AppState.vendedorAtivo !== 'todos' || termo || (AppState.tipoClienteFiltro && AppState.tipoClienteFiltro !== 'todos')) {
+      const temFiltroDias = Boolean(
+        AppState.diasContatoFiltro &&
+        AppState.diasContatoFiltro !== 'todos' &&
+        (AppState.diasContatoFiltro !== 'exato' || (AppState.diasContatoExato !== null && AppState.diasContatoExato !== ''))
+      );
+      if (AppState.vendedorAtivo !== 'todos' || termo || (AppState.tipoClienteFiltro && AppState.tipoClienteFiltro !== 'todos') || temFiltroDias) {
         statusFiltro.textContent = `Exibindo ${leadsFiltrados.length} de ${todosLeads.length} leads`;
       } else {
         statusFiltro.textContent = `Exibindo todos os ${todosLeads.length} leads`;
@@ -618,6 +643,51 @@
     if (e.key === 'Escape') fecharPopoverTipoCliente();
   });
 
+  function obterInfoContatoInicial(lead) {
+    if (window.IsapelCRM && typeof window.IsapelCRM.calcularDiasContatoInicial === 'function') {
+      return window.IsapelCRM.calcularDiasContatoInicial(lead);
+    }
+
+    const raw = lead && (lead.dataContatoInicial || lead.dataCadastro || lead.data_cadastro || lead.dataCriacao || lead.criadoEm || lead.created_at);
+    if (!raw) {
+      return { dias: null, dataBr: '', dataIso: '', textoCurto: '1º contato: sem data', textoDetalhado: 'Sem data', textoCompleto: 'Data do contato inicial não registrada', faixa: 'neutral' };
+    }
+    const matchYmd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(raw).trim());
+    const dt = matchYmd
+      ? new Date(Number(matchYmd[1]), Number(matchYmd[2]) - 1, Number(matchYmd[3]), 12, 0, 0)
+      : new Date(raw);
+    if (isNaN(dt.getTime())) {
+      return { dias: null, dataBr: '', dataIso: '', textoCurto: '1º contato: sem data', textoDetalhado: 'Sem data', textoCompleto: 'Data do contato inicial não registrada', faixa: 'neutral' };
+    }
+
+    const hoje = new Date();
+    const d0 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    const d1 = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    const dias = Math.max(0, Math.round((d1.getTime() - d0.getTime()) / 86400000));
+    const dia = String(dt.getDate()).padStart(2, '0');
+    const mes = String(dt.getMonth() + 1).padStart(2, '0');
+    const ano = dt.getFullYear();
+    const dataBr = `${dia}/${mes}/${ano}`;
+    const dataIso = `${ano}-${mes}-${dia}`;
+    const textoCurto = dias === 0 ? '1º contato: Hoje' : (dias === 1 ? '1º contato: há 1 dia' : `1º contato: há ${dias} dias`);
+    const textoDetalhado = dias === 0 ? 'Hoje (0 dias)' : (dias === 1 ? 'Há 1 dia' : `Há ${dias} dias`);
+    const est = lead && lead.estagio ? String(lead.estagio).toLowerCase() : '';
+    let faixa = 'fresh';
+    if (est === 'fechado' || est === 'perdido') faixa = 'neutral';
+    else if (dias >= 7) faixa = 'alert';
+    else if (dias >= 3) faixa = 'warm';
+
+    return {
+      dias,
+      dataBr,
+      dataIso,
+      textoCurto,
+      textoDetalhado,
+      textoCompleto: `Contato inicial em ${dataBr} (${textoDetalhado.toLowerCase()})`,
+      faixa
+    };
+  }
+
   function criarCardElement(lead) {
     const card = document.createElement('div');
     card.className = 'crm-card';
@@ -666,6 +736,8 @@
     else if (cidadeCurta.includes('Vale do Paraíba')) cidadeCurta = 'S. José / Taubaté';
     else if (cidadeCurta.length > 14) cidadeCurta = cidadeCurta.slice(0, 13) + '…';
 
+    const contatoInfo = obterInfoContatoInicial(lead);
+
     card.innerHTML = `
       <div class="crm-card__top">
         <span class="crm-card__region-badge" title="${lead.cidade || ''} - ${lead.regiao || ''}">
@@ -691,8 +763,12 @@
         </a>
       </div>
 
-      <div style="display: flex; align-items: center; justify-content: flex-end; font-size: 0.8rem; margin-top: 0.2rem;">
-        <strong style="color: var(--isapel-navy); font-size: 0.88rem;">${formatarMoeda(lead.valorProposta || 0)}</strong>
+      <div class="crm-card__metrics-row">
+        <span class="crm-card__days-badge crm-card__days-badge--${contatoInfo.faixa}" title="${contatoInfo.textoCompleto}">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>${contatoInfo.textoCurto}</span>
+        </span>
+        <strong class="crm-card__value-text">${formatarMoeda(lead.valorProposta || 0)}</strong>
       </div>
 
       <div class="crm-card__notes-snippet" title="${ultimaNota}">
@@ -2450,6 +2526,17 @@
 
     if (nomeEl) nomeEl.textContent = lead.nome;
     if (foneEl) foneEl.textContent = `${lead.telefoneFormatado || lead.telefone} • ${lead.cidade || ''} (${lead.uf || 'SP'})`;
+
+    const badgeContatoNotas = document.getElementById('modal-notas-lead-contato-inicial');
+    if (badgeContatoNotas) {
+      const infoContato = obterInfoContatoInicial(lead);
+      badgeContatoNotas.className = `crm-card__days-badge crm-card__days-badge--${infoContato.faixa}`;
+      badgeContatoNotas.textContent = infoContato.dataBr
+        ? `1º contato: ${infoContato.dataBr} (${infoContato.textoDetalhado.toLowerCase()})`
+        : infoContato.textoCurto;
+      badgeContatoNotas.style.display = 'inline-flex';
+    }
+
     if (inputNota) inputNota.value = '';
 
     // Renderiza linha do tempo de notas
@@ -2590,6 +2677,18 @@
     document.getElementById('edit-lead-telefone').value = lead.telefoneFormatado || lead.telefone || '';
     document.getElementById('edit-lead-valor').value = lead.valorProposta || 0;
 
+    const infoContato = obterInfoContatoInicial(lead);
+    const inputDataContato = document.getElementById('edit-lead-data-contato-inicial');
+    const previewDiasEl = document.getElementById('edit-lead-dias-contato-preview');
+    if (inputDataContato) {
+      inputDataContato.value = infoContato.dataIso || '';
+      inputDataContato.setAttribute('data-original-iso', infoContato.dataIso || '');
+    }
+    if (previewDiasEl) {
+      previewDiasEl.className = `crm-card__days-badge crm-card__days-badge--${infoContato.faixa}`;
+      previewDiasEl.textContent = infoContato.dias !== null ? infoContato.textoDetalhado : 'Sem data';
+    }
+
     const selectVendedor = document.getElementById('edit-lead-vendedor');
     if (selectVendedor) {
       selectVendedor.value = lead.vendedorId || (isVendedor ? sessao.vendedorId : 'maciel');
@@ -2639,6 +2738,10 @@
 
     const estagio = document.getElementById('edit-lead-etapa').value;
     const tipoCliente = document.getElementById('edit-lead-tipo') ? document.getElementById('edit-lead-tipo').value : '';
+    const inputDataContato = document.getElementById('edit-lead-data-contato-inicial');
+    const novaDataYmd = inputDataContato ? inputDataContato.value.trim() : '';
+    const originalDataYmd = inputDataContato ? (inputDataContato.getAttribute('data-original-iso') || '') : '';
+    const alterouDataContato = Boolean(novaDataYmd && novaDataYmd !== originalDataYmd);
 
     if (!id || !nome || !telefone) {
       showToast('Preencha os campos obrigatórios.', 'warning');
@@ -2646,16 +2749,24 @@
     }
 
     let leadAtualizado = null;
+    const updatesPayload = {
+      nome: nome,
+      telefone: telefone,
+      valorProposta: valor,
+      vendedorId: vendedorId,
+      estagio: estagio,
+      tipoCliente: tipoCliente
+    };
+
+    if (alterouDataContato) {
+      const novaDataIsoCompleta = `${novaDataYmd}T12:00:00.000Z`;
+      updatesPayload.dataContatoInicial = novaDataIsoCompleta;
+      updatesPayload.dataCadastro = novaDataIsoCompleta;
+      updatesPayload.dataCriacao = novaDataIsoCompleta;
+    }
 
     if (window.IsapelCRM && typeof window.IsapelCRM.atualizarLead === 'function') {
-      leadAtualizado = window.IsapelCRM.atualizarLead(id, {
-        nome: nome,
-        telefone: telefone,
-        valorProposta: valor,
-        vendedorId: vendedorId,
-        estagio: estagio,
-        tipoCliente: tipoCliente
-      });
+      leadAtualizado = window.IsapelCRM.atualizarLead(id, updatesPayload);
     } else {
       const todos = obterTodosOsLeads();
       const lead = todos.find(l => l.id === id);
@@ -2667,6 +2778,12 @@
         lead.vendedorId = vendedorId;
         lead.estagio = estagio;
         lead.tipoCliente = tipoCliente;
+        if (alterouDataContato) {
+          const novaDataIsoCompleta = `${novaDataYmd}T12:00:00.000Z`;
+          lead.dataContatoInicial = novaDataIsoCompleta;
+          lead.dataCadastro = novaDataIsoCompleta;
+          lead.dataCriacao = novaDataIsoCompleta;
+        }
         localStorage.setItem('isapel_crm_leads_v1', JSON.stringify(todos));
         leadAtualizado = lead;
       }
@@ -2721,6 +2838,26 @@
     if (btnSalvar) btnSalvar.addEventListener('click', salvarEdicaoLead);
     if (btnExcluir) btnExcluir.addEventListener('click', excluirLeadAtual);
 
+    const inputDataContato = document.getElementById('edit-lead-data-contato-inicial');
+    if (inputDataContato) {
+      const atualizarPreviewContato = () => {
+        const previewDiasEl = document.getElementById('edit-lead-dias-contato-preview');
+        if (!previewDiasEl) return;
+        const val = inputDataContato.value.trim();
+        if (!val) {
+          previewDiasEl.className = 'crm-card__days-badge crm-card__days-badge--neutral';
+          previewDiasEl.textContent = 'Sem data';
+          return;
+        }
+        const stageVal = document.getElementById('edit-lead-etapa') ? document.getElementById('edit-lead-etapa').value : 'novo';
+        const info = obterInfoContatoInicial({ dataContatoInicial: val, estagio: stageVal });
+        previewDiasEl.className = `crm-card__days-badge crm-card__days-badge--${info.faixa}`;
+        previewDiasEl.textContent = info.dias !== null ? info.textoDetalhado : 'Sem data';
+      };
+      inputDataContato.addEventListener('change', atualizarPreviewContato);
+      inputDataContato.addEventListener('input', atualizarPreviewContato);
+    }
+
     if (backdrop) {
       backdrop.addEventListener('click', (e) => {
         if (e.target === backdrop) fecharModalEditar();
@@ -2744,6 +2881,30 @@
     if (tipoFilterSelect) {
       tipoFilterSelect.addEventListener('change', (e) => {
         AppState.tipoClienteFiltro = e.target.value;
+        renderizarKanban();
+      });
+    }
+
+    const diasContatoFilterSelect = document.getElementById('kanban-dias-contato-filter');
+    const diasExatoInput = document.getElementById('kanban-dias-exato-input');
+    if (diasContatoFilterSelect) {
+      diasContatoFilterSelect.addEventListener('change', (e) => {
+        AppState.diasContatoFiltro = e.target.value;
+        if (diasExatoInput) {
+          if (e.target.value === 'exato') {
+            diasExatoInput.style.display = 'inline-block';
+            diasExatoInput.focus();
+          } else {
+            diasExatoInput.style.display = 'none';
+          }
+        }
+        renderizarKanban();
+      });
+    }
+    if (diasExatoInput) {
+      diasExatoInput.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        AppState.diasContatoExato = val === '' ? null : Math.max(0, parseInt(val, 10));
         renderizarKanban();
       });
     }
