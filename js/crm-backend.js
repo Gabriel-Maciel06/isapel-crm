@@ -1037,6 +1037,13 @@
       titulo: 'Perdido / Standby',
       descricao: 'Oportunidade encerrada com motivo documentado para reativação futura',
       cor: '#EF4444'
+    },
+    cadencia: {
+      id: 'cadencia',
+      ordem: 7,
+      titulo: 'Cadência',
+      descricao: 'Lead em sequência programada de follow-up e cadência comercial',
+      cor: '#0D9488'
     }
   };
 
@@ -2011,7 +2018,8 @@
         proposta: 0,
         negociacao: 0,
         fechado: 0,
-        perdido: 0
+        perdido: 0,
+        cadencia: 0
       };
 
       let totalContatos = 0;
@@ -2252,7 +2260,8 @@
           proposta: totalProposta,
           negociacao: totalNegociacao,
           fechado: totalFechadosGeral,
-          perdido: leads.filter(l => l.estagio === 'perdido').length
+          perdido: leads.filter(l => l.estagio === 'perdido').length,
+          cadencia: leads.filter(l => l.estagio === 'cadencia').length
         }
       },
 
@@ -2297,7 +2306,8 @@
     md += `- 📝 **Propostas Enviadas:** ${f.proposta}\n`;
     md += `- 🤝 **Negociação / Amostras em Teste:** ${f.negociacao}\n`;
     md += `- 🏆 **Fechados / Ativos:** ${f.fechado}\n`;
-    md += `- 🛑 **Standby / Perdidos:** ${f.perdido}\n\n`;
+    md += `- 🛑 **Standby / Perdidos:** ${f.perdido}\n`;
+    md += `- 🔁 **Em Cadência:** ${f.cadencia || 0}\n\n`;
 
     // 2. ARENA DE COMPETIÇÃO
     md += `## 🏆 2. Performance da Arena Comercial\n\n`;

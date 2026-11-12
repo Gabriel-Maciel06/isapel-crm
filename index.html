@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Estilos Temáticos da Isapel Papéis -->
-  <link rel="stylesheet" href="css/crm-theme.css?v=20261111v1">
+  <link rel="stylesheet" href="css/crm-theme.css?v=20261111v3">
 
   <!-- Módulo de Autenticação e Guarda de Rota Imediata (Anti-FOUC) -->
   <script src="js/crm-auth.js?v=20261111v1"></script>
@@ -621,6 +621,22 @@
               </div>
             </div>
             <div class="crm-kanban-col__body drop-target" data-stage="perdido" id="cards-perdido"></div>
+          </div>
+
+          <!-- Coluna 7: Cadência -->
+          <div class="crm-kanban-col crm-kanban-col--7" data-stage="cadencia" id="col-cadencia">
+            <div class="crm-kanban-col__header">
+              <div class="crm-kanban-col__indicator"></div>
+              <div class="crm-kanban-col__title-row">
+                <h3 class="crm-kanban-col__title">7. Cadência</h3>
+                <span class="crm-kanban-col__badge-count" id="count-cadencia">0</span>
+              </div>
+              <div class="crm-kanban-col__summary-row">
+                <span>Total Estimado</span>
+                <span class="crm-kanban-col__total-value" id="total-cadencia">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="crm-kanban-col__body drop-target" data-stage="cadencia" id="cards-cadencia"></div>
           </div>
 
         </div>
@@ -1726,6 +1742,7 @@
                 <option value="negociacao">4. Negociação</option>
                 <option value="fechado">5. Fechado (Ganho)</option>
                 <option value="perdido">6. Perdido</option>
+                <option value="cadencia">7. Cadência</option>
               </select>
             </div>
           </div>
@@ -1986,13 +2003,13 @@
   </script>
 
   <!-- Base de Regras de Negócio e Dados -->
-  <script src="js/crm-backend.js?v=20261111v1"></script>
+  <script src="js/crm-backend.js?v=20261111v3"></script>
 
   <!-- Sincronizador Híbrido Supabase & Backup de Rede -->
   <script src="js/crm-sync.js?v=20261111v1"></script>
 
   <!-- Motor Analítico e Métricas de Vendas -->
-  <script src="js/crm-analytics.js?v=20261111v1"></script>
+  <script src="js/crm-analytics.js?v=20261111v3"></script>
 
   <!-- Módulo 3D da Arena de Vendedores -->
   <script src="js/arena-3d.js?v=20261111v1"></script>
@@ -2007,7 +2024,7 @@
   </script>
 
   <!-- Aplicação Principal -->
-  <script src="js/crm-app.js?v=20261111v2"></script>
+  <script src="js/crm-app.js?v=20261111v3"></script>
 
 </body>
 </html>

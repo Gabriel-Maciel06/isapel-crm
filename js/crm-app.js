@@ -386,9 +386,9 @@
   }
 
   // ==========================================================================
-  // 7. RENDERIZAÇÃO DO FUNIL KANBAN DE 6 COLUNAS & CARDS
+  // 7. RENDERIZAÇÃO DO FUNIL KANBAN DE 7 COLUNAS & CARDS
   // ==========================================================================
-  const ESTAGIOS_LISTA = ['novo', 'qualificacao', 'proposta', 'negociacao', 'fechado', 'perdido'];
+  const ESTAGIOS_LISTA = ['novo', 'qualificacao', 'proposta', 'negociacao', 'fechado', 'perdido', 'cadencia'];
 
   function obterTodosOsLeads() {
     if (window.IsapelCRM && typeof window.IsapelCRM.listarLeads === 'function') {
@@ -784,7 +784,7 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 3px; vertical-align: -1px;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>Editar
           </button>
         </div>
-        ${lead.estagio !== 'fechado' && lead.estagio !== 'perdido' ? `
+        ${!['fechado', 'perdido', 'cadencia'].includes(lead.estagio) ? `
           <button type="button" class="crm-card__btn-advance btn-advance-stage" data-id="${lead.id}" style="font-weight: 700; color: var(--isapel-sky-dark);" title="Avançar para a próxima coluna">
             Avançar &rarr;
           </button>
@@ -947,7 +947,8 @@
     if (!lead) return;
 
     const indexAtual = ESTAGIOS_LISTA.indexOf(lead.estagio);
-    if (indexAtual >= 0 && indexAtual < ESTAGIOS_LISTA.length - 2) { // Não avança para 'perdido'
+    const indexFechado = ESTAGIOS_LISTA.indexOf('fechado');
+    if (indexAtual >= 0 && indexAtual < indexFechado) { // Não avança após 'fechado' ('perdido' e 'cadencia' são movidos manualmente)
       const proxEstagio = ESTAGIOS_LISTA[indexAtual + 1];
       moverLeadDeEstagio(leadId, proxEstagio);
       showToast(`Lead avançado para "${proxEstagio.toUpperCase()}"`, 'info');

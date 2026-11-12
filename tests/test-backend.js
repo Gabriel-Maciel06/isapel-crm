@@ -100,19 +100,21 @@ test('Vendedores Maciel, Fernanda e Caio configurados com características solic
 });
 
 // ----------------------------------------------------------------------------
-// 3. FUNIL DE VENDAS COMPLETO (6 ETAPAS)
+// 3. FUNIL DE VENDAS COMPLETO (7 ETAPAS)
 // ----------------------------------------------------------------------------
-console.log('\n--- 3. Funil de Vendas de 6 Etapas ---');
+console.log('\n--- 3. Funil de Vendas de 7 Etapas ---');
 
-test('Funil possui exatamente as 6 etapas estruturadas solicitadas', () => {
+test('Funil possui exatamente as 7 etapas estruturadas solicitadas', () => {
   const etapas = Object.keys(CRM.ETAPAS_FUNIL);
-  assert.strictEqual(etapas.length, 6);
+  assert.strictEqual(etapas.length, 7);
   assert.strictEqual(CRM.ETAPAS_FUNIL.novo.titulo, 'Novo Lead');
   assert.strictEqual(CRM.ETAPAS_FUNIL.qualificacao.titulo, 'Contato Feito / Qualificação');
   assert.strictEqual(CRM.ETAPAS_FUNIL.proposta.titulo, 'Cotação / Proposta Enviada');
   assert.strictEqual(CRM.ETAPAS_FUNIL.negociacao.titulo, 'Negociação / Amostra');
   assert.strictEqual(CRM.ETAPAS_FUNIL.fechado.titulo, 'Fechado / Ganho');
   assert.strictEqual(CRM.ETAPAS_FUNIL.perdido.titulo, 'Perdido / Standby');
+  assert.strictEqual(CRM.ETAPAS_FUNIL.cadencia.titulo, 'Cadência');
+  assert.strictEqual(CRM.ETAPAS_FUNIL.cadencia.ordem, 7);
 });
 
 // ----------------------------------------------------------------------------
@@ -208,7 +210,8 @@ test('Cálculo exato de métricas para os vendedores na Arena', () => {
     assert(typeof m.taxaConversao === 'number', 'taxaConversao numérico');
     assert(typeof m.pontuacaoGeral === 'number', 'pontuacaoGeral numérico');
     assert(m.leadsPorEstagio, 'leadsPorEstagio obrigatório');
-    assert.strictEqual(Object.keys(m.leadsPorEstagio).length, 6, 'Deve contabilizar os 6 estágios');
+    assert.strictEqual(Object.keys(m.leadsPorEstagio).length, 7, 'Deve contabilizar os 7 estágios');
+    assert.strictEqual(typeof m.leadsPorEstagio.cadencia, 'number', 'cadencia deve estar presente em leadsPorEstagio');
   });
 
   // Confirmação da ordenação do ranking por pontuação

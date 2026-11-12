@@ -30,12 +30,12 @@ assert(htmlContent.includes('data-tab="tab-arena"'), 'Aba 2 (Arena 3D) deve exis
 assert(htmlContent.includes('data-tab="tab-fechamento"'), 'Aba 3 (Fechamento) deve existir');
 console.log('  ✅ [PASS] As 3 abas de navegação estão configuradas com atributos data-tab');
 
-// 3. Validação das 6 Colunas do Kanban
-const colunasRequeridas = ['novo', 'qualificacao', 'proposta', 'negociacao', 'fechado', 'perdido'];
+// 3. Validação das 7 Colunas do Kanban
+const colunasRequeridas = ['novo', 'qualificacao', 'proposta', 'negociacao', 'fechado', 'perdido', 'cadencia'];
 colunasRequeridas.forEach(col => {
   assert(htmlContent.includes(`data-stage="${col}"`), `Coluna ${col} deve existir com data-stage`);
 });
-console.log('  ✅ [PASS] O Kanban possui as 6 colunas completas com suporte a drop');
+console.log('  ✅ [PASS] O Kanban possui as 7 colunas completas com suporte a drop');
 
 // 4. Validação da Seção de Fechamento do Dia
 assert(htmlContent.includes('id="btn-executar-fechamento"'), 'Botão Encerrar Expediente deve existir');

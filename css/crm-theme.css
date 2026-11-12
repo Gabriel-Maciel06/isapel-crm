@@ -636,10 +636,10 @@ a:hover {
 }
 
 /* ==========================================================================
-   5. QUADRO KANBAN DE QUALIFICAÇÃO (6 COLUNAS)
+   5. QUADRO KANBAN DE QUALIFICAÇÃO (7 COLUNAS)
    ========================================================================== */
 .crm-kanban-wrapper {
-  padding: 1.25rem 3rem 1.25rem 2.5rem;
+  padding: 1.25rem 2.5rem;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
@@ -648,9 +648,9 @@ a:hover {
 
 .crm-kanban-board {
   display: grid;
-  grid-template-columns: repeat(6, minmax(185px, 1fr));
+  grid-template-columns: repeat(7, minmax(220px, 1fr));
   gap: 0.85rem;
-  min-width: 1240px;
+  min-width: 1620px;
   height: 100%;
   align-items: stretch;
 }
@@ -701,6 +701,7 @@ a:hover {
 .crm-kanban-col--4 .crm-kanban-col__indicator { background: var(--isapel-amber); }
 .crm-kanban-col--5 .crm-kanban-col__indicator { background: var(--isapel-emerald); } /* Fechado/Ganho = Verde Esmeralda */
 .crm-kanban-col--6 .crm-kanban-col__indicator { background: var(--isapel-carmine); } /* Perdido = Carmim/Vermelho */
+.crm-kanban-col--7 .crm-kanban-col__indicator { background: #0D9488; } /* Cadência = Teal */
 
 .crm-kanban-col__title-row {
   display: flex;
@@ -917,16 +918,22 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.4rem;
   background: #F8FAFC;
   padding: 0.4rem 0.55rem;
   border-radius: var(--radius-sm);
   border: 1px solid #EDF2F7;
+  min-width: 0;
 }
 
 .crm-card__phone-text {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .crm-card__whatsapp-btn {
