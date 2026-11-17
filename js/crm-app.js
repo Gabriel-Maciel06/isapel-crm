@@ -1909,6 +1909,7 @@
         : [
             { id: 'perdido', nome: 'Perdido', cor: 'red', count: 4, pctTotal: 11.4, pctFormatada: '11,4%' },
             { id: 'avancado', nome: 'Avançado', cor: 'green', count: 11, pctTotal: 31.4, pctFormatada: '31,4%' },
+            { id: 'cadencia', nome: 'Cadência', cor: 'teal', count: 0, pctTotal: 0.0, pctFormatada: '0,0%' },
             { id: 'sem_retorno', nome: 'Sem retorno', cor: 'gray', count: 20, pctTotal: 57.1, pctFormatada: '57,1%' }
           ];
 

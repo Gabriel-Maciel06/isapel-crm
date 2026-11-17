@@ -377,6 +377,29 @@ test('Distribuição por vendedor calcula métricas individuais para a diretoria
   assert.strictEqual(caio.totalLeads, 1);
 });
 
+test('Distribuição de qualidade dos leads inclui Perdido, Avançado, Cadência e Sem retorno', () => {
+  const sessao = { usuario: 'diretoria', perfil: 'diretoria', vendedorId: null };
+  const leadsComCadencia = [
+    ...leadsParaMetricas,
+    { id: '7', nome: 'Lead Em Cadência', estagio: 'cadencia', tipoCliente: 'distribuidor', vendedorId: 'maciel' }
+  ];
+  const resultado = IsapelAnalytics.calcularMetricas(leadsComCadencia, sessao, { periodo: 'todos' });
+
+  assert.ok(Array.isArray(resultado.distribuicaoQualidade));
+  assert.strictEqual(resultado.distribuicaoQualidade.length, 4);
+
+  const ids = resultado.distribuicaoQualidade.map(q => q.id);
+  assert.deepStrictEqual(ids, ['perdido', 'avancado', 'cadencia', 'sem_retorno']);
+
+  const cadencia = resultado.distribuicaoQualidade.find(q => q.id === 'cadencia');
+  assert.strictEqual(cadencia.nome, 'Cadência');
+  assert.strictEqual(cadencia.cor, 'teal');
+  assert.strictEqual(cadencia.count, 1);
+  assert.strictEqual(cadencia.comPerfil, 1);
+  assert.strictEqual(cadencia.emAtendimento, 1);
+  assert.strictEqual(cadencia.semRetorno, 0);
+});
+
 // ----------------------------------------------------------------------------
 // 6. REATIVIDADE E LISTENERS
 // ----------------------------------------------------------------------------

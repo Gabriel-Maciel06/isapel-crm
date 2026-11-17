@@ -4143,6 +4143,10 @@ a:hover {
   background: #8B5CF6;
 }
 
+.crm-gdot--teal {
+  background: #0D9488;
+}
+
 /* Célula aprimorada de Leads nas Tabelas Gerenciais (Barra + Número + Porcentagem) */
 .crm-lead-metric-cell {
   display: inline-flex;
@@ -4211,6 +4215,10 @@ a:hover {
 
 .crm-lead-metric-bar--purple {
   background-color: #8B5CF6;
+}
+
+.crm-lead-metric-bar--teal {
+  background-color: #0D9488;
 }
 
 /* Mini barras legadas de Leads na Tabela */

@@ -692,6 +692,7 @@
     const qualidadeContadores = {
       perdido: { id: 'perdido', nome: 'Perdido', cor: 'red', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 },
       avancado: { id: 'avancado', nome: 'Avançado', cor: 'green', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 },
+      cadencia: { id: 'cadencia', nome: 'Cadência', cor: 'teal', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 },
       sem_retorno: { id: 'sem_retorno', nome: 'Sem retorno', cor: 'gray', count: 0, comPerfil: 0, emAtendimento: 0, semRetorno: 0 }
     };
 
@@ -726,12 +727,14 @@
         qualId = 'perdido';
       } else if (['proposta', 'negociacao', 'fechado'].includes(estagioLead)) {
         qualId = 'avancado';
+      } else if (estagioLead === 'cadencia') {
+        qualId = 'cadencia';
       }
 
       if (qualidadeContadores[qualId]) {
         qualidadeContadores[qualId].count += 1;
         if (temPerfil) qualidadeContadores[qualId].comPerfil += 1;
-        if (['qualificacao', 'proposta', 'negociacao'].includes(estagioLead)) {
+        if (['qualificacao', 'proposta', 'negociacao', 'cadencia'].includes(estagioLead)) {
           qualidadeContadores[qualId].emAtendimento += 1;
         }
         if (estagioLead === 'novo' || qualId === 'sem_retorno') {
